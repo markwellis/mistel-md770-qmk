@@ -6,8 +6,8 @@ passed the selected representative [hardware checks](mistel-md770-personal-hardw
 Upgrading from the preceding layer order requires a settings reset.
 The bring-up records below describe the preceding firmware.
 
-The tested changes are committed on `mistel-md770-support`: `a86078e8a0`
-adds onboard programming and `31b3ef5775` corrects USB reception after wake.
+The tested support tree is committed on `mistel-md770-support` as
+`bf866604c1`, including onboard programming and the USB receive wake correction.
 The one-line ChibiOS USB transport correction re-arms OUT reception. Without
 it, a reset input queue can deliver a previous report from the retained
 receive buffer. The actual-source regression in `tests/chibios_usb/` and

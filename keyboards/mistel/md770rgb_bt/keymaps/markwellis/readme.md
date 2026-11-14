@@ -33,7 +33,7 @@ write global configuration or install a service.
 
 | Component | Use before merging | Switch after merging |
 | --- | --- | --- |
-| QMK keyboard port | `markwellis/qmk_firmware` branch `mistel-md770-support` (`31b3ef5775`); its PR is not open yet | Upstream QMK containing the MD770 port |
+| QMK keyboard port | `markwellis/qmk_firmware` branch `mistel-md770-support` (`bf866604c1`); its PR is not open yet | Upstream QMK containing the MD770 port |
 | HT32 reset address | Fix commit `410d3636` in the QMK-compatible ChibiOS-Contrib branch below; the existing local integration checkout already includes it | QMK must update its ChibiOS-Contrib dependency to include [ChibiOS-Contrib #469](https://github.com/ChibiOS/ChibiOS-Contrib/pull/469) |
 | `pok3rtool` | Pinned upstream source plus `patches/pok3rtool-md770.patch`, applied by `shell.nix` | Update the source pin/hash to a revision containing #19, then remove the patch entry and file |
 | USB permissions | [MD770 qmk_udev branch](https://github.com/qmk/qmk_udev/compare/main...markwellis:mistel-md770-iap), or the sudo flashing command below | Install QMK udev rules containing those device IDs |

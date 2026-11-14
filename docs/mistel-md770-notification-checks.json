@@ -189,17 +189,16 @@
     "owner_dismiss_to_off_result": "Owner confirmed both halves returned to off after A",
     "qmk_working_branch": "mistel-md770-support",
     "changes_committed": true,
-    "commit": "31b3ef57756ec041d7d6844b17e6853c53736da5"
+    "commit": "bf866604c116844c1e6ae10969be6774de0a54f6"
   },
   "hardware_record": "mistel-md770-personal-hardware-tests.json",
   "source_revisions": {
     "qmk_firmware": {
       "branch": "mistel-md770-support",
-      "onboard_programming_commit": "a86078e8a028d615f23159181f456d39ade8c332",
-      "usb_receive_wake_commit": "31b3ef57756ec041d7d6844b17e6853c53736da5",
       "chibios_contrib_build_checkout": "410d3636a15485aefc74559a52e38c8a642b8ad9",
       "dependency_selection": "Local reset-address correction; excluded from the support branch gitlink as documented",
-      "hardware_tested_sources_unchanged": true
+      "hardware_tested_sources_unchanged": true,
+      "support_commit": "bf866604c116844c1e6ae10969be6774de0a54f6"
     },
     "mistel-md770-qmk": {
       "branch": "main",
