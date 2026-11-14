@@ -1,0 +1,114 @@
+{
+  "date": "2026-11-15",
+  "verdict": "Bluetooth support is technically feasible using the resident radio firmware. Stock Bluetooth HID typing is physically proven with power-bank power, no host USB data connection and no battery; QMK transport implementation remains outstanding.",
+  "owner_hardware": {
+    "module_installed": true,
+    "battery_installed": false,
+    "battery_connector_location": "keyboard mainboard",
+    "power": "external USB",
+    "switch": "Unmarked; owner returned it to the opposite position after the successful stock radio test"
+  },
+  "stock_image": {
+    "bytes": 49008,
+    "sha256": "8fafdca096756f23626802d5b586b270b0bd512fe5d1c0327db4eafcd4f689b2",
+    "load_address": "0x3200"
+  },
+  "offline_probe": {
+    "source": "tests/md770_bluetooth/stock_probe.py",
+    "actual_stock_instruction_execution": true,
+    "cases_passed": 8,
+    "scope": "Supplied RAM/MMIO state; report building and parser assignments, not physical SPI timing"
+  },
+  "astra_high_review": "No remaining blocker in revised receive-only diagnostic and reader",
+  "astra_max_review": "No remaining blocker; exact vector and register setup verified",
+  "initial_diagnostic": {
+    "image_bytes": 42480,
+    "sha256": "0da612e81bf2cd323017d478512ce574d9bc52acafcaed639960f60c37b15bb7",
+    "flash_and_post_metadata_verification": "passed",
+    "result": "Enumerated but typing and Raw HID stopped; suspected generic SPI slave interrupt issue, exact cause unconfirmed",
+    "recovery": "Owner held Delete at power-on; updater returned; external QMK settings erased"
+  },
+  "production_branch": "qmk_firmware:mistel-md770-support",
+  "production_source_modified": false,
+  "checkpoint": "Investigation complete: Bluetooth feasibility confirmed by stock pairing and power-bank typing. Known-good personal QMK restored and joined-half typing confirmed. Production branch unchanged; no PR opened.",
+  "stock_baseline": {
+    "image_sha256": "8fafdca096756f23626802d5b586b270b0bd512fe5d1c0327db4eafcd4f689b2",
+    "image_bytes": 49008,
+    "application_unmodified": true,
+    "flash_exit_code": 0,
+    "encoded_sum": "0x0e685d2a",
+    "encoded_crc32": "0x6785727c",
+    "post_metadata_verification": "passed",
+    "version_metadata": "Generated QMK metadata accepted by retained updater",
+    "left_firmware": "Unchanged QMK; stock right accepted its matrix reports",
+    "result": "Passed pairing, connection and typing, including power-bank power without host USB",
+    "owner_result": "Both A and J worked; Pn+1 and Pn+F3 worked; right indicator blinking blue",
+    "stock_right_qmk_left_matrix_compatible": true,
+    "radio_advertisement_name": "Mistel 3",
+    "usb_only_radio_operation_confirmed": true,
+    "paired": true,
+    "hid_service": "0x1124 classic Bluetooth HID",
+    "bluetooth_input_bus": "0x0005",
+    "bluetooth_a_event_observed_while_usb_connected": true,
+    "power_bank_typing": "Owner sent aj and confirmed typing works; no Mistel USB device present; Bluetooth input endpoint present",
+    "battery_required": false,
+    "software_updater_entry": "Passed using existing pok3rtool from stock application before personal QMK restoration"
+  },
+  "personal_firmware_restoration": {
+    "image": "mistel_md770rgb_bt_right_markwellis.bin",
+    "bytes": 42568,
+    "sha256": "04469837738827efc765826d5bc7abcd3217ce210987099b6c91c292113ee888",
+    "flash_exit_code": 0,
+    "encoded_sum": "0xb4ab10c1",
+    "encoded_crc32": "0x312e5e64",
+    "post_metadata_verification": "passed",
+    "normal_usb_product": "MD770 RGB BT (wired QMK)",
+    "owner_typing_check": "Passed; owner confirmed joined keyboard types normally"
+  },
+  "receive_only_diagnostic": {
+    "image_bytes": 42380,
+    "sha256": "84311fcf84341d12c351332cef3365627775ef2c8cf0b8e5c66fbf8dbef929db",
+    "heap_headroom_after_reserved_stacks_bytes": 168,
+    "flash_exit_code": 0,
+    "encoded_sum": "0x82056142",
+    "encoded_crc32": "0x8a07702e",
+    "post_metadata_verification": "passed",
+    "raw_hid_responsive": true,
+    "owner_typing_result": "on ok",
+    "switch_off_capture": {
+      "received_bytes": 0,
+      "spi_status": "0x143"
+    },
+    "switch_on_without_cold_reset_capture": {
+      "received_bytes": 0,
+      "spi_status": "0x43"
+    },
+    "cold_switch_on_capture": {
+      "received_bytes": 0,
+      "spi_status": "0x43"
+    }
+  },
+  "command_diagnostic": {
+    "image_bytes": 42576,
+    "sha256": "f6f719026f3262b8547ba696c40665bf56bf4e8431bdfc8794aac036eab1d7dc",
+    "heap_headroom_after_reserved_stacks_bytes": 160,
+    "change": "Bounded stock command payload and request output, two-second timeout, stock A10 input configuration",
+    "astra_high_review": "No remaining high-risk code finding",
+    "astra_max_review": "No remaining high-risk blocker; stock SEL-release completion and A10 input/pulldown independently confirmed",
+    "flash_exit_code": 0,
+    "encoded_sum": "0x7d529062",
+    "encoded_crc32": "0x44d664dc",
+    "post_metadata_verification": "passed",
+    "raw_hid_responsive": true,
+    "observations": [
+      "First a7 02 00 01 capture: one 00 byte, SR 0x43",
+      "aa 03 01 and aa 00 01: no captured bytes, SR 0x43",
+      "No valid radio status packet",
+      "Owner reports switch is unmarked; positions are not yet identified",
+      "After toggling switch and cold reconnect, a7 02 00 01 again captured one 00 byte, SR 0x43"
+    ],
+    "source": "tests/md770_bluetooth/radio_probe.c"
+  },
+  "production_revision": "bf866604c116844c1e6ae10969be6774de0a54f6",
+  "next_step": "Reproduce stock SPI transaction framing and obtain a valid radio status packet from QMK before adding report routing"
+}
