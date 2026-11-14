@@ -1,8 +1,8 @@
 # MD770 RGB BT VIA definition
 
-The personal `markwellis` keymap enables VIA on the right half automatically.
-See its [build and flash instructions](../keyboards/mistel/md770rgb_bt/keymaps/markwellis/readme.md).
-The commands below enable VIA when building QMK's `default` keymap directly.
+The personal `markwellis` keymap uses a separate Raw HID notification protocol
+and leaves VIA disabled. This optional definition applies to QMK's `default`
+keymap when explicitly built with VIA.
 
 Use this definition with the right-half QMK default keymap built with VIA:
 
@@ -16,7 +16,7 @@ Apply the dependency correction described in
 first. Flash each half separately using the [USB updater](../docs/usb-flashing.md).
 Clear QMK settings when installing this layer/storage layout for the first time.
 QMK reserves the first 64 KiB (`0x0000`–`0xffff`) of the right half's external
-flash, with an 8 KiB backing store and 4 KiB logical EEPROM. Settings resets
+flash, with a 12,800-byte backing store and 6,400-byte logical EEPROM. Settings resets
 and journal consolidation erase that whole block, including stock settings
 and macros within it.
 
@@ -30,20 +30,26 @@ VIA is not required for normal typing or lighting controls.
 | 0 | QWERTY base |
 | 1 | Colemak base |
 | 2 | Dvorak base |
-| 3–5 | Programmable profiles 1–3 |
-| 6 | DIP1 Mac function-key overlay |
-| 7 | Fn shortcuts |
-| 8 | DIP4 Caps/Fn overlay |
+| 3 | DIP1 Mac function-key overlay |
+| 4 | DIP4 Caps/Fn overlay |
+| 5–7 | Programmable profiles 1–3 |
+| 8 | Fn shortcuts |
 | 9 | Pn controls |
+| 10–12 | Profiles 1–3 Fn assignments |
+| 13–15 | Profiles 1–3 Pn assignments |
+| 16 | Default profile assignments |
+| 17 | Default profile Fn assignments |
+| 18 | Default profile Pn assignments |
 
 Profiles start transparent so the selected QWERTY, Colemak or Dvorak layout
-still applies. Remap layers 3–5 and assign native VIA macros there. Pn+M,
+still applies. Remap layers 5–7 or 16 and assign native VIA macros there. Pn+M,
 Pn+comma, Pn+dot and Pn+slash select the default profile and profiles 1–3.
 The layer indicator is off, red, green or blue respectively. Pn+Quote cycles
 the base layout without changing the profile. Both selections persist.
 Fn+R held for one second arms a reset of the selected profile's key assignments.
-Release all keys to apply it.
-VIA macro text is shared and is retained. Hold both physical Alt keys for
+Release all keys to restore that profile's ordinary, Fn and Pn banks.
+The 20 macro slots are shared with the [onboard recorder](../docs/onboard-programming.md)
+and are retained by a profile reset. Hold both physical Alt keys for
 one second to reset all QMK settings, profiles, macros and saved colours.
 
 Pn+F9 starts per-key colour editing. Select a colour with Pn+Escape or

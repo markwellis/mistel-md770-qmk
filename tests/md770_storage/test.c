@@ -48,7 +48,7 @@ int main(void) {
     assert(wear_leveling_read(3, &saved_profile, sizeof(saved_profile)) != WEAR_LEVELING_FAILED);
     assert(wear_leveling_read(48, saved_colours, sizeof(saved_colours)) != WEAR_LEVELING_FAILED);
     assert(saved_profile == profile && memcmp(saved_colours, colours, sizeof(colours)) == 0);
-    for (unsigned i = 0; i < 1000; ++i) {
+    for (unsigned i = 0; i < 3000; ++i) {
         uint16_t value = i;
         assert(wear_leveling_write(1024, &value, sizeof(value)) != WEAR_LEVELING_FAILED);
     }
@@ -56,7 +56,7 @@ int main(void) {
     assert(wear_leveling_init() != WEAR_LEVELING_FAILED);
     uint16_t last = 0;
     assert(wear_leveling_read(1024, &last, sizeof(last)) != WEAR_LEVELING_FAILED);
-    assert(last == 999);
+    assert(last == 2999);
     assert(wear_leveling_read(48, saved_colours, sizeof(saved_colours)) != WEAR_LEVELING_FAILED);
     assert(memcmp(saved_colours, colours, sizeof(colours)) == 0);
     for (size_t i = EXTERNAL_FLASH_BLOCK_SIZE; i < sizeof(flash); ++i) assert(flash[i] == 0xa5);

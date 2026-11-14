@@ -1,11 +1,9 @@
 # Mark's MD770 RGB BT keymap
 
-This is a personal copy of the upstream-candidate `default` keymap from
-QMK commit `bec2a0bc17321f4773feae9af4ba5a1b0d0ab4e6`. Its key assignments
-and behaviour start unchanged, including Fn/Pn controls, DIP switches,
-profiles and lighting. The right-half build enables VIA to retain the
-USB lighting-control interface used by the installed firmware. The left
-half builds without VIA. One keymap is shared by both half-specific builds.
+This personal keymap follows the port's `default` key assignments and
+behaviour, including Fn/Pn controls, DIP switches, profiles, lighting and
+onboard programming. The right-half build adds Raw HID notification lighting;
+VIA is disabled. One keymap is shared by both half-specific builds.
 The upstream keyboard submission retains its own `default` keymap.
 
 QMK discovers this repository through its standard
@@ -35,7 +33,7 @@ write global configuration or install a service.
 
 | Component | Use before merging | Switch after merging |
 | --- | --- | --- |
-| QMK keyboard port | Published `markwellis/qmk_firmware` branch `mistel-md770-support` (`bec2a0bc17`); its PR is not open yet | Upstream QMK containing the MD770 port |
+| QMK keyboard port | `markwellis/qmk_firmware` branch `mistel-md770-support` (`31b3ef5775`); its PR is not open yet | Upstream QMK containing the MD770 port |
 | HT32 reset address | Fix commit `410d3636` in the QMK-compatible ChibiOS-Contrib branch below; the existing local integration checkout already includes it | QMK must update its ChibiOS-Contrib dependency to include [ChibiOS-Contrib #469](https://github.com/ChibiOS/ChibiOS-Contrib/pull/469) |
 | `pok3rtool` | Pinned upstream source plus `patches/pok3rtool-md770.patch`, applied by `shell.nix` | Update the source pin/hash to a revision containing #19, then remove the patch entry and file |
 | USB permissions | [MD770 qmk_udev branch](https://github.com/qmk/qmk_udev/compare/main...markwellis:mistel-md770-iap), or the sudo flashing command below | Install QMK udev rules containing those device IDs |
@@ -45,7 +43,7 @@ The udev rules affect USB access; they are not required to compile firmware.
 Merging #469 into canonical ChibiOS alone is insufficient: the fix must also
 reach QMK's ChibiOS-Contrib fork and QMK's selected dependency revision.
 
-The existing local `mistel-md770-bt-upstream` checkout is ready to build.
+The existing local `mistel-md770-support` checkout is ready to build.
 To reproduce the pending configuration with a fresh sibling checkout, run
 these commands from the userspace root. Do not clone over an existing repo:
 
@@ -79,10 +77,11 @@ Your files are in `keyboards/mistel/md770rgb_bt/keymaps/markwellis/`:
 | `keymap.json` | Key assignments and layers for both halves |
 | `keymap.c` | Fn/Pn behaviour, profiles, DIP handling and custom actions |
 | `keymap.h` | Layer names used by the JSON and C code |
+| `programming.c` and `programming.h` | Onboard reassignment, persistent macro recording and Fn/Pn relocation |
+| `notification.c` and `notification.h` | Personal RAM-only Raw HID notification lighting |
 | `config.h` | Compile-time options and saved per-key colour storage |
 | `rules.mk` | Features enabled for this keymap |
 | `rgb_matrix_user.inc` | The saved per-key lighting effect |
-| [VIA definition](../../../../../via/md770rgb_bt.json) | VIA V3 design shared with the project documentation |
 
 For a simple remap, change the relevant keycode in `keymap.json` and rebuild.
 Keep its layer order consistent with `enum layer_names` in `keymap.h`.
@@ -95,19 +94,20 @@ existing `_user` hooks when adding behaviour. See QMK's
 [custom functions](https://docs.qmk.fm/custom_quantum_functions) and
 [keycode reference](https://docs.qmk.fm/keycodes).
 
-No personal functions or remaps have been added yet. `rules.mk` enables
-VIA only for the right half; that is the sole build-option change from the
-copied default.
+The keymap includes the factory-style onboard programming described in
+[onboard programming](../../../../../docs/onboard-programming.md).
+No personal remaps have been added. The keyboard-only editor and persistent
+recordings work without VIA. Stored assignments can override changed compiled
+keys; keep long-term personal defaults in `keymap.json` for a source backup.
 
-For live VIA remapping, open [VIA](https://usevia.app/), enable Show Design
-tab in Settings, load [`via/md770rgb_bt.json`](../../../../../via/md770rgb_bt.json)
-from the repository root as a V3 definition, and
-authorise the paired keyboard through the right-half USB interface.
-Layers 3–5 are the three programmable profiles. Export VIA changes and keep
-the backup in Git if they form part of your setup: EEPROM is not your source
-backup. Stored VIA remaps can override changed compiled key assignments.
-Hold both physical Alt keys for one second to reset all QMK settings when
-needed; this also clears saved profiles, macros and colours.
+To latch a breathing notification until the next key press:
+
+```fish
+python3 scripts/md770_notify.py ff8800
+```
+
+See [notifications](../../../../../docs/notifications.md) for the HID packet
+and behaviour. The alert leaves saved lighting settings unchanged.
 
 ## Build
 
@@ -174,12 +174,10 @@ sudo -A (command -v pok3rtool) flash QMK ./mistel_md770rgb_bt_right_markwellis.b
 
 Use the left filename for the left half. Do not compile QMK with sudo.
 
-Internal flashing does not erase the external settings chip. However, this
-QMK revision uses the firmware build date to validate VIA settings:
-`quantum/via.c` resets VIA keymaps, macros and layout options when that date
-changes. Export your VIA configuration before updating and import it again
-when needed. Do not rely on VIA remaps surviving a rebuild on another day.
-Other saved settings can also require a reset after storage-format changes.
+Internal flashing does not erase the external settings chip. Clear settings
+after changing the layer/storage layout or migrating from the earlier VIA
+build: hold both physical Alt keys for one second. This clears saved profiles,
+macros and colours. Notification alerts themselves never change saved settings.
 Pn+Insert itself preserves settings;
 holding Delete on the right or Escape on the left during connection clears
 that half's QMK settings and enters its updater. The right half stores the
@@ -187,8 +185,7 @@ persistent settings; standalone left-half settings are transient.
 
 ## Update later
 
-Export any VIA changes before updating. Keep the export with your personal
-source files in Git. Keep this userspace repository separate from the QMK
+Keep personal source files in Git. Keep this userspace repository separate from the QMK
 hardware source.
 Until the port and dependency fix reach upstream, retain the pending setup
 described above. Once both reach upstream `master`, update from the userspace
@@ -216,6 +213,10 @@ inherit later edits to QMK's `default` keymap: review changes under
 changes can also require adjusting your personal code.
 
 ## Initial verification
+
+This records the earlier VIA-enabled setup, before onboard programming and
+personal notifications. Current notification verification is described in
+[notifications](../../../../../docs/notifications.md#verification).
 
 On 2026-11-14, both personal targets compiled against QMK integration commit
 `ab06dea4ecd97a7a688674b325494a2b0ffae248` with the existing ChibiOS reset

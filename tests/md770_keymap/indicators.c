@@ -12,7 +12,8 @@ PWMDriver       PWMD_GPTM0, PWMD_MCTM0;
 static unsigned pwm_writes, mode_writes, sleep_calls, wake_calls;
 static unsigned modes[64];
 static unsigned entry_edges;
-static bool checking_entry;
+static bool     checking_entry;
+static unsigned reset_edges;
 
 void pwmStart(PWMDriver *driver, const PWMConfig *config) {
     assert(config->frequency == 24000000 && config->period == UINT16_MAX);
@@ -46,7 +47,10 @@ void wait_ms(unsigned ms) {
         assert(PWMD_GPTM0.width[0] == expected && PWMD_GPTM0.width[1] == expected);
         assert(PWMD_GPTM0.width[2] == expected && PWMD_MCTM0.width[0] == expected);
     } else {
-        assert(ms == 250);
+        assert(ms == 100);
+        uint16_t expected = reset_edges++ % 2 ? 0 : 6000;
+        assert(PWMD_GPTM0.width[0] == expected && PWMD_GPTM0.width[1] == expected && PWMD_MCTM0.width[0] == expected);
+        assert(PWMD_GPTM0.width[2] == 0);
     }
 }
 
@@ -79,6 +83,7 @@ int main(void) {
     assert(entry_edges == 6 && PWMD_GPTM0.width[2] == 0);
     assert(PWMD_GPTM0.width[0] == 0 && PWMD_GPTM0.width[1] == 0 && PWMD_MCTM0.width[0] == 0);
     assert(shutdown_kb(false));
-    assert(PWMD_GPTM0.width[0] == 6000 && PWMD_GPTM0.width[1] == 6000 && PWMD_MCTM0.width[0] == 6000);
-    puts("Indicator initialisation, PWM limits, Caps/profile independence and suspend/resume passed.");
+    assert(reset_edges == 10 && PWMD_GPTM0.width[0] == 0 && PWMD_GPTM0.width[1] == 0 && PWMD_MCTM0.width[0] == 0);
+    puts("Indicator initialisation, PWM limits, Caps/profile independence and "
+         "suspend/resume passed.");
 }

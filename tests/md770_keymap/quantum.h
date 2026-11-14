@@ -1,16 +1,20 @@
 #pragma once
+#include "quantum/keycodes.h"
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
-#include "quantum/keycodes.h"
 
 #define MATRIX_ROWS 16
-#define MATRIX_COLS 8
+#define MATRIX_COLS 7
 #define RGB_MATRIX_LED_COUNT 85
-#define RGB_MATRIX_MAXIMUM_BRIGHTNESS 255
+#define RGB_MATRIX_MAXIMUM_BRIGHTNESS 128
+#define RGB_MATRIX_LED_FLUSH_LIMIT 16
+#define RGB_MATRIX_SLEEP
 #define RGB_MATRIX_SOLID_COLOR 1
 #define RGB_MATRIX_CUSTOM_MD770_CUSTOM 11
 #define MO(layer) (QK_MOMENTARY | (layer))
+#define MOD_BIT(code) (1U << ((code) & 0x07))
+#define KEYEQ(a, b) ((a).row == (b).row && (a).col == (b).col)
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
@@ -26,6 +30,13 @@
 typedef uint8_t  matrix_row_t;
 typedef uint32_t layer_state_t;
 typedef struct {
+    uint8_t col, row;
+} keypos_t;
+typedef struct {
+    bool swap_control_capslock, swap_lalt_lgui, swap_ralt_rgui;
+} keymap_config_t;
+extern keymap_config_t keymap_config;
+typedef struct {
     uint8_t h, s, v;
 } hsv_t;
 typedef struct {
@@ -33,11 +44,9 @@ typedef struct {
 } rgb_t;
 typedef struct {
     struct {
-        struct {
-            uint8_t col, row;
-        } key;
-        bool pressed;
-        uint8_t type;
+        keypos_t key;
+        bool     pressed;
+        uint8_t  type;
     } event;
 } keyrecord_t;
 typedef struct {
@@ -47,11 +56,25 @@ extern layer_state_t default_layer_state, layer_state;
 extern led_config_t  g_led_config;
 uint8_t              get_highest_layer(layer_state_t state);
 void                 default_layer_set(layer_state_t state);
+layer_state_t        layer_state_set(layer_state_t state);
 bool                 layer_state_is(uint8_t layer);
 void                 clear_keyboard(void);
 void                 eeconfig_update_default_layer(layer_state_t state);
 void                 eeconfig_disable(void);
 void                 soft_reset_keyboard(void);
+uint8_t              get_mods(void);
+void                 set_mods(uint8_t mods);
+void                 send_keyboard_report(void);
+uint8_t              get_weak_mods(void);
+void                 add_weak_mods(uint8_t mods);
+void                 del_weak_mods(uint8_t mods);
+void                 register_code(uint8_t code);
+void                 unregister_code(uint8_t code);
+bool                 is_key_pressed(uint8_t code);
+uint8_t              has_anykey(void);
+uint16_t             host_last_consumer_usage(void);
+uint16_t             host_last_system_usage(void);
+void                 tap_code(uint8_t code);
 uint32_t             timer_read32(void);
 uint32_t             timer_elapsed32(uint32_t start);
 matrix_row_t         matrix_get_row(uint8_t row);
@@ -59,11 +82,15 @@ uint32_t             eeconfig_update_user_datablock(const void *data, uint32_t o
 uint32_t             eeconfig_read_user_datablock(void *data, uint32_t offset, uint32_t length);
 void                 rgb_matrix_enable(void);
 bool                 rgb_matrix_is_enabled(void);
+bool                 rgb_matrix_get_suspend_state(void);
+void                 rgb_matrix_set_suspend_state(bool state);
 void                 rgb_matrix_mode(uint8_t mode);
+void                 rgb_matrix_mode_noeeprom(uint8_t mode);
 uint8_t              rgb_matrix_get_mode(void);
 void                 rgb_matrix_sethsv(uint16_t h, uint8_t s, uint8_t v);
 hsv_t                rgb_matrix_get_hsv(void);
 void                 rgb_matrix_step(void);
+rgb_t                hsv_to_rgb(hsv_t colour);
 rgb_t                hsv_to_rgb_nocie(hsv_t colour);
 
 typedef union {
@@ -113,8 +140,14 @@ typedef struct {
 uint8_t rgb_matrix_get_val(void);
 rgb_t   rgb_matrix_hsv_to_rgb(hsv_t colour);
 void    rgb_matrix_set_color(unsigned index, uint8_t red, uint8_t green, uint8_t blue);
+void    rgb_matrix_set_color_all(uint8_t red, uint8_t green, uint8_t blue);
+void    rgb_matrix_update_pwm_buffers(void);
 bool    rgb_matrix_check_finished_leds(unsigned last);
+#ifdef RAW_ENABLE
+#    include "lib/lib8tion/lib8tion.h"
+#else
 uint8_t scale8(uint8_t value, uint8_t scale);
+#endif
 
 #define KEY_EVENT 1
 #define IS_KEYEVENT(event) ((event).type == KEY_EVENT)
