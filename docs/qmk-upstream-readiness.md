@@ -1,5 +1,18 @@
 # MD770 QMK development
 
+The current local candidate adds [onboard assignments, persistent macro
+recording and Fn/Pn relocation](onboard-programming.md). The personal build
+passed the selected representative [hardware checks](mistel-md770-personal-hardware-tests.json).
+Upgrading from the preceding layer order requires a settings reset.
+The bring-up records below describe the preceding firmware.
+
+The tested changes are committed on `mistel-md770-support`: `a86078e8a0`
+adds onboard programming and `31b3ef5775` corrects USB reception after wake.
+The one-line ChibiOS USB transport correction re-arms OUT reception. Without
+it, a reset input queue can deliver a previous report from the retained
+receive buffer. The actual-source regression in `tests/chibios_usb/` and
+the first fresh-colour report after physical USB wake both passed.
+
 This is the historical bring-up record. The current
 [combined QMK candidate](https://github.com/markwellis/qmk_firmware/tree/mistel-md770-support)
 uses the chip's measured 512 KiB geometry and native 64 KiB allocation;

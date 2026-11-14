@@ -1,0 +1,210 @@
+{
+  "date": "2026-11-14",
+  "scope": "Personal markwellis notification firmware; no notification code added to QMK default keymap or keyboard driver",
+  "qmk_base_commit": "b438fc525b18f9de29dd2b01d06226f979f2dead",
+  "changes_committed": true,
+  "hardware_flash_attempted": true,
+  "via_enabled": false,
+  "raw_hid_enabled": true,
+  "onboard_programming_enabled": true,
+  "settings_reset_required_from_previous_via_build": true,
+  "protocol": {
+    "report_bytes": 32,
+    "signature": "MD",
+    "version": 1,
+    "rgb_offsets": [
+      3,
+      4,
+      5
+    ],
+    "acknowledgement": "Echo; unsupported signature/version replaces byte zero with ff"
+  },
+  "state_ram_bytes": 28,
+  "review": {
+    "model": "gpt-6-astra",
+    "reasoning_efforts": [
+      "high",
+      "max"
+    ],
+    "result": "No remaining blocker; selected representative hardware pass completed",
+    "corrected_findings": [
+      "Restore incremental effects and excluded LEDs after dismissal.",
+      "Apply the board brightness cap and QMK lightness curve.",
+      "Dismiss on physical matrix edges, including USB wake keys, while ignoring keys already held at receipt."
+    ]
+  },
+  "checks": {
+    "personal_build_both_halves": true,
+    "personal_right_without_rgb_build": true,
+    "strict_lint_both_halves": true,
+    "native_rgb_editor_notification_harness": true,
+    "qmk_rgb_core_tests_passed": 8,
+    "qmk_rgb_core_sanitisers": [
+      "address",
+      "undefined"
+    ],
+    "sender_tests_passed": 9,
+    "existing_programming_tests_passed": 39,
+    "existing_default_rgb_harness": true,
+    "clang_format_and_diff_checks": true
+  },
+  "qmk_core_test_scope": "Actual QMK RGB engine, colour conversion, configuration storage and suspend/wake functions; four simulated LEDs and a test matrix. The matrix user hook is invoked explicitly because QMK test_common supplies an empty matrix_scan_kb.",
+  "limits": [
+    "The selected representative hardware pass is complete. Full host system sleep and the exhaustive DIP sweep remain outside this hardware scope.",
+    "The alert leaves RGB configuration unchanged. Tests check normal settings during pending and forced EEPROM saves; no notification command calls EEPROM writers.",
+    "The personal right build has limited spare static RAM; interrupt and process stacks remain separately reserved at 1024 and 2048 bytes."
+  ],
+  "images": {
+    "right_markwellis": {
+      "bytes": 42532,
+      "sha256": "ada97ccead81ad69f3c064126ffc9c66271ebbb82f26245095083d172b547eb5",
+      "spare_ram_after_reserved_stacks_bytes": 168
+    },
+    "left_markwellis": {
+      "bytes": 32756,
+      "sha256": "af3cb7385cb033d8c8c3e493964bfd8373ec90a62a0af20481ae1c6720ec4372",
+      "spare_ram_after_reserved_stacks_bytes": 8600
+    },
+    "right_notifications_no_rgb": {
+      "bytes": 36296,
+      "sha256": "f6b99240f5a5751fd4f903ae5dd831ec389e8c03849b7345f7c835d1e75e3bfc",
+      "spare_ram_after_reserved_stacks_bytes": 880
+    }
+  },
+  "source_sha256": {
+    "mistel-md770-qmk": {
+      "keyboards/mistel/md770rgb_bt/keymaps/markwellis/config.h": "c6b88065aacf642353a8660cbdc2f32942ca77fd6a70bd24d43a244ca285e257",
+      "keyboards/mistel/md770rgb_bt/keymaps/markwellis/keymap.c": "7a6eea40f161bb491e65b772f2770368387b8ab6d93951626134e8cbad0bceae",
+      "keyboards/mistel/md770rgb_bt/keymaps/markwellis/keymap.h": "76d315dcc65a4232a01c416df25f369c45627d5dd97e97d28f68c1ee029d1163",
+      "keyboards/mistel/md770rgb_bt/keymaps/markwellis/keymap.json": "b2ee909250a3d7cbac8b4059e4cff7438bc01ab854aec1fec3443c9696591dd0",
+      "keyboards/mistel/md770rgb_bt/keymaps/markwellis/notification.c": "1db6d5d574be05ab77013301420f3ef970e1fe81e112ede7d2336aa979bc7faf",
+      "keyboards/mistel/md770rgb_bt/keymaps/markwellis/notification.h": "e0faac01a2ca2a93085a55bdd452a34d9dc079d4df06ca3f9afe74676c6b0af6",
+      "keyboards/mistel/md770rgb_bt/keymaps/markwellis/programming.c": "c3db880d81509649e8310e428674bfbacc49220a88b9e0d6beb678dfb3642d83",
+      "keyboards/mistel/md770rgb_bt/keymaps/markwellis/programming.h": "6c56b86e2831712e5bffbffa10c91477c5259c87643ece6bf7cb5bf13fc2ced6",
+      "keyboards/mistel/md770rgb_bt/keymaps/markwellis/rgb_matrix_user.inc": "f7be74b0f7f13f4d55de4229a9bc018d66e9d8217d360c7ba60295d67645e065",
+      "keyboards/mistel/md770rgb_bt/keymaps/markwellis/rules.mk": "e827591841302c6b5b2f3de24c916940511ffc2012c596a99a69d7a682ee0b81",
+      "scripts/md770_notify.py": "067b2974049f5dd15ca60955239ae5d072369c07771ad6d1b27811cc5498e7fd",
+      "tests/md770_keymap/indicators.c": "8a142374279a721f6738ce175f988d4b827bd2fda209784869a1a3a83d29b354",
+      "tests/md770_keymap/keycode_config.h": "3bc8d74c8d6d3c790314b7ac1006dbb2aa8a7898f09f1ef7771cb56d4550d6f9",
+      "tests/md770_keymap/programming.c": "69d26c2956bf32afa320cf487050957c8cd300cccf3e3ca177c1a59881f66b7d",
+      "tests/md770_keymap/quantum.h": "52c347c568fdfeee3e6133b938549b52ae4ebd0d51c80d645e61aac204ab1916",
+      "tests/md770_keymap/run-programming.sh": "064b9818b05a58a808d2fb11b4146a831392bc9da4175fec4918b288bd3a4488",
+      "tests/md770_keymap/send_string.h": "3a3606503a51f441a3745c256466032a219bd18d83deb180370c0de033e26f2d",
+      "tests/md770_keymap/test.c": "788f6b933d80bef59d81e49c8e43483397ebc40655b6e490d55192a4099f52d1",
+      "tests/md770_notification/config.h": "317ecae1b3bda097651e2e84d75bf1453c645252211f0012dc6b7db22682263e",
+      "tests/md770_notification/run.sh": "bb9f51eca49f39f43c86fa2f6299b15e8099ce7662d24ca01386028b86172ce3",
+      "tests/md770_notification/test.mk": "63613a80c30329a8a4c97347b36a697c6de978d91ec59f6b4dbb1046dcdcd719",
+      "tests/md770_notification/test_notification.cpp": "0ff25b1e42168dc50e8ac4e70db2a4a2703d25c687d6b0f26de8bbc702b5c885",
+      "tests/test_md770_notify.py": "405cd8fe0f3dc2d010c3640d087d63a85a6269a929e1000cf743c4d4d57fc842"
+    },
+    "qmk_firmware": {
+      "quantum/rgb_matrix/rgb_matrix.c": "a6ebb51507c2059f3eef8206f279c7a660855dd36a0d0d682feed3718cea274c",
+      "quantum/rgb_matrix/animations/raindrops_anim.h": "fcfd45b461c5d41a8e5a1df067a8b4d9108d749f4c20d283d9db7b1400a32265",
+      "quantum/color.c": "afda5e7242bde4dcec09edb4adbfb5c1f204bd638e29b5c9fb178a0ed7508583",
+      "quantum/led_tables.c": "7fb90a2b42d4c93e9276362aca6942fad514c3837d2b3529b99df462364bd534",
+      "quantum/matrix_common.c": "dce25cc6f9774f01f96e60b6a2f0294881280f4830860c2f4764db8c0ee27111",
+      "platforms/suspend.c": "795e00fbf2125196699e57fc8a34ad47ac8c3ab39aeb7c398d560a60ab793539",
+      "keyboards/mistel/md770rgb_bt/info.json": "844c6a8ecf45aec042696fdb7363785ebc1b82743192f5d9d12753e4e2870660",
+      "keyboards/mistel/md770rgb_bt/config.h": "4451c2c59587f7197bcd3dd3504b36e45c46adb8a8e9a9e9fa6e3c02a6082c8d",
+      "keyboards/mistel/md770rgb_bt/right/keyboard.json": "4520fb714f1fc58d17c9cbc218b869d4ad9ea8a0ebb7eecf9ad861e786576b99"
+    }
+  },
+  "baseline_note": "Original pre-suspend-fix images and source hashes; suspend_blank_fix and usb_wakeup_receive_fix identify the tested corrections and final image",
+  "suspend_blank_fix": {
+    "cause": "QMK NONE effect skips an already-initialised off frame; notification pixels can remain during USB suspension",
+    "change": "Personal suspend hook clears the frame and enters QMK RGB suspend before the foreground task can render again",
+    "added_state_bytes": 0,
+    "eeprom_writes_added": false,
+    "regressions_reproduced_before_fix": [
+      "Off-mode quantum suspend retains nonzero pixels",
+      "Re-suspend before the first resumed frame flush retains nonzero pixels"
+    ],
+    "real_qmk_tests_passed": 8,
+    "sender_tests_passed": 9,
+    "native_harness_passed": true,
+    "build_both_halves": true,
+    "strict_right_lint": true,
+    "reviews": {
+      "astra_high": "No remaining blocker",
+      "astra_max": "No remaining blocker"
+    },
+    "right_image": {
+      "bytes": 42564,
+      "sha256": "7a68df9cff622b2a81d5d7b4a2b7bfacf0b2458d8c0ad24081c357bd5105144d"
+    },
+    "left_image_unchanged": true,
+    "source_sha256": {
+      "keyboards/mistel/md770rgb_bt/keymaps/markwellis/notification.c": "d12790c7c2206f5444d26e8ccc954a0a9a759a108714135691573b92b0fcb555",
+      "tests/md770_notification/test_notification.cpp": "8b8fa898b6fe6310518c6f7f33f9bd926113ebcba6b339105fb79691c3d00e58"
+    },
+    "hardware_verification": "Passed: both halves completely dark during real USB runtime suspend; J woke and dismissed; active-alert power loss cleared the alert and preserved saved colours",
+    "format_check": true,
+    "offline_right_image_validation": true
+  },
+  "usb_wakeup_receive_fix": {
+    "repository": "qmk_firmware",
+    "source": "tmk_core/protocol/chibios/usb_driver.c",
+    "cause": "Suspend resets the input queue but wake leaves the HT32 receive pointer on the previous slot; the first new report can replay an old report",
+    "change": "Re-arm reception with the existing usb_start_receive helper after resuming the output endpoint queue",
+    "added_state_bytes": 0,
+    "eeprom_writes_added": false,
+    "regression": {
+      "runner": "tests/chibios_usb/run.sh",
+      "scope": "Actual QMK USB transport and ChibiOS buffer queues; simulated hardware transfer and OS services",
+      "before_fix": "Sent red; delivered old green; exit 1",
+      "after_fix": "Sent red; delivered red; exit 0",
+      "sanitisers": [
+        "address",
+        "undefined"
+      ]
+    },
+    "astra_high_review": "No remaining blocker",
+    "astra_max_review": "No remaining blocker",
+    "notification_core_tests_passed": 8,
+    "sender_tests_passed": 9,
+    "native_harness_passed": true,
+    "both_halves_build": true,
+    "strict_right_lint": true,
+    "format_check": true,
+    "offline_image_validation": true,
+    "right_image": {
+      "image": "mistel_md770rgb_bt_right_markwellis.bin",
+      "bytes": 42568,
+      "sha256": "04469837738827efc765826d5bc7abcd3217ce210987099b6c91c292113ee888"
+    },
+    "left_image_unchanged": true,
+    "source_sha256": "a0e2259828e52b96e2c502e37fa44a57071f3decd85ca3946c1deb5fe8665f8b",
+    "flash_cli_exit_code": 0,
+    "hardware_status": "Passed: real USB suspend/key wake, first new red report acknowledgement and red output, physical-key dismissal to lighting off",
+    "post_metadata_verification": "passed",
+    "encoded_sum": "0xb4ab10c1",
+    "encoded_crc32": "0x312e5e64",
+    "version_page_sha256": "470442bf654b0c3f1768d7876052a73300df6348ffba8040fec615ab0b3d7945",
+    "normal_usb_return_verified": true,
+    "post_wake_first_red_report_acknowledged": true,
+    "usb_device_number_before_and_after_wake": 27,
+    "original_usb_power_settings_restored": true,
+    "owner_suspend_and_wake_result": "Owner confirmed green, sleep and wake worked",
+    "owner_post_wake_red_result": "Owner confirmed red showed",
+    "owner_dismiss_to_off_result": "Owner confirmed both halves returned to off after A",
+    "qmk_working_branch": "mistel-md770-support",
+    "changes_committed": true,
+    "commit": "31b3ef57756ec041d7d6844b17e6853c53736da5"
+  },
+  "hardware_record": "mistel-md770-personal-hardware-tests.json",
+  "source_revisions": {
+    "qmk_firmware": {
+      "branch": "mistel-md770-support",
+      "onboard_programming_commit": "a86078e8a028d615f23159181f456d39ade8c332",
+      "usb_receive_wake_commit": "31b3ef57756ec041d7d6844b17e6853c53736da5",
+      "chibios_contrib_build_checkout": "410d3636a15485aefc74559a52e38c8a642b8ad9",
+      "dependency_selection": "Local reset-address correction; excluded from the support branch gitlink as documented",
+      "hardware_tested_sources_unchanged": true
+    },
+    "mistel-md770-qmk": {
+      "branch": "main",
+      "keymap_and_notification_commit": "05f7dacb7540975274043649fb83dd25cd1eec53",
+      "usb_regression_commit": "d14521e2b8bdda7c4bd89cff6a96926ca11e802c"
+    }
+  }
+}

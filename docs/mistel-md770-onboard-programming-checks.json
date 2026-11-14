@@ -1,0 +1,132 @@
+{
+  "date": "2026-11-14",
+  "scope": "Editor baseline before personal notifications and VIA removal; personal image/source hashes are historical",
+  "qmk_base_commit": "b438fc525b18f9de29dd2b01d06226f979f2dead",
+  "changes_committed": false,
+  "hardware_flash_attempted": false,
+  "settings_reset_required": true,
+  "review": {
+    "model": "gpt-6-astra",
+    "reasoning_efforts": [
+      "high",
+      "max"
+    ],
+    "result": "Ready for hardware testing; no remaining actionable correctness or maintainability blocker found after corrections",
+    "max_review_findings_fixed": [
+      "Preserve repeated key-down and native tap semantics, including overlapping space bars, through QMK reporting helpers.",
+      "Match delay-control releases to recognised presses and give relocated Fn/Pn controls priority."
+    ]
+  },
+  "verification": {
+    "firmware_builds_passed": 7,
+    "strict_lint_default_and_personal_both_halves": true,
+    "native_programming_cases_passed": 39,
+    "native_programming_sanitisers": [
+      "address",
+      "undefined",
+      "bounds"
+    ],
+    "rgb_and_profile_reset_harness_passed": true,
+    "indicator_harness_passed": true,
+    "wear_levelling_spi_harness_passed": true,
+    "qmk_unit_tests_passed": 16,
+    "format_and_diff_checks_passed": true,
+    "regressions_reproduced_before_fix": [
+      "playback_overlap",
+      "relocated_fn_t",
+      "delay_key_release"
+    ],
+    "builds_rechecked_after_max_review": [
+      "right_default",
+      "right_markwellis",
+      "right_typed_no_rgb"
+    ]
+  },
+  "settings": {
+    "logical_bytes": 6400,
+    "backing_bytes": 12800,
+    "reserved_external_erase_block_bytes": 65536,
+    "layers": 19,
+    "matrix_rows": 16,
+    "matrix_columns": 7,
+    "macro_slots": 20,
+    "recorder_events": 200,
+    "recorder_ram_bytes": 800
+  },
+  "limits": [
+    "Host tests use mocked keyboard reports and persistence APIs; the storage harness compiles QMK wear-levelling and SPI backing-store code against a flash model.",
+    "Hardware programming controls, physical timing, recorded playback and power-cycle persistence need validation.",
+    "The personal VIA build has little spare static RAM; its linked firmware has no surviving heap-allocation functions. Interrupt and process stacks are separately reserved at 1024 and 2048 bytes.",
+    "Imported native SS_TAP commands retain QMK tap timing, including an 80 ms blocking Caps Lock tap. The asynchronous guarantee applies to recorded delays; onboard recordings use separate down/up commands."
+  ],
+  "images": {
+    "right_default": {
+      "bytes": 41304,
+      "sha256": "a28bd9e4592766a2766b27ce80f97534e442035574ff1f1e35ceeb8e89cf19c4",
+      "word_aligned": true,
+      "spare_ram_after_reserved_stacks_bytes": 880
+    },
+    "left_default": {
+      "bytes": 32756,
+      "sha256": "af3cb7385cb033d8c8c3e493964bfd8373ec90a62a0af20481ae1c6720ec4372",
+      "word_aligned": true,
+      "spare_ram_after_reserved_stacks_bytes": 8600
+    },
+    "right_markwellis": {
+      "bytes": 44200,
+      "sha256": "17d7788ec698e0a89de9154b7262269b0aa5ef26a04c9e2c709ae88837067dc1",
+      "word_aligned": true,
+      "spare_ram_after_reserved_stacks_bytes": 208
+    },
+    "left_markwellis": {
+      "bytes": 32756,
+      "sha256": "af3cb7385cb033d8c8c3e493964bfd8373ec90a62a0af20481ae1c6720ec4372",
+      "word_aligned": true,
+      "spare_ram_after_reserved_stacks_bytes": 8600
+    },
+    "right_typed_no_rgb": {
+      "bytes": 35648,
+      "sha256": "64b6c9cb973098a3e2ca1c653538c9ad05d2abcedb773094183ae613647598e3",
+      "word_aligned": true,
+      "spare_ram_after_reserved_stacks_bytes": 1560
+    },
+    "left_typed_no_rgb": {
+      "bytes": 26712,
+      "sha256": "8b81c4b71eaee2a7a6766bdd86b0bccaea64c490587cdea319fb85a41bfea0a8",
+      "word_aligned": true,
+      "spare_ram_after_reserved_stacks_bytes": 9240
+    },
+    "right_typed_no_editor": {
+      "bytes": 36632,
+      "sha256": "11d6d983a4c267df20efecc9571ea35edfaac49761a014e5e73cd229c7b6a552",
+      "word_aligned": true,
+      "spare_ram_after_reserved_stacks_bytes": 1880
+    }
+  },
+  "source_sha256": {
+    "mistel-md770-qmk": {
+      "keyboards/mistel/md770rgb_bt/keymaps/markwellis/config.h": "c6b88065aacf642353a8660cbdc2f32942ca77fd6a70bd24d43a244ca285e257",
+      "keyboards/mistel/md770rgb_bt/keymaps/markwellis/keymap.c": "2bc214cff960ab41907f788204d638107b20c04180cc0c93dc8e3455bd3913a2",
+      "keyboards/mistel/md770rgb_bt/keymaps/markwellis/keymap.h": "76d315dcc65a4232a01c416df25f369c45627d5dd97e97d28f68c1ee029d1163",
+      "keyboards/mistel/md770rgb_bt/keymaps/markwellis/keymap.json": "b2ee909250a3d7cbac8b4059e4cff7438bc01ab854aec1fec3443c9696591dd0",
+      "keyboards/mistel/md770rgb_bt/keymaps/markwellis/programming.c": "c3db880d81509649e8310e428674bfbacc49220a88b9e0d6beb678dfb3642d83",
+      "keyboards/mistel/md770rgb_bt/keymaps/markwellis/programming.h": "6c56b86e2831712e5bffbffa10c91477c5259c87643ece6bf7cb5bf13fc2ced6",
+      "keyboards/mistel/md770rgb_bt/keymaps/markwellis/rules.mk": "8b45649e1788e8096de55a68d77357ebaa33aeab2a8354bf41ae62a787381db5",
+      "tests/md770_keymap/indicators.c": "8a142374279a721f6738ce175f988d4b827bd2fda209784869a1a3a83d29b354",
+      "tests/md770_keymap/keycode_config.h": "3bc8d74c8d6d3c790314b7ac1006dbb2aa8a7898f09f1ef7771cb56d4550d6f9",
+      "tests/md770_keymap/programming.c": "69d26c2956bf32afa320cf487050957c8cd300cccf3e3ca177c1a59881f66b7d",
+      "tests/md770_keymap/quantum.h": "79acd7bfc516950b0d350466e51fe73ee823cfc4d4739ca71e8bc4f226559750",
+      "tests/md770_keymap/run-programming.sh": "064b9818b05a58a808d2fb11b4146a831392bc9da4175fec4918b288bd3a4488",
+      "tests/md770_keymap/send_string.h": "3a3606503a51f441a3745c256466032a219bd18d83deb180370c0de033e26f2d",
+      "tests/md770_keymap/test.c": "cce8f974a6a23fa88faf270cbfd34daf8ebc1f0e23374c2314ef7d04fefb1187",
+      "tests/md770_storage/test.c": "e712fce6650153cc385409773955cf2b7df09578f62433d53518876786809e20"
+    },
+    "qmk_firmware": {
+      "keyboards/mistel/md770rgb_bt/config.h": "4451c2c59587f7197bcd3dd3504b36e45c46adb8a8e9a9e9fa6e3c02a6082c8d",
+      "keyboards/mistel/md770rgb_bt/right/keyboard.json": "4520fb714f1fc58d17c9cbc218b869d4ad9ea8a0ebb7eecf9ad861e786576b99",
+      "keyboards/mistel/md770rgb_bt/indicators.c": "b3a713d314d0d55fe4c4fc03e9b75df7de2e93d81a361e0c1f0096c62541bfe7",
+      "keyboards/mistel/md770rgb_bt/keymaps/default/rules.mk": "4383eeac5ee387055ccfe91d0b2c427324bd0f1b7b39bfda33993cbb440ba181"
+    }
+  },
+  "newer_personal_record": "mistel-md770-notification-checks.json"
+}

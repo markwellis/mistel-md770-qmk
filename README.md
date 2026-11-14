@@ -18,8 +18,9 @@ hardware validation.
 ## Personal keymap
 
 This repository is also standard QMK External Userspace. The `markwellis`
-keymap starts from the port's default and enables VIA on the right half for
-USB lighting control. Upstream QMK retains its own `default` keymap.
+keymap starts from the port's default and adds personal Raw HID
+[notification lighting](docs/notifications.md). VIA is disabled. Upstream
+QMK retains its own `default` keymap.
 
 With a sibling `qmk_firmware` checkout containing the pending changes:
 
@@ -28,10 +29,17 @@ nix-shell --run 'qmk userspace-compile -j 4'
 ```
 
 See the [personal keymap instructions](keyboards/mistel/md770rgb_bt/keymaps/markwellis/readme.md)
-for setup, custom functions, building, flashing, VIA backups and updates.
+for setup, custom functions, building, flashing and updates.
 The keymap is GPL-2.0-or-later; see its
 [licence](keyboards/mistel/md770rgb_bt/keymaps/markwellis/LICENSE).
 Other tools retain their own licences and provenance notices.
+
+The current local candidate adds [onboard assignments and persistent macro
+recording](docs/onboard-programming.md), including profile-specific Fn/Pn
+relocation. The personal build passed the selected representative
+[hardware checks](docs/mistel-md770-personal-hardware-tests.json), including
+notifications and USB wake. Its reordered layers require a full QMK settings
+reset when upgrading from the earlier firmware.
 
 ## Pending upstream changes
 
@@ -43,6 +51,7 @@ Status checked 2026-11-14. The current build setup includes these pending change
 | [pok3rtool #19](https://github.com/pok3r-custom/pok3rtool/pull/19) | Open | Recognise both MD770 halves and declare missing CLI dependencies |
 | [QMK keyboard port](https://github.com/qmk/qmk_firmware/compare/develop...markwellis:qmk_firmware:mistel-md770-support) | Branch prepared; PR not opened | Add the keyboard, default keymap and flashing command |
 | [QMK udev rules](https://github.com/qmk/qmk_udev/compare/main...markwellis:mistel-md770-iap) | Branch prepared; PR not opened | Allow user-level USB access for flashing; not needed for compilation |
+| QMK ChibiOS USB receive wake | On support branch; PR not opened | Re-arm reception after suspend resets the input queue |
 
 The ChibiOS fix must also reach QMK's ChibiOS-Contrib fork and dependency pin.
 `shell.nix` builds pinned upstream `pok3rtool` with the #19 patch. The

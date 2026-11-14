@@ -1,0 +1,703 @@
+{
+  "date": "2026-11-14",
+  "scope": "Personal onboard-programming and notification hardware tests; breathing test last",
+  "source_build_record": "mistel-md770-notification-checks.json",
+  "right": {
+    "image": "mistel_md770rgb_bt_right_markwellis.bin",
+    "bytes": 42532,
+    "sha256": "ada97ccead81ad69f3c064126ffc9c66271ebbb82f26245095083d172b547eb5",
+    "updater_identity": "04d9:1419",
+    "updater_identity_matches_record": true,
+    "owner_used_delete_on_connect_to_clear_settings": true,
+    "tool": "pinned pok3rtool from shell.nix",
+    "flash_cli_exit_code": 0,
+    "application_sum_and_crc_verified_after_metadata_write": true,
+    "encoded_sum": "0x8e43257f",
+    "encoded_crc32": "0x4de3152",
+    "version": "QMK",
+    "version_page_sha256": "470442bf654b0c3f1768d7876052a73300df6348ffba8040fec615ab0b3d7945",
+    "bootloader_and_option_page_outside_write_scope": true,
+    "normal_usb_return_verified": true,
+    "normal_usb_identity": {
+      "vid": "04d9",
+      "pid": "0419",
+      "product": "MD770 RGB BT (wired QMK)",
+      "bcdDevice": "0010"
+    },
+    "normal_return_method": "Retained updater start-application command after post-write verification",
+    "owner_confirmed_basic_typing": true
+  },
+  "left": {
+    "image": "mistel_md770rgb_bt_left_markwellis.bin",
+    "bytes": 32756,
+    "sha256": "af3cb7385cb033d8c8c3e493964bfd8373ec90a62a0af20481ae1c6720ec4372",
+    "updater_identity": "04d9:141a",
+    "updater_identity_matches_record": true,
+    "owner_used_escape_on_connect": true,
+    "tool": "pinned pok3rtool from shell.nix",
+    "flash_cli_exit_code": 0,
+    "application_sum_and_crc_verified_after_metadata_write": true,
+    "encoded_sum": "0x9ead474c",
+    "encoded_crc32": "0xdb931727",
+    "version": "QMK",
+    "version_page_sha256": "24f4c07b01c640122f10900d30ec0f494f8baadc8d9c551635bc74e6bb54979c",
+    "bootloader_and_option_page_outside_write_scope": true,
+    "normal_usb_return_verified": true,
+    "normal_usb_identity": {
+      "vid": "04d9",
+      "pid": "041a",
+      "product": "MD770 RGB BT (wired QMK)",
+      "bcdDevice": "0010"
+    },
+    "wev_standard_key_press_release_events": 66,
+    "wev_expected_symbols": [
+      "q",
+      "w",
+      "e",
+      "r",
+      "t",
+      "a",
+      "s",
+      "d",
+      "f",
+      "g",
+      "z",
+      "x",
+      "c",
+      "v",
+      "b",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "grave",
+      "Tab",
+      "Escape",
+      "F1",
+      "F2",
+      "F3",
+      "F4",
+      "F5",
+      "F6",
+      "space",
+      "Shift_L",
+      "A"
+    ],
+    "wev_all_expected_symbols_seen": true,
+    "wev_all_keys_released": true,
+    "wev_press_release_anomalies": false
+  },
+  "tests": {
+    "typing_and_modifiers": {
+      "right_basic_typing": "owner confirmed",
+      "left_standard_keys_and_shift_a": "passed in wev",
+      "joined_standard_keys_and_cross_half_shift_ctrl_alt": "passed in wev",
+      "joined_baseline_press_release_events": 114,
+      "backspace": "passed in targeted follow-up",
+      "both_spacebars": "Owner completed separate and overlapping Space checks; wev captured four paired Space presses",
+      "all_observed_keys_released": true,
+      "press_release_anomalies": false,
+      "host_right_alt_mapping": "Multi_key (Compose)",
+      "caps_indicator": "Owner confirmed ON and OFF; Caps Lock events and host lock state paired correctly",
+      "gui_lock": "passed; baseline and unlocked left Windows presses produced Super_L, while the locked press produced no GUI event",
+      "fn_media": "evtest confirmed paired Previous Track, Play/Pause, Next Track, Volume Up, Volume Down and Mute; repeat Mute and Play/Pause taps restored their toggles",
+      "normal_a_after_media": "a; no depressed, latched or locked modifiers at the end",
+      "remaining": "No additional ordinary keyboard checks planned for the shorter pass"
+    },
+    "fn_navigation": {
+      "result": "passed in wev",
+      "physical_keys": "I J K L H N [ ] ; Z",
+      "expected_symbols_seen": [
+        "Up",
+        "Left",
+        "Down",
+        "Right",
+        "Home",
+        "End",
+        "Scroll_Lock",
+        "Pause",
+        "Insert",
+        "Menu"
+      ],
+      "normal_i_after_fn_release": true,
+      "follow_up_press_release_events": 34,
+      "all_observed_keys_released": true,
+      "press_release_anomalies": false,
+      "host_scroll_lock_left_on": true
+    },
+    "profiles_and_layouts": {
+      "profile_indicator_sequence": "Owner confirmed off, red, green, blue, off",
+      "qwe_space_sample_groups_captured": 4,
+      "layout_cycle": "passed in wev",
+      "physical_keys_for_layout_cycle": "QWERTY followed by Space",
+      "layout_outputs": [
+        "qwfpgj",
+        "',.pyf",
+        "qwerty"
+      ],
+      "layout_after_test": "QWERTY",
+      "profile_and_layout_press_release_events": 74,
+      "all_observed_keys_released": true,
+      "press_release_anomalies": false,
+      "remaining": "Cross-layout explicit-remap combinations retain software coverage; no further manual checks planned in the shorter pass"
+    },
+    "editor_state_machine": {
+      "status": "Representative hardware state and reset checks passed",
+      "states_exercised_by_successful_assignments": [
+        "IDLE",
+        "TARGET",
+        "RECORDING",
+        "SAVE_RECORDING"
+      ],
+      "successful_saves_return_to_target_selection": true,
+      "cancel_target_selection": "passed; owner confirmed profile indicator returned to off",
+      "cancel_recording": "passed; unsaved Q-to-X recording preserved A/B/C assignments",
+      "profile_reset": "passed for profiles 1 and 2; owner confirmed five white flashes for each reset",
+      "cancellation_press_release_events": 12,
+      "cancellation_all_observed_keys_released": true,
+      "empty_recording_rejected": "passed; red indicator and previous Q-to-A assignment preserved",
+      "unsupported_fn_r_recording_rejected": "passed; red indicator and previous Q-to-A assignment preserved",
+      "recovery_after_rejected_saves": "passed; a subsequent W-to-Q assignment saved with white feedback",
+      "save_recording_waits_for_physical_release": "passed; K stayed held while saving E-to-K and attempting to exit",
+      "exit_attempt_while_save_pending": "passed; editor remained active until release and a later exit",
+      "deferred_save_feedback": "Owner confirmed white after K release and off after the later editor exit",
+      "deferred_save_output": "k, k, Up; all paired and modifiers released",
+      "save_move_waits_for_physical_release": "passed with Pn-to-G move; G stayed held through a T+Right Ctrl exit attempt and relocation completed on release",
+      "relocation_states_exercised": [
+        "MOVE_FN",
+        "MOVE_PN",
+        "SAVE_MOVE"
+      ],
+      "states_to_exercise": [
+        "IDLE",
+        "TARGET",
+        "RECORDING",
+        "MOVE_FN",
+        "MOVE_PN",
+        "SAVE_RECORDING",
+        "SAVE_MOVE"
+      ],
+      "cases_to_check": [
+        "Enter and exit target selection",
+        "Cancel recording and preserve the previous assignment",
+        "Save only after every physical key releases",
+        "Empty or invalid recording preserves the previous assignment and gives error feedback",
+        "Continue editing after a successful save or rejected recording",
+        "Move Fn and Pn, reject reserved destinations, and cancel relocation",
+        "Reset a profile and reset all settings"
+      ],
+      "full_settings_reset": "Passed; owner confirmed five white flashes, then key backlights and profile indicator off; F2 and F7 emitted ordinary function-key events"
+    },
+    "onboard_assignments": {
+      "default_profile_main_q_to_a": "passed in wev",
+      "default_profile_fn_q_to_b": "passed in wev",
+      "default_profile_pn_q_to_c": "passed in targeted wev retest",
+      "pn_bank_first_attempt": "Initially observed A; repeating the programming steps produced C without a firmware change. Owner confirms user error",
+      "default_profile_three_bank_retest_output": [
+        "a",
+        "b",
+        "c"
+      ],
+      "default_profile_held_q": {
+        "symbol": "a",
+        "duration_ms": 1309,
+        "release_seen": true
+      },
+      "white_editor_indicator": "owner confirmed",
+      "profile1": {
+        "q_before_programming": "q",
+        "main_fn_pn_q_outputs": [
+          "d",
+          "e",
+          "f"
+        ],
+        "default_profile_unchanged_after_switching": true,
+        "default_profile_output_order": "a, c, b; owner confirmed testing Pn before Fn",
+        "red_profile_indicator_after_editor_exit": "owner confirmed",
+        "press_release_events": 14,
+        "all_observed_keys_released": true,
+        "press_release_anomalies": false
+      },
+      "profile2": {
+        "q_before_programming": "q",
+        "expected_main_fn_pn_q_outputs": [
+          "g",
+          "h",
+          "i"
+        ],
+        "observed_main_fn_pn_q_outputs": [
+          "q",
+          "h",
+          "i"
+        ],
+        "main_q_to_g": "passed in targeted wev retest",
+        "main_bank_first_attempt": "Initially observed q; repeating the programming steps produced g without a firmware change. Owner confirms user error",
+        "main_bank_retest_output": "g, h, i, held g",
+        "held_q_retest_duration_ms": 655,
+        "retest_mapping_events_paired": true,
+        "retest_final_depressed_and_latched_modifiers": 0,
+        "retest_capture_note": "Additional modifier events occurred across wev focus changes; mapping taps and held-key release were paired",
+        "fn_q_to_h": "passed in wev",
+        "pn_q_to_i": "passed in wev",
+        "profile1_unchanged_after_switching": true,
+        "profile1_retest_output": "d, e, f",
+        "green_profile_indicator_after_editor_exit": "owner confirmed",
+        "press_release_events": 14,
+        "all_observed_keys_released": true,
+        "press_release_anomalies": false
+      },
+      "profile3": {
+        "q_before_programming": "q",
+        "expected_main_fn_pn_q_outputs": "j, k, l",
+        "initial_observed_main_fn_pn_q_outputs": "j, k, p",
+        "main_q_to_j": "passed in wev",
+        "fn_q_to_k": "passed in wev",
+        "pn_q_to_l": "passed in targeted wev retest",
+        "pn_bank_first_attempt": "Initially observed p; repeating the programming steps produced l without a firmware change. Owner confirms user error",
+        "pn_bank_retest_output": "j, k, l, ordinary l",
+        "pn_bank_retest_press_release_events": 8,
+        "profile2_unchanged_after_switching": true,
+        "profile2_retest_output": "g, h, i",
+        "initial_press_release_events": 14,
+        "all_observed_keys_released": true,
+        "press_release_anomalies": false
+      },
+      "press_release_anomalies": false,
+      "all_four_profiles_main_fn_pn_independent_assignments": "passed in wev",
+      "original_source_mapping": "passed; W recorded from physical Q produces q despite Q being assigned a",
+      "remapped_shift_and_release": "passed; Shift+W produces Q and a later W produces q with modifiers released",
+      "rejected_save_recovery_press_release_events": 10,
+      "default_e_to_k": "passed in wev after deferred save",
+      "default_ordinary_q_w_e_restored": "passed; reassigned to their original Q/W/E keycodes for normal typing",
+      "remaining": "Macros and relocation"
+    },
+    "persistent_macros": {
+      "default_f1": {
+        "recorded_physical_keys": "Q, W, E",
+        "playback": "qwe",
+        "reads_original_sources_despite_q_w_e_remaps": true,
+        "playback_edge_intervals_ms": [
+          39,
+          40,
+          40,
+          40,
+          40
+        ],
+        "all_observed_keys_released": true
+      },
+      "default_f2": {
+        "recorded_physical_keys": "Left Shift+A, release Shift, then B",
+        "playback": "Ab",
+        "modifier_order_preserved": true,
+        "normal_a_after_playback": "a",
+        "all_observed_keys_released": true
+      },
+      "default_f3_delays": {
+        "recorded_keys": "A, Fn+T, B, Fn+G, C, Fn+B, D",
+        "fn_released_before_b_delay_key_release": true,
+        "playback": "abcd",
+        "expected_inter_key_gaps_ms": [
+          15,
+          140,
+          540
+        ],
+        "observed_inter_key_gaps_ms": [
+          14,
+          141,
+          541
+        ],
+        "key_hold_durations_ms": [
+          41,
+          40,
+          39,
+          40
+        ],
+        "result": "passed within USB timing granularity",
+        "all_observed_keys_released": true
+      },
+      "default_f4_overlap_and_held_shift": {
+        "recorded_keys": "Hold left Space, tap right Space, release left; Shift+A; save while Shift remains held",
+        "playback": "Two Spaces, then uppercase A",
+        "space_key_presses_and_releases": 4,
+        "modifier_order_preserved": true,
+        "held_shift_saved_with_release": true,
+        "normal_a_after_playback": "a",
+        "captured_press_release_events": 10,
+        "all_observed_keys_released": true,
+        "press_release_anomalies": false,
+        "save_indicator": "Owner did not observe; white editor feedback was verified in earlier cases"
+      },
+      "default_f5_interruptible_delay": {
+        "recorded_keys": "Shift+A, four complete Fn+B taps, release Shift, then B",
+        "full_playback": "Ab",
+        "observed_explicit_delay_ms": 2000,
+        "interrupted_playback": "A then lowercase physical c; no delayed b",
+        "interruption_released_macro_shift": true,
+        "second_playback_completed": true,
+        "captured_press_release_events": 12,
+        "all_observed_keys_released": true,
+        "press_release_anomalies": false
+      },
+      "recording_limit": {
+        "destination": "Default-profile F6, previously assigned Z",
+        "recording_input": "Owner typed the alphabet five times to exceed the 200-event limit",
+        "red_rejection_indicator": "owner confirmed",
+        "previous_z_assignment_preserved": true,
+        "captured_press_release_events": 2,
+        "all_observed_keys_released": true,
+        "press_release_anomalies": false
+      },
+      "playback_with_physical_keys_held": {
+        "macro_does_not_start_while_a_held": true,
+        "macro_preserves_physically_held_shift": true,
+        "held_shift_playback": "AB, followed by a physical uppercase B",
+        "normal_a_after_releasing_shift": "a",
+        "subsequent_ordinary_playback": "Ab",
+        "tested_key_events_paired": true,
+        "final_depressed_and_latched_modifiers": 0
+      },
+      "macro_slot_reuse_and_resize": {
+        "procedure": "Replace F1's qwe macro with Z; reuse its slot for F7 with aabbcc, then shorten F7 to ab",
+        "ordinary_letters_after_restoration": "qwe",
+        "replaced_f1_output": "z",
+        "resized_f7_output": "ab",
+        "macro_slot_reclaimed": true,
+        "grow_and_shrink_operations_completed": true,
+        "captured_press_release_events": 12,
+        "all_observed_keys_released": true,
+        "press_release_anomalies": false,
+        "other_macro_integrity": "passed; F2/F3/F4/F5 retained their correct playbacks after cold reconnect"
+      },
+      "save_and_exit_indicators": "owner confirmed",
+      "captured_press_release_events": 14,
+      "press_release_anomalies": false,
+      "cold_reconnect": {
+        "f1_and_f6": "z, z",
+        "f2": "Ab",
+        "f3": "abcd with original delay controls preserved",
+        "f4": "Two Spaces then uppercase A",
+        "f5": "Ab with the two-second delay preserved",
+        "f7": "ab",
+        "recorded_f3_inter_key_gaps_ms": [
+          15,
+          140,
+          541
+        ],
+        "recorded_f5_explicit_delay_ms": 2002,
+        "all_observed_keys_released": true,
+        "press_release_anomalies": false
+      },
+      "remaining": "20-slot exhaustion and interrupted-store cases have software coverage; not exercised physically"
+    },
+    "fn_pn_relocation": {
+      "cancel_move_fn": "passed; owner confirmed red relocation feedback before cancellation",
+      "cancel_move_pn": "passed; owner confirmed red relocation feedback before cancellation",
+      "reserved_destination_rejection": "Owner confirmed red feedback remained after separately tapping left Shift, right Shift, Right Ctrl, Fn and Pn",
+      "fn_i_after_cancellation": "Up; paired in wev",
+      "fn_relocation_entry_shift_report_duration_ms": 3001,
+      "final_modifiers_after_cancellation": 0,
+      "returned_to_profile3_blue": "owner confirmed",
+      "move_fn_to_t_attempt": "Move took effect; old Fn emitted Super_R. Owner then restarted using the old Fn key and confirms user error",
+      "deferred_fn_move_save": "Inconclusive after the owner restarted; defer the release-waiting check to the Pn move",
+      "state_after_move_attempt": "Owner confirms blue profile 3; verify profile 2's existing Fn placement next",
+      "first_moved_fn_verification": "T+I produced ordinary t and i, while the final original Fn+I produced Up after returning to profile 3; explicitly confirm profile selection and both candidate Fn positions next",
+      "confirmed_profile2_placement_before_retry": "Owner confirmed green profile 2; original Fn+I produced Up, and T+I produced ordinary t and i. All events paired",
+      "move_fn_to_t": {
+        "profile": 2,
+        "new_t_plus_i": "Up",
+        "original_fn_position": "Super_R (Right GUI)",
+        "indicator_sequence": "Owner confirmed green, red, then blue after returning to profile 3",
+        "relocation_entry_shift_report_duration_ms": 2999,
+        "captured_press_release_events": 6,
+        "all_observed_keys_released": true,
+        "press_release_anomalies": false
+      },
+      "move_pn_to_g": {
+        "profile": 2,
+        "new_g_plus_slash": "Selected profile 3, whose original Fn+I then produced Up",
+        "original_pn_position": "Menu (Application)",
+        "destination_held_during_early_exit_attempt": true,
+        "red_relocation_indicator": "owner confirmed",
+        "relocation_entry_shift_report_duration_ms": 3000,
+        "captured_press_release_events": 6,
+        "all_observed_keys_released": true,
+        "press_release_anomalies": false
+      },
+      "recording_with_moved_controls": {
+        "profile": 2,
+        "destination": "F8",
+        "procedure": "Hold moved Fn=T while tapping A/C; save with moved Pn=G before releasing T",
+        "playback": "ac",
+        "playback_edge_intervals_ms": [
+          39,
+          40,
+          40
+        ],
+        "no_accidental_t_or_g_delay_controls": true,
+        "captured_press_release_events": 4,
+        "all_observed_keys_released": true,
+        "press_release_anomalies": false
+      },
+      "return_to_profile3_after_placement_check": "Initial shortcut was mistyped; owner confirms user error and subsequently confirms blue after Pn+slash",
+      "profile2_reset_restores_controls": "passed; original Fn+Q emitted Previous Track and original Pn+Q emitted q after reset and DIP4 off",
+      "remaining": "None for the representative relocation pass"
+    },
+    "dip_switches": {
+      "status": "Selected representative combinations, remap precedence and profile-reset recovery passed",
+      "planned_switch_combinations": 4,
+      "representative_switch_sets": [
+        [],
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          4
+        ]
+      ],
+      "coverage_scope": "Owner selected a shorter feature pass; the exhaustive 16-combination hardware sweep is deferred",
+      "completed_switch_combinations": [
+        [],
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          4
+        ]
+      ],
+      "dip1_and_3": "Left Alt -> Super_L; Left Windows -> Alt_L; Right Alt -> Super_R; F11 -> Volume Down; Fn+F11 -> F11",
+      "dip2_and_4": "Caps+I -> Control_L+i; left Ctrl -> Caps Lock keycode 66; Fn+I -> Up; DIP2 takes priority",
+      "dip4_only": "Caps+I -> Up; original Fn -> Caps Lock keycode 66",
+      "all_off_after_test": "Fn+I -> Up; all depressed and latched modifiers released",
+      "explicit_caps_remap_precedence": "passed; profile 1 Caps -> x and original Fn+I -> Up with DIP4 on",
+      "moved_fn_precedence": "passed; profile 2 Caps -> Caps Lock keycode 66 and moved T+I -> Up with DIP4 on",
+      "profile_reset_restores_dip4": "passed; resetting profile 1 removed Caps-to-X and Caps+I emitted Up. Owner repeated this key sequence",
+      "profile2_bank_reset": "Main Q -> q; original Fn+Q -> Previous Track; original Pn+Q -> q; F8 -> ordinary F8",
+      "consumer_capture": "evtest confirmed paired KEY_VOLUMEDOWN events from the keyboard consumer interface",
+      "host_caps_mapping_note": "caps:none maps Caps Lock to VoidSymbol in wev; raw keycode 66 confirms the emitted key",
+      "additional_precedence_checks": [
+        "DIP2 takes priority over DIP4",
+        "DIP1 and DIP3 modifier interaction",
+        "Explicit Caps Lock remap takes priority over DIP4",
+        "Moved Fn takes priority over DIP4",
+        "Profile switching and reset restore the appropriate DIP4 behaviour"
+      ]
+    },
+    "rgb_and_custom_colours": {
+      "status": "Normal RGB controls, per-key colour saving, cold persistence and split recovery passed",
+      "normal_colour_mode_speed_brightness_controls": "Owner confirmed cycling colours and modes and adjusting speed and brightness all worked",
+      "both_half_white_and_red_and_off_checks": "Included in the completed normal RGB batch; owner reported no difference",
+      "programming_key_highlight": "Owner recalls stock lighting the programmed keys red, but accepts leaving this cosmetic difference",
+      "programming_indicator_reference": "mistel-md770-user-manual.pdf, printed page 34, specifies the white profile indicator",
+      "custom_colour_setup": "Owner confirmed A red/J blue after saving; later cold reconnect verified persistence",
+      "custom_colour_cold_persistence": "Owner confirmed A red/J blue after ten-second host USB power disconnect"
+    },
+    "cold_reconnect_persistence": {
+      "owner_completed_host_usb_disconnect_for_10_seconds": true,
+      "saved_profile3_blue_indicator_after_reconnect": "owner confirmed",
+      "normal_right_usb_return_verified": true,
+      "profile3_main_fn_pn": "j, k, l; captured immediately after reconnect and after switching profiles",
+      "default_main_fn_pn": "a, b, c",
+      "profile2_main_fn_pn": "g, h, i",
+      "profile1_main_fn_pn": "d, e, f; passed in follow-up",
+      "all_12_profile_bank_assignments_survived_cold_reconnect": true,
+      "all_remaining_macros_and_f1_f6_assignments_survived_later_reconnect": true,
+      "layout_persistence": "passed in explicit retest; printed QWERTY produced qwfpgj both before and after cold reconnect",
+      "qwerty_restored_after_layout_persistence_test": "qwerty captured after two layout-cycle presses",
+      "moved_fn_t_survived": "T+I produced Up in saved profile 2 after cold reconnect",
+      "moved_pn_g_survived": "G+slash returned to profile 3, whose original Fn+I produced Up",
+      "profile2_f8_survived": "ac with 38/40/40 ms playback edge intervals",
+      "captured_press_release_events": 24,
+      "all_observed_keys_released": true,
+      "press_release_anomalies": false,
+      "remaining": "No remaining persistence check in the selected shorter pass",
+      "custom_lighting": "Passed; owner confirmed A red/J blue after cold reconnect"
+    },
+    "updater_entry_and_return": "Passed: Pn+Insert entered the right updater for both corrections; flashed image and metadata checks passed and QMK returned",
+    "split_disconnect_reconnect": {
+      "held_left_shift_before_loss": "Right J produced uppercase J",
+      "stale_left_modifier_released": "Right J produced lowercase j after inter-half cable loss",
+      "reconnect": "Left A and cross-half Shift+J worked again",
+      "normal_j_after_reconnect": "j",
+      "custom_lighting_recovered": "Owner confirmed A red and J blue",
+      "captured_press_release_events": 14,
+      "all_observed_keys_released": true,
+      "press_release_anomalies": false,
+      "final_modifiers": 0
+    },
+    "usb_suspend_wake": {
+      "usb_runtime_suspend": "Confirmed suspended in sysfs while a green notification was active",
+      "wake_result": "Passed in the corrected retry: unchanged device number 20, confirmed suspended then active, original power settings restored",
+      "original_usb_power_settings_restored": true,
+      "test_setup_limitation": "Zero-second autosuspend could immediately suspend again after a key press; this wake attempt is inconclusive",
+      "retry_probe_review": "Astra high and Astra max reviewed the revised temporary host probe; no remaining blockers",
+      "retry": "Confirmed suspended then wake activity; same USB device number 20, final runtime_status active, original control on and delay 2000 restored",
+      "owner_retry_result": "J woke the keyboard and dismissed the alert on the second attempt; owner confirms all keys remained dim green while suspended in both attempts",
+      "fixed_image_result": "Passed: confirmed suspend, no re-enumeration, wake activity and restored original USB settings; owner confirmed completely dark sleep and dark after J",
+      "final_transport_corrected_image": "Passed with USB device number 27 unchanged: suspended, J wake, original control on and delay 2000 restored, first red report acknowledged and displayed correctly"
+    },
+    "notification_breathing_last": {
+      "first_orange_alert": "Owner confirmed it worked and stopped on a physical key press",
+      "remaining": "None in the selected representative hardware pass",
+      "custom_pattern_restored_after_dismissal": "Owner confirmed A red/J blue returned",
+      "normal_lighting_off_before_alert": "Owner confirmed both key backlights off after Pn+0",
+      "first_orange_hid_acknowledgement": "Sender reported Notification latched after validating the echo",
+      "lighting_off_alert": "Owner confirmed blue breathing with normal lighting off",
+      "recolour_while_latched": "Owner confirmed blue changed to purple before any key press",
+      "dismiss_to_off": "Owner confirmed J dismissed purple and both key backlights returned to off",
+      "suspend_blank_defect": "Detected in the original image; corrected suspend hook passed both-half dark-sleep and key-wake retests",
+      "fixed_image_suspend_blank": "Owner confirmed both halves completely dark; J woke and dismissed the alert",
+      "power_loss_result": "Owner confirmed alert cleared after power disconnect and saved A-red/J-blue colours remained available",
+      "final_colour_mismatch": "Detected before the USB receive fix: previous green replayed after sending red; resolved by the separately recorded transport correction",
+      "fresh_red_after_cold_replug": "Sender acknowledged; owner confirmed red",
+      "colour_mismatch_cause": "Both Astra reviewers identified the reset receive queue retaining the old HT32 receive pointer; actual-source regression reproduces old green instead of new red",
+      "status": "Selected notification hardware checks passed",
+      "final_post_wake_colour": "First red report acknowledged and visually red; A dismissed it and both halves returned to off"
+    }
+  },
+  "checkpoint": {
+    "status": "Selected representative hardware pass complete",
+    "date": "2026-11-14",
+    "wev_capture_stopped": true,
+    "next": "No remaining hardware checks in the agreed representative scope",
+    "remaining_test_scope": "Owner selected shorter hardware coverage, provided it is sufficient; retain all remaining feature areas and important interactions, use representative DIP combinations",
+    "normal_typing_recovery_instruction": "Select Pn+slash, release both, then hold Fn+R for two seconds and release both; this resets only profile 3",
+    "profile3_reset_for_normal_typing": "Normal Q/W/E captured after selecting profile 3; the reset gesture itself was not observed",
+    "selected_profile_at_last_test": 0,
+    "selected_layout_at_last_test": "QWERTY; confirmed in wev after layout persistence retest",
+    "temporary_assignments_at_last_test": {
+      "remaps_and_macros": "All cleared by the full settings reset",
+      "fn_pn_positions": "Original positions in every profile",
+      "lighting": "Saved custom A red/J blue; remaining key backlights off"
+    },
+    "host_keyboard_options": "caps:none,compose:ralt restored and verified after temporary Caps LED testing",
+    "audio_after_media_test": "Restored to the recorded Volume 1.00, unmuted",
+    "consumer_capture_stopped": true,
+    "instruction_style": "Short numbered batches with no more than 10 instructions; every required light check has its own numbered step",
+    "notification_test_order": "Other shorter-pass checks completed before the first notification",
+    "temporary_usb_power_settings": {
+      "status": "Restored and verified",
+      "control": "on",
+      "autosuspend_delay_ms": 2000
+    },
+    "qmk_working_branch": "mistel-md770-support",
+    "notification_probe_stopped": true
+  },
+  "input_test_tool": "wev",
+  "joined_setup": {
+    "owner_confirmed_inter_half_cable_connected": true,
+    "host_usb_right_only": true,
+    "dip_switches_on": [],
+    "normal_right_usb_verified": true
+  },
+  "notification_suspend_fix": {
+    "right_image": "mistel_md770rgb_bt_right_markwellis.bin",
+    "bytes": 42564,
+    "sha256": "7a68df9cff622b2a81d5d7b4a2b7bfacf0b2458d8c0ad24081c357bd5105144d",
+    "left_unchanged": true,
+    "real_qmk_tests_passed": 8,
+    "sender_tests_passed": 9,
+    "native_harness_passed": true,
+    "strict_lint_passed": true,
+    "format_check_passed": true,
+    "offline_image_validation_passed": true,
+    "astra_high_review": "No remaining blocker",
+    "astra_max_review": "No remaining blocker",
+    "flash": "passed",
+    "flash_cli_exit_code": 0,
+    "boot_info_matches_record": true,
+    "application_sum_and_crc_verified_after_metadata_write": true,
+    "encoded_sum": "0x97377cf3",
+    "encoded_crc32": "0x8a751ae3",
+    "version_page_sha256": "470442bf654b0c3f1768d7876052a73300df6348ffba8040fec615ab0b3d7945",
+    "application_start_requested": true,
+    "normal_usb_return_verified": true,
+    "owner_confirmed_cold_boot_and_saved_colours": true,
+    "usb_wake_telemetry": "Confirmed USB_ASLEEP, then USB_WAKE_ACTIVITY and original settings restored; no re-enumeration was reported",
+    "owner_wake_result": "Owner confirmed both halves were completely dark during sleep on the corrected image and stayed dark after J wake",
+    "hardware_suspend_retest": "passed"
+  },
+  "usb_wakeup_receive_fix": {
+    "repository": "qmk_firmware",
+    "source": "tmk_core/protocol/chibios/usb_driver.c",
+    "cause": "Suspend resets the input queue but wake leaves the HT32 receive pointer on the previous slot; the first new report can replay an old report",
+    "change": "Re-arm reception with the existing usb_start_receive helper after resuming the output endpoint queue",
+    "added_state_bytes": 0,
+    "eeprom_writes_added": false,
+    "regression": {
+      "runner": "tests/chibios_usb/run.sh",
+      "scope": "Actual QMK USB transport and ChibiOS buffer queues; simulated hardware transfer and OS services",
+      "before_fix": "Sent red; delivered old green; exit 1",
+      "after_fix": "Sent red; delivered red; exit 0",
+      "sanitisers": [
+        "address",
+        "undefined"
+      ]
+    },
+    "astra_high_review": "No remaining blocker",
+    "astra_max_review": "No remaining blocker",
+    "notification_core_tests_passed": 8,
+    "sender_tests_passed": 9,
+    "native_harness_passed": true,
+    "both_halves_build": true,
+    "strict_right_lint": true,
+    "format_check": true,
+    "offline_image_validation": true,
+    "right_image": {
+      "image": "mistel_md770rgb_bt_right_markwellis.bin",
+      "bytes": 42568,
+      "sha256": "04469837738827efc765826d5bc7abcd3217ce210987099b6c91c292113ee888"
+    },
+    "left_image_unchanged": true,
+    "source_sha256": "a0e2259828e52b96e2c502e37fa44a57071f3decd85ca3946c1deb5fe8665f8b",
+    "flash_cli_exit_code": 0,
+    "hardware_status": "Passed: real USB suspend/key wake, first new red report acknowledgement and red output, physical-key dismissal to lighting off",
+    "post_metadata_verification": "passed",
+    "encoded_sum": "0xb4ab10c1",
+    "encoded_crc32": "0x312e5e64",
+    "version_page_sha256": "470442bf654b0c3f1768d7876052a73300df6348ffba8040fec615ab0b3d7945",
+    "normal_usb_return_verified": true,
+    "post_wake_first_red_report_acknowledged": true,
+    "usb_device_number_before_and_after_wake": 27,
+    "original_usb_power_settings_restored": true,
+    "owner_suspend_and_wake_result": "Owner confirmed green, sleep and wake worked",
+    "owner_post_wake_red_result": "Owner confirmed red showed",
+    "owner_dismiss_to_off_result": "Owner confirmed both halves returned to off after A",
+    "qmk_working_branch": "mistel-md770-support",
+    "changes_committed": true,
+    "commit": "31b3ef57756ec041d7d6844b17e6853c53736da5"
+  },
+  "deferred_hardware_checks": [
+    "Exhaustive 16-combination DIP sweep",
+    "Full host system suspend/wake",
+    "Physical interruption of an EEPROM rewrite",
+    "Exhausting all 20 macro slots on hardware"
+  ],
+  "changes_committed": true,
+  "source_revisions": {
+    "qmk_firmware": {
+      "branch": "mistel-md770-support",
+      "onboard_programming_commit": "a86078e8a028d615f23159181f456d39ade8c332",
+      "usb_receive_wake_commit": "31b3ef57756ec041d7d6844b17e6853c53736da5",
+      "chibios_contrib_build_checkout": "410d3636a15485aefc74559a52e38c8a642b8ad9",
+      "dependency_selection": "Local reset-address correction; excluded from the support branch gitlink as documented",
+      "hardware_tested_sources_unchanged": true
+    },
+    "mistel-md770-qmk": {
+      "branch": "main",
+      "keymap_and_notification_commit": "05f7dacb7540975274043649fb83dd25cd1eec53",
+      "usb_regression_commit": "d14521e2b8bdda7c4bd89cff6a96926ca11e802c"
+    }
+  }
+}
