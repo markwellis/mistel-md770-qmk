@@ -110,5 +110,18 @@
     "source": "tests/md770_bluetooth/radio_probe.c"
   },
   "production_revision": "bf866604c116844c1e6ae10969be6774de0a54f6",
-  "next_step": "Reproduce stock SPI transaction framing and obtain a valid radio status packet from QMK before adding report routing"
+  "implementation_plan": {
+    "reference": "docs/mistel-md770-bluetooth.md#implementation-plan",
+    "date": "2026-11-15",
+    "scope": "Stock-compatible Bluetooth, charging, battery indications, shared LEDs and power management",
+    "method": "Complete static stock trace first; use or extend the existing Unicorn harness only to resolve specific questions or compare stock transitions",
+    "hardware_candidate_gate": "Relevant state trace complete, manual differences resolved, offline checks passed and finished default/personal build memory checked",
+    "charging_hardware_validation": "Unavailable: battery removed; source-derived and emulated results must remain distinct from physical validation",
+    "research_record": "docs/mistel-md770-stock-bluetooth-power.md",
+    "research_checks": "docs/mistel-md770-stock-trace-checks.json",
+    "research_check_groups_passed": 37,
+    "research_status": "Complete for the Holtek application boundary; physical charger characteristics and resident radio internals are outside the available application images",
+    "implementation_started": false
+  },
+  "next_step": "Stopped at the requested research boundary before implementation; use the recovered specification for any later authorised firmware work"
 }

@@ -41,6 +41,11 @@ relocation. The personal build passed the selected representative
 notifications and USB wake. Its reordered layers require a full QMK settings
 reset when upgrading from the earlier firmware.
 
+The QMK support branch now also contains
+[Bluetooth, charging indicators and battery idle support](docs/mistel-md770-bluetooth-implementation.md).
+Default/personal builds and offline checks pass; these additions have not
+been flashed or validated on hardware.
+
 ## Pending upstream changes
 
 Status checked 2026-11-14. The current build setup includes these pending changes:
@@ -124,6 +129,8 @@ revisions or IAP contents.
 - [Recovery and bootloader investigation](docs/mistel-md770-recovery.md)
 - [Left-half recovery investigation](docs/left-recovery-investigation.md)
 - [Firmware reconstruction, wiring and protocols](docs/mistel-md770-firmware.md)
+- [Bluetooth, charging and power implementation and verification](docs/mistel-md770-bluetooth-implementation.md)
+- [Completed stock Bluetooth, charging, power and indicator research](docs/mistel-md770-stock-bluetooth-power.md)
 - [Initial QMK feasibility assessment](docs/mistel-md770-qmk-feasibility.md)
 - [Prior research and primary sources](docs/mistel-md770-prior-art.md)
 - [Stock lighting experiments](docs/mistel-md770.md)
@@ -209,3 +216,6 @@ The corresponding original writer source is available at
 
 The utility must match the executable hash in the recorded ROM preflight.
 A different rebuild needs a fresh recorded read-only preflight first.
+
+The [emulator checkpoint](docs/mistel-md770-emulator-checkpoint.md) records the
+unfinished ARM emulator, the counter-width fix it exposed, and the next steps.

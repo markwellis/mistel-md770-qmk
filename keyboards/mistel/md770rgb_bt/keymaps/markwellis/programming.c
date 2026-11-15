@@ -1,6 +1,9 @@
 // Copyright 2026 Mark Ellis (@markwellis)
 // SPDX-License-Identifier: GPL-2.0-or-later
 #include "programming.h"
+#ifdef BLUETOOTH_ENABLE
+#    include "connection.h"
+#endif
 
 #ifdef DYNAMIC_KEYMAP_ENABLE
 #    include "dynamic_keymap.h"
@@ -126,6 +129,11 @@ static void playback_task(void) {
     if (!playing || timer_elapsed32(playback_started) < playback_wait) return;
     uint16_t capacity = dynamic_keymap_macro_get_buffer_size();
     for (uint8_t budget = 0; budget < 16 && playing; ++budget) {
+#    ifdef BLUETOOTH_ENABLE
+        if (connection_get_host() == CONNECTION_HOST_BLUETOOTH && !md770_radio_can_enqueue()) {
+            return;
+        }
+#    endif
         if (playback_offset >= playback_end || macro_byte(capacity - 1)) {
             md770_playback_cancel();
             return;

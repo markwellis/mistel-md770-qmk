@@ -4,6 +4,7 @@
 #include "keyboards/mistel/md770rgb_bt/md770rgb_bt.h"
 #include "keymap_data.h"
 #include "send_string.h"
+#include "connection.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -25,6 +26,15 @@ static unsigned     writes, resets, played;
 static uint8_t      indicator, mods, weak_mods;
 static uint16_t     consumer_usage, system_usage;
 static bool         physical_report, host_keys[256];
+static bool         bluetooth_mode;
+static unsigned     radio_reports;
+
+connection_host_t connection_get_host(void) {
+    return bluetooth_mode ? CONNECTION_HOST_BLUETOOTH : CONNECTION_HOST_USB;
+}
+bool md770_radio_can_enqueue(void) {
+    return radio_reports <= 8;
+}
 static struct {
     uint8_t  code;
     bool     down;
@@ -66,7 +76,9 @@ uint8_t get_mods(void) {
 void set_mods(uint8_t value) {
     mods = value;
 }
-void    send_keyboard_report(void) {}
+void send_keyboard_report(void) {
+    if (bluetooth_mode) ++radio_reports;
+}
 uint8_t get_weak_mods(void) {
     return weak_mods;
 }
@@ -77,6 +89,7 @@ void del_weak_mods(uint8_t value) {
     weak_mods &= ~value;
 }
 void register_code(uint8_t code) {
+    if (bluetooth_mode) ++radio_reports;
     if (IS_MODIFIER_KEYCODE(code))
         mods |= MOD_BIT(code);
     else if (IS_CONSUMER_KEYCODE(code))
@@ -94,6 +107,7 @@ void register_code(uint8_t code) {
     playback[played++].time = now;
 }
 void unregister_code(uint8_t code) {
+    if (bluetooth_mode) ++radio_reports;
     if (IS_MODIFIER_KEYCODE(code))
         mods &= ~MOD_BIT(code);
     else if (IS_CONSUMER_KEYCODE(code))
@@ -785,6 +799,22 @@ static void playback_interrupt(void) {
     assert(!host_keys[KC_A]);
 }
 
+static void playback_bluetooth(void) {
+    const uint8_t data[] = "abcdefghijklmnop";
+    load_macro(data, sizeof(data));
+    bluetooth_mode = true;
+    tap(3, 2);
+    assert(played > 0 && played < 32 && radio_reports <= 16);
+    unsigned previous = played;
+    run_for(100);
+    assert(played == previous);
+    event(12, 2, true);
+    event(12, 2, false);
+    radio_reports = 0;
+    run_for(100);
+    assert(played == previous);
+}
+
 static void playback_modifiers(void) {
     const uint8_t data[] = {1, SS_DOWN_CODE, KC_LCTL, 1, SS_DELAY_CODE, '1', '0', '0', '|', 1, SS_UP_CODE, KC_LCTL, 0};
     load_macro(data, sizeof(data));
@@ -923,7 +953,9 @@ int main(int argc, char **argv) {
     assert(argc == 2);
     memcpy(keycodes, compiled_keymaps, sizeof(keycodes));
     default_layer_set(default_layer_state);
-    if (!strcmp(argv[1], "remap"))
+    if (!strcmp(argv[1], "playback_bluetooth"))
+        playback_bluetooth();
+    else if (!strcmp(argv[1], "remap"))
         reassignment();
     else if (!strcmp(argv[1], "macro"))
         macro_recording();

@@ -1,0 +1,187 @@
+{
+  "date": "2026-11-15",
+  "qmk_repository": "markwellis/qmk_firmware",
+  "qmk_branch": "mistel-md770-support",
+  "qmk_base_commit": "bf866604c116844c1e6ae10969be6774de0a54f6",
+  "source_state": "Committed QMK implementation and separate Contrib fix; no PRs opened",
+  "qmk_source_sha256": {
+    "keyboards/mistel/md770rgb_bt/bluetooth.c": "1ec5f0888ee88ab101e76f8ddf2c72fd6eec6da50b4d01ce58378c2bd3523833",
+    "keyboards/mistel/md770rgb_bt/config.h": "b1df38eb5179b200044555cd36f1e034f9bbc53dfa974d04b8aee33846d7d826",
+    "keyboards/mistel/md770rgb_bt/indicators.c": "3726784683e106869dda144754a4c2310091529e3df0acaa1e78ea0704c490fa",
+    "keyboards/mistel/md770rgb_bt/info.json": "d2c56bd01170c9030033082bd172b81654c3464ac816a0fee222cc95f287a13a",
+    "keyboards/mistel/md770rgb_bt/keymaps/default/keymap.json": "2881ba0a67bae0ec12b21586b7f410a17727fd2115a53ef86e5adb9edd568ade",
+    "keyboards/mistel/md770rgb_bt/keymaps/default/programming.c": "5e852016f33d2c74a7f921ff6f6a117372238dc72428d6814fd1409aa066f2c8",
+    "keyboards/mistel/md770rgb_bt/mcuconf.h": "f4cd3a363fc8a27a2b7563f8dd576d37bb42eedf9b6d4573c0989b36f8f181bf",
+    "keyboards/mistel/md770rgb_bt/md770rgb_bt.c": "c479d755ea5e0d29ec47279afb517347cade8291a9230ce77b8b010c74781f68",
+    "keyboards/mistel/md770rgb_bt/md770rgb_bt.h": "d1d96a6d07915e072fae914a1b6d196e31be7b6a7c2741faecdd07bc10b020c4",
+    "keyboards/mistel/md770rgb_bt/power.c": "bec2981f59d6b0f4750ee47e9bc4381450d7ebb672406885baa0aaf0f7c0dbad",
+    "keyboards/mistel/md770rgb_bt/readme.md": "4337121462f7a0e56dd5492c020686c4159c1d6cf218722077fdd41a6c574fca",
+    "keyboards/mistel/md770rgb_bt/rgb.c": "3210d0cd160b6b0626bc2ea804824b070baab2dd53f867145ac67c0a88b38384",
+    "keyboards/mistel/md770rgb_bt/right/keyboard.json": "c3e88669a49f0695c7ac4d5f7b65ed053baae3f1a25db1aac486bb35ff1cf4e8",
+    "keyboards/mistel/md770rgb_bt/right/rules.mk": "7f7d73e45086d1f55b414daa4040aef68151880dc8dbdac62fa11e1b794b0e9d",
+    "keyboards/mistel/md770rgb_bt/rules.mk": "3f51d7bc711c25592c3c3278bc027e7a8fe77d4020a5e0bb77dc4c27525ba900",
+    "keyboards/mistel/md770rgb_bt/scan.c": "127451851a2b8c7fe3dccc0230ac32111bea7b00a33189b00790c1cb9c8ed236",
+    "platforms/chibios/suspend.c": "e1df1bf97b2d90df5f9b0254d5f21d51afafa144afaf76a30e21f105d0478570"
+  },
+  "userspace_source_sha256": {
+    "keyboards/mistel/md770rgb_bt/keymaps/markwellis/keymap.json": "2881ba0a67bae0ec12b21586b7f410a17727fd2115a53ef86e5adb9edd568ade",
+    "keyboards/mistel/md770rgb_bt/keymaps/markwellis/programming.c": "be96fc1e5c0acbd46d67b9902b9a878a6fa1db59755fdc4f562cf4ed9782f46b"
+  },
+  "dependency": {
+    "chibios": "6170ddf92d55be54c89b708d1882eea229edeb2c",
+    "chibios_contrib": "5a9ad82b6ba4f649cdb800e8c2bbc9be2d3ce767",
+    "counter_width_fix_commit": "a175f0d820dc125367073c30a1fb6029b419621d",
+    "counter_width_fix_branch": "qmk-ht32-bftm-counter-width",
+    "required_local_patches": [
+      "patches/ht32f523xx-reset-register.patch",
+      "patches/ht32f523xx-bftm-counter-width.patch"
+    ]
+  },
+  "review": {
+    "model": "gpt-6-astra",
+    "reasoning_effort": "max",
+    "result": "Software review signed off; no remaining P1/P2 findings",
+    "independent_checks": "Sanitised actual-source tests and deterministic reconnect/final-byte/IRQ-error reproductions",
+    "human_review": "pending",
+    "scope": "Bluetooth/power firmware; new emulator prototype is incomplete and not signed off"
+  },
+  "checks": {
+    "builds": "right and left, default and markwellis: all passed",
+    "strict_qmk_keyboard_lint": "right and left passed",
+    "native_driver_power_resume_rgb": {
+      "source": "tests/md770_bluetooth/run.sh",
+      "passed": 29,
+      "sanitizers": [
+        "address",
+        "undefined behaviour",
+        "bounds"
+      ],
+      "leak_detection": "disabled under ptrace; test-model allocations only"
+    },
+    "onboard_programming_and_macro_cases": {
+      "source": "tests/md770_keymap/run-programming.sh",
+      "passed": 40,
+      "includes": "Bluetooth queue backpressure yield and physical-key playback cancellation"
+    },
+    "qmk_protocol_split_dip_unit_tests": {
+      "passed": 16
+    },
+    "qmk_notification_unit_tests": {
+      "passed": 8
+    },
+    "chibios_usb_receive_regression": "passed: first post-wake packet is fresh",
+    "host_tools": {
+      "command": "python3 -B -m unittest discover -s tests -p 'test_md770*.py'",
+      "passed": 26
+    },
+    "stock_instruction_checks": {
+      "original_probe": 8,
+      "trace_groups": 39,
+      "record": "docs/mistel-md770-stock-trace-checks.json"
+    },
+    "git_diff_whitespace_check": "passed in both repositories",
+    "emulator_prototype": {
+      "status": "incomplete at owner-requested stop",
+      "counter_width_regression": [
+        {
+          "keymap": "default",
+          "gpt_counter_bytes": 4,
+          "idle_compare": 96000,
+          "result": "passed"
+        },
+        {
+          "keymap": "markwellis",
+          "gpt_counter_bytes": 4,
+          "idle_compare": 96000,
+          "result": "passed"
+        }
+      ],
+      "before": {
+        "counter_bytes": 2,
+        "idle_compare": 30464
+      },
+      "after": {
+        "counter_bytes": 4,
+        "idle_compare": 96000
+      },
+      "checkpoint": "docs/mistel-md770-emulator-checkpoint.md"
+    }
+  },
+  "images": [
+    {
+      "half": "right",
+      "keymap": "markwellis",
+      "binary": ".build/mistel_md770rgb_bt_right_markwellis.bin",
+      "bytes": 47200,
+      "sha256": "1c62855eb40918da14fd05456ba34450209a5983aef140996dac7059da454dbf",
+      "compatibility_record": "passed",
+      "vectors": "passed",
+      "word_alignment": "passed",
+      "data_bytes": 1156,
+      "bss_bytes": 11748,
+      "interrupt_stack_bytes": 1024,
+      "thread_stack_bytes": 2048,
+      "remaining_heap_bytes": 368,
+      "spi0_irq21_vector": "0x00009c19",
+      "spi0_vector_is_strong_handler": true
+    },
+    {
+      "half": "right",
+      "keymap": "default",
+      "binary": ".build/mistel_md770rgb_bt_right_default.bin",
+      "bytes": 45936,
+      "sha256": "d2bf6121f204ea04eb2924cea37c400ff284dac48174fe05a69944d006e3b67b",
+      "compatibility_record": "passed",
+      "vectors": "passed",
+      "word_alignment": "passed",
+      "data_bytes": 760,
+      "bss_bytes": 11436,
+      "interrupt_stack_bytes": 1024,
+      "thread_stack_bytes": 2048,
+      "remaining_heap_bytes": 1080,
+      "spi0_irq21_vector": "0x0000a221",
+      "spi0_vector_is_strong_handler": true
+    },
+    {
+      "half": "left",
+      "keymap": "markwellis",
+      "binary": ".build/mistel_md770rgb_bt_left_markwellis.bin",
+      "bytes": 33416,
+      "sha256": "c3df1ed93011258e488c2a28f65fcc14d439cde31897b952ebe9e4fff2506b96",
+      "compatibility_record": "passed",
+      "vectors": "passed",
+      "word_alignment": "passed",
+      "data_bytes": 732,
+      "bss_bytes": 3696,
+      "interrupt_stack_bytes": 1024,
+      "thread_stack_bytes": 2048,
+      "remaining_heap_bytes": 8848
+    },
+    {
+      "half": "left",
+      "keymap": "default",
+      "binary": ".build/mistel_md770rgb_bt_left_default.bin",
+      "bytes": 33416,
+      "sha256": "c3df1ed93011258e488c2a28f65fcc14d439cde31897b952ebe9e4fff2506b96",
+      "compatibility_record": "passed",
+      "vectors": "passed",
+      "word_alignment": "passed",
+      "data_bytes": 732,
+      "bss_bytes": 3696,
+      "interrupt_stack_bytes": 1024,
+      "thread_stack_bytes": 2048,
+      "remaining_heap_bytes": 8848
+    }
+  ],
+  "flashed": false,
+  "hardware_validation": "Not run for this implementation; installed keyboard firmware was not changed",
+  "untested": [
+    "QMK Bluetooth delivery, timing, pairing, reconnect and host switching",
+    "LED behaviour on physical pins with this build",
+    "Full USB host sleep/wake with the revised path",
+    "Physical charging, current and termination: battery absent",
+    "Real battery thresholds, current, idle wake and runtime"
+  ],
+  "power_implementation_limit": "Retains 48 MHz/peripheral clocks; RGB gating, 2 ms idle scan and ChibiOS WFI yield, rather than stock clock switching/deep WFE",
+  "qmk_commit": "3f9fb0f449061752370c3359d6a981d387fe5e7d"
+}

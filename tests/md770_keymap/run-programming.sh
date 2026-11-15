@@ -25,12 +25,13 @@ gcc -std=c11 -Wall -Wextra -Werror -fsanitize=address,undefined,bounds -fno-sani
     -Itests/md770_keymap -I"$md770_test_dir" -I../qmk_firmware -I../qmk_firmware/quantum \
     '-DQMK_KEYBOARD_H="keyboards/mistel/md770rgb_bt/md770rgb_bt.h"' \
     -DDYNAMIC_KEYMAP_ENABLE -DDIP_SWITCH_ENABLE -DDYNAMIC_KEYMAP_MACRO_COUNT=20 \
+    -DBLUETOOTH_ENABLE \
     keyboards/mistel/md770rgb_bt/keymaps/markwellis/keymap.c \
     keyboards/mistel/md770rgb_bt/keymaps/markwellis/programming.c \
     tests/md770_keymap/programming.c -o "$md770_test_dir/programming"
 
 if [ "$#" -eq 0 ]; then
-    set -- remap macro modifiers held reject invalid shared relocate default pn mac_assignment mac_relocation dip_reset middle slots dip_target dip_caps dip_pn original banks delays limit default_relocation default_banks default_mac playback_held playback_interrupt playback_modifiers playback_boundaries playback_invalid playback_dip playback_reports playback_overlap playback_repeat_tap relocated_fn_t relocated_fn_g relocated_fn_b relocated_pn_delay delay_key_release
+    set -- remap macro modifiers held reject invalid shared relocate default pn mac_assignment mac_relocation dip_reset middle slots dip_target dip_caps dip_pn original banks delays limit default_relocation default_banks default_mac playback_held playback_interrupt playback_bluetooth playback_modifiers playback_boundaries playback_invalid playback_dip playback_reports playback_overlap playback_repeat_tap relocated_fn_t relocated_fn_g relocated_fn_b relocated_pn_delay delay_key_release
 fi
 for case; do
     "$md770_test_dir/programming" "$case"
