@@ -1,0 +1,14 @@
+{
+  "bytes": 65600,
+  "before_sha256": "0f7a45cedc3eac772c33230aa46f3d19a2487ebb0ea46107a173ec9ec8b28efd",
+  "after_sha256": "10b877e1fddfc420a6e2a0f2cd12c2dfb6841edb210232337bb211eccc65c57c",
+  "guard_unchanged": true,
+  "tail_outside_backing_is_erased": true,
+  "previously_programmed_tail_bytes_now_erased": 9498,
+  "shared_spi_driver": "unmodified upstream",
+  "shared_wear_leveling_backend": "unmodified upstream",
+  "capacity_bytes": 524288,
+  "erase_block_bytes": 65536,
+  "backing_bytes": 8192,
+  "logical_eeprom_bytes": 4096
+}

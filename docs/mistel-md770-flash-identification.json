@@ -1,0 +1,20 @@
+{
+  "jedec_id": "C84013",
+  "capacity_bytes": 524288,
+  "erase_types": [
+    {
+      "bytes": 4096,
+      "command": "0x20"
+    },
+    {
+      "bytes": 32768,
+      "command": "0x52"
+    },
+    {
+      "bytes": 65536,
+      "command": "0xd8"
+    }
+  ],
+  "sfdp_hex": "53464450000101ff00000109300000ffc8000103600000ffffffffffffffffffffffffffffffffffffffffffffffffffe520f1ffffff3f0044eb086b083b42bbeeffffffffff00ffffff00ff0c200f5210d800ffffffffffffffffffffffffff003600279ef97764fcebffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+  "external_flash_write_commands_sent": false
+}

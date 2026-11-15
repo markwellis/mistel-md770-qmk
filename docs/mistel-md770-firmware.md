@@ -725,7 +725,7 @@ executes the Windows updaters. Generated images and pseudocode are local
 analysis outputs; keep them out of commits. From the repository root in fish:
 
 ```fish
-set PACKAGE "$HOME/Downloads/MD770 RGB BT v1.07.02"
+set PACKAGE "$HOME/Downloads/firmware_v1.07.02"
 set ANALYSIS "$PWD/md770-analysis"
 mkdir -p "$ANALYSIS/images" "$ANALYSIS/projects" "$ANALYSIS/c"
 python3 scripts/md770-extract.py "$PACKAGE/Right(Master)/MD770R_FW_0419_7.02_20230421.exe" "$ANALYSIS/images"

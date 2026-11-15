@@ -1,0 +1,18 @@
+{
+  "half": "right",
+  "application_sha256": "4213c52a0f699009a0b15c014b50630efd703a4696b45f1b5613456279888261",
+  "flash_modified": false,
+  "success": true,
+  "iap_identity_and_version_verified": true,
+  "encoded_sum": "77569158",
+  "encoded_crc32": "768cc42f",
+  "application_checksums_verified": true,
+  "application_return_requested": true,
+  "normal_usb_identity": {
+    "idVendor": "04d9",
+    "idProduct": "0419",
+    "product": "MD770 RGB BT (wired QMK)",
+    "bcdDevice": "0010"
+  },
+  "normal_usb_return_verified": true
+}

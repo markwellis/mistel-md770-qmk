@@ -33,3 +33,13 @@ sudo -A python3 tests/md770_storage/capture_backup.py /path/to/private-backup.bi
 Confirm the flash geometry first. Keep the raw backup private; remove the
 probe from the final build. The capture creates the backup as root with
 mode `0600`.
+
+The original GPL-2.0-or-later `identify_probe.c` reads the JEDEC identity
+and 256-byte Serial Flash Discoverable Parameters (SFDP) table without
+sending flash write commands. For the historical diagnostic build, copy
+it into the keyboard folder as `flash_identify.c`, add
+`SRC += flash_identify.c` to the right-half `rules.mk`, and enable the QMK
+console. Remove it from the final build. The captured
+[identification](../../docs/mistel-md770-flash-identification.json) records
+the 512 KiB capacity and supported erase sizes. See the
+[GPL text](../../keyboards/mistel/md770rgb_bt/keymaps/markwellis/LICENSE).

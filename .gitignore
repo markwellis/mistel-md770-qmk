@@ -5,10 +5,14 @@ __pycache__/
 **/target/
 *.bin
 *.exe
+*.elf
+*.map
+*.bundle
 *.nar
 *.nar.zst
 /recovery/
 /md770-analysis/
+/firmware_v1.07.02/
 *.hex
 *.uf2
 .build/

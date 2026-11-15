@@ -1,0 +1,18 @@
+{
+  "source": "351e1ddffeb35dbbb4bdbd12b1c94c481503d4d6",
+  "candidate_source": "b6027a5466",
+  "right_sha256": "0836bdfb8bee21415bf3607b06397f354db6bba718e772374b0e07ae64655cfe",
+  "left_sha256": "0306ecb4ae9b0b5d519c149ddd10331f083084b6cb4fa0d3380479866497f000",
+  "right_install_verified": true,
+  "left_install_verified": true,
+  "right_via_protocol": "01000d00",
+  "diagnostic_command_rejected": true,
+  "owner_checks": {
+    "paired_typing_after_cold_reconnect": true,
+    "both_space_bars": true,
+    "cross_half_shift": true,
+    "red_profile_persisted": true
+  },
+  "shared_storage_drivers_modified": false,
+  "native_host_uploader_hardware_tested": false
+}

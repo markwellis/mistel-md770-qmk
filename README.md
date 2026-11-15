@@ -177,7 +177,9 @@ pinned upstream revision, local corrections and upstream licence.
 
 Firmware executables, decoded images, device backups, compiled tools and
 Nix runtime archives stay outside Git. Evidence records contain their
-hashes. The recorded unit's recovery bundle is kept outside this repository as
+hashes. See the [firmware archive policy and retained evidence](docs/firmware-artefacts.md)
+for the official updater fingerprints and reproducible analysis tools.
+The recorded unit's recovery bundle is kept outside this repository as
 `red_right_recovery_20261112/`.
 All 25 `SHA256SUMS` entries and the runtime archive passed verification after
 copying. Its `manifest.json` SHA-256 is
