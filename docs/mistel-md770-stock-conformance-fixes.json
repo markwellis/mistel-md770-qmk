@@ -1,6 +1,6 @@
 {
   "date": "2026-11-16T20:29:13.725271+00:00",
-  "status": "software_verified_unflashed",
+  "status": "flashed_awaiting_hardware_calibration",
   "checkpoint_commits": {
     "mistel-md770-qmk": "779831a",
     "qmk_firmware": "7f95caf037"
@@ -50,10 +50,6 @@
       "ht32f523xx-usb-stop.patch": "f8cc1ce21e8bbaf253f8d446d36d8b06c43488eb343f7988c264c7bdc639c10f"
     }
   },
-  "installed_artifacts_unchanged": {
-    "mistel_md770rgb_bt_right_markwellis_validation.bin": "ec0fff325e91c221efc15228a997e52811777eb6afc521b916db55890d9ebbcd",
-    "mistel_md770rgb_bt_left_markwellis.bin": "c3df1ed93011258e488c2a28f65fcc14d439cde31897b952ebe9e4fff2506b96"
-  },
   "remaining": [
     "Measured hardware calibration against the new firmware",
     "RF delivery, reconnect and first-key/wake checks",
@@ -64,8 +60,7 @@
     "Component fixtures supply post-initialisation, time, RTOS and bus boundaries; ordinary component tests explicitly skip the clock service",
     "Clock tests execute the clock/sleep and kernel/IRQ paths with supplied oscillator readiness, timer completion, RTOS sleep and wake events",
     "Flash and USB tests supply chip responses and physical bus transfers; remote-wake checks observe requests only",
-    "RF, electrical wake, battery current/runtime and underside-switch wiring remain unverified",
-    "No new firmware has been flashed"
+    "RF, electrical wake, battery current/runtime and underside-switch wiring remain unverified"
   ],
   "implementation_commits": {
     "qmk_firmware": "c4500108e946de80b9745ba3f7d796ed452678ec"
@@ -528,5 +523,27 @@
       "binary_sha256": "6017a0eb05bc41f38e07d286434384ad6ccbc03024a3656e072733910c81ae6f",
       "binary_bytes": 52348
     }
-  ]
+  ],
+  "hardware_installation": {
+    "right": {
+      "record": "docs/mistel-md770-conformance-flash-right.json",
+      "application_sha256": "1a54bc60046d3a18dce05f65a0668dff858e2e60fbc833c2c86e8271cc500400",
+      "status": "flashed_and_usb_verified",
+      "checksums_verified": true,
+      "normal_usb_verified": true,
+      "matches_calibration_prediction_image": true
+    },
+    "left": {
+      "record": "docs/mistel-md770-conformance-flash-left.json",
+      "application_sha256": "c1989c29f8ceee5df0182f2cc2ec6a455cf88deec728add1051347f95b3fb5d5",
+      "status": "flashed_and_usb_verified",
+      "checksums_verified": true,
+      "normal_usb_verified": true
+    }
+  },
+  "previous_firmware_artifacts_retained": {
+    "mistel_md770rgb_bt_right_markwellis_validation.bin": "ec0fff325e91c221efc15228a997e52811777eb6afc521b916db55890d9ebbcd",
+    "mistel_md770rgb_bt_left_markwellis.bin": "c3df1ed93011258e488c2a28f65fcc14d439cde31897b952ebe9e4fff2506b96"
+  },
+  "installation_verified_at": "2026-11-16T20:50:52.248138+00:00"
 }

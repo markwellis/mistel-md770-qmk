@@ -22,8 +22,12 @@ The report-family masks share one definition. Unused radio state was removed.
 The full software pass succeeded again. All 11 exported hardware prediction
 cases retain their previous reports and expected key events.
 
-No new firmware was flashed. Installed-image hashes are unchanged; measured
-hardware calibration remains pending. RF delivery, reconnection, first-key
+Both reviewed images are flashed. Each application sum/CRC, QMK metadata
+and normal USB return check passed. The right image matches the exported
+calibration predictions. Right-side settings were retained. See
+`docs/mistel-md770-conformance-flash-right.json` and
+`docs/mistel-md770-conformance-flash-left.json`. Measured hardware calibration
+remains pending. RF delivery, reconnection, first-key
 wake, electrical power behaviour, battery runtime and switch wiring remain
 unverified. Passing these bounded comparisons does not establish full stock
 or board equivalence.
