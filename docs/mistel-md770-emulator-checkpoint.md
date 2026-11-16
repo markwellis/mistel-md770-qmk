@@ -26,11 +26,32 @@ Both reviewed images are flashed. Each application sum/CRC, QMK metadata
 and normal USB return check passed. The right image matches the exported
 calibration predictions. Right-side settings were retained. See
 `docs/mistel-md770-conformance-flash-right.json` and
-`docs/mistel-md770-conformance-flash-left.json`. Measured hardware calibration
-remains pending. RF delivery, reconnection, first-key
-wake, electrical power behaviour, battery runtime and switch wiring remain
+`docs/mistel-md770-conformance-flash-left.json`. The joined keyboard passed
+the USB baseline: physical left A then right J each produced exactly one
+press/release, with no additional events. The capture is
+`docs/hardware-calibration/conformance-usb-split.json`; it checks function,
+without scoring an emulator prediction. The same two-key baseline also passed
+through the Bluetooth input device using the existing slot-1 pairing while
+USB supplied power; see
+`docs/hardware-calibration/conformance-bluetooth-split.json`.
+Macro calibration, reconnection, first-key wake,
+electrical power behaviour, battery runtime and switch wiring remain
 unverified. Passing these bounded comparisons does not establish full stock
 or board equivalence.
+
+Testing stopped at the owner's request after these two captures on
+2026-11-16. The three test macro recordings have not been confirmed.
+Next session, prepare Q=text, I=chord and E=delay, then capture HC01, HC08
+and HC11 using `docs/mistel-md770-conformance-hardware-calibration.json`.
+Media/indicators, reconnection, power-bank delivery and the two host
+sleep/wake paths also remain. The installed images are ready for these
+checks; another flash is not required.
+
+The local ChibiOS-Contrib edits are committed and pushed on
+`markwellis/ChibiOS-Contrib` branch `md770-conformance-integration`, ending
+at `9e0d3dabc0b89aa6b654b1e87df02bee2fbed0af`. Their source contents are
+unchanged. QMK retains its upstream dependency pin; the four committed
+patch files still reproduce the integration checkout.
 
 Reproduce with `nix-shell --run 'bash tests/md770_bluetooth/run-software.sh'`.
 New builds and records use `_conformance` names. The upstream dependency pin

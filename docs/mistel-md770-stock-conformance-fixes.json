@@ -1,6 +1,6 @@
 {
   "date": "2026-11-16T20:29:13.725271+00:00",
-  "status": "flashed_awaiting_hardware_calibration",
+  "status": "hardware_calibration_paused_at_owner_request",
   "checkpoint_commits": {
     "mistel-md770-qmk": "779831a",
     "qmk_firmware": "7f95caf037"
@@ -48,6 +48,14 @@
       "ht32f523xx-bftm-counter-width.patch": "cc9b53c800b0f955518b9190a1895fea6e60a3cd55a2292e4d672ab0a64f3ce9",
       "ht32f523xx-runtime-clocks.patch": "dad87be52fd0a1219dc47c54150c717ab0c9ea5f01172a5162c2945e2ca9294e",
       "ht32f523xx-usb-stop.patch": "f8cc1ce21e8bbaf253f8d446d36d8b06c43488eb343f7988c264c7bdc639c10f"
+    },
+    "committed_integration": {
+      "repository": "markwellis/ChibiOS-Contrib",
+      "branch": "md770-conformance-integration",
+      "commit": "9e0d3dabc0b89aa6b654b1e87df02bee2fbed0af",
+      "pushed": true,
+      "source_contents_unchanged_by_commit": true,
+      "qmk_submodule_pin_changed": false
     }
   },
   "remaining": [
@@ -545,5 +553,33 @@
     "mistel_md770rgb_bt_right_markwellis_validation.bin": "ec0fff325e91c221efc15228a997e52811777eb6afc521b916db55890d9ebbcd",
     "mistel_md770rgb_bt_left_markwellis.bin": "c3df1ed93011258e488c2a28f65fcc14d439cde31897b952ebe9e4fff2506b96"
   },
-  "installation_verified_at": "2026-11-16T20:50:52.248138+00:00"
+  "installation_verified_at": "2026-11-16T20:50:52.248138+00:00",
+  "hardware_calibration": {
+    "status": "paused_at_owner_request",
+    "usb_split_baseline": {
+      "record": "docs/hardware-calibration/conformance-usb-split.json",
+      "passed": true,
+      "scope": "Physical left A and right J each produced exactly one ordered USB press/release; no extra events",
+      "emulator_prediction_scored": false
+    },
+    "remaining": [
+      "Prepare and capture the three recorded macros against exported emulator predictions",
+      "Bluetooth media and Caps/connection indicators",
+      "Bluetooth reconnect, power-bank delivery and first-key checks on the reviewed image",
+      "USB and Bluetooth-selected host sleep/wake and output handover"
+    ],
+    "deferred": [
+      "Internal-cell power and battery measurements; no battery available"
+    ],
+    "bluetooth_split_baseline": {
+      "record": "docs/hardware-calibration/conformance-bluetooth-split.json",
+      "passed": true,
+      "scope": "Physical left A and right J each produced exactly one ordered Bluetooth press/release using the existing slot-1 pairing while USB supplied power",
+      "emulator_prediction_scored": false
+    },
+    "stopped_at": "2026-11-16T21:13:29.660238+00:00",
+    "macro_recordings_confirmed": false,
+    "last_confirmed_setup": "Halves joined; laptop USB connected to right; Bluetooth slot 1 selected and delivering keys",
+    "resume_next": "Prepare Q=text, I=chord and E=delay in a replaceable profile, then capture HC01, HC08 and HC11 against the conformance plan"
+  }
 }

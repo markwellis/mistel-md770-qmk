@@ -20,7 +20,7 @@ changed wake path on the candidate.
 | 5. Host sleep and output handover | With USB connected and Bluetooth selected, suspend/resume the host, type over Bluetooth, switch to USB and type, then switch back | Both outputs recover and no keys remain held |
 
 HC01, HC08 and HC11 are existing software-verified cases in the generated
-[plan](mistel-md770-hardware-calibration.json). The reduced set samples each
+[plan](mistel-md770-conformance-hardware-calibration.json). The reduced set samples each
 declared factor value but does not cover every factor pair. Passing it is a
 practical smoke check using the earlier hardware baseline, not completion of
 the optional full calibration matrix. No live macro-calibration cases have
@@ -29,24 +29,21 @@ have passed separately; see the
 [pulse agreement record](mistel-md770-diagnostic-pulse-agreement.json).
 These scenarios do not need a battery.
 
-The owner authorised both-half flashing and a full settings reset on
-2026-11-16. Both the original right validation image and
-[left personal image](mistel-md770-bluetooth-flash-left.json) were flashed,
-checksummed and returned to QMK. The owner reports performing the full settings
-reset on the joined keyboard; a blue right-hand indicator was observed
-afterwards, without explicit confirmation of the five white reset flashes.
-The Bluetooth test supply is a USB power bank, not an internal cell.
-This establishes installation, not either hardware test outcome.
+Both reviewed images were flashed and checksum-verified on 2026-11-16:
+the [right validation image](mistel-md770-conformance-flash-right.json) and
+[left personal image](mistel-md770-conformance-flash-left.json).
+Right-side settings were retained. The right binary matches the current
+plan generated after 125 emulator groups and 449 parameterised subtests
+per keymap.
 
-Hardware bring-up then found an SPI reset race. The corrected normal
-[right validation image](mistel-md770-validation-restored-flash-right.json) is now
-flashed and checksum-verified, with settings retained. Both halves passed
-[live Bluetooth typing on a power bank](mistel-md770-powerbank-typing.json).
-The binary matches
-the current plan generated after 83 emulator groups and 376 parameterised
-subtests per keymap. The temporary diagnostic image has been removed.
-Connection in this run followed a long Pn+F1 pairing request; automatic cold
-reconnection remains unverified.
+Physical left A then right J each produced exactly one press/release over
+[USB](hardware-calibration/conformance-usb-split.json) and
+[Bluetooth](hardware-calibration/conformance-bluetooth-split.json), with no
+extra events. Bluetooth used the existing slot-1 pairing while laptop USB
+supplied power. These are functional baselines, without an emulator
+prediction comparison. Testing stopped at the owner's request; the three
+macro recordings have not been confirmed. Reconnection, media/indicators,
+power-bank delivery and host sleep/wake remain for this candidate.
 
 The five scenarios include two host sleep/wake cycles: one with USB selected,
 then one with Bluetooth selected while USB remains connected. They exercise
@@ -83,7 +80,7 @@ claiming that the whole board model is correct.
 | Area in `qmk_firmware` | Change since the wired baseline | Hardware check |
 | --- | --- | --- |
 | `keyboards/mistel/md770rgb_bt/bluetooth.c` | Reset/startup, transfer/retry/recovery, reconnect resynchronisation and pairing delay | Scenarios 2–4 check successful connection, reports and reconnection; deliberate FIFO faults/timeouts remain software checks |
-| `keyboards/mistel/md770rgb_bt/power.c` | USB running/sleeping/wake-requested transitions, supply history, low-voltage filtering and idle | Scenarios 1 and 5 check the two wake/output paths; battery behaviour is deferred |
+| `keyboards/mistel/md770rgb_bt/power.c` | USB stop/resume, supply history, low-voltage filtering and idle | Scenarios 1 and 5 check the two wake/output paths; battery behaviour is deferred |
 | `platforms/chibios/suspend.c` | Preserve Bluetooth-held reports during an unrelated USB resume | Scenario 5 checks post-resume Bluetooth delivery and output handover; held-during-resume details retain software coverage |
 | `keyboards/mistel/md770rgb_bt/scan.c`, `rgb.c` | Idle scan cadence and RGB sleep/wake gating/priming | Wake paths are sampled; battery idle and electrical waveforms remain unmeasured |
 | `keyboards/mistel/md770rgb_bt/indicators.c` | Bluetooth, Caps, charging and warning indications | Scenario 2 samples Bluetooth/Caps; charging/low-battery observations are deferred |
@@ -111,7 +108,7 @@ is exported only after the tests pass. Its binary must match `objcopy`
 output from the exact tested ELF bytes.
 
 For hardware calibration, install the plan's right-hand validation image:
-`qmk_firmware/.build/mistel_md770rgb_bt_right_markwellis_validation.bin`.
+`qmk_firmware/.build/mistel_md770rgb_bt_right_markwellis_conformance_validation.bin`.
 Use the existing [USB installation procedure](usb-flashing.md). Keep the
 matching left-hand personal build. The capture command verifies the local
 reference binary's hash; confirming which image is actually flashed remains
@@ -142,7 +139,9 @@ Nix environment:
 
 ```fish
 nix-shell --command fish
-python3 scripts/md770_calibrate.py --quick --out docs/hardware-calibration/quick.json
+set md770_plan docs/mistel-md770-conformance-hardware-calibration.json
+set md770_firmware ../qmk_firmware/.build/mistel_md770rgb_bt_right_markwellis_conformance_validation.bin
+python3 scripts/md770_calibrate.py --plan $md770_plan --firmware $md770_firmware --quick --timeout 300 --out docs/hardware-calibration/quick.json
 ```
 
 If input access requires root, use
@@ -172,8 +171,10 @@ Enter the Nix environment and print the cases and available input devices:
 
 ```fish
 nix-shell --command fish
-python3 scripts/md770_calibrate.py --show-plan
-python3 scripts/md770_calibrate.py --list
+set md770_plan docs/mistel-md770-conformance-hardware-calibration.json
+set md770_firmware ../qmk_firmware/.build/mistel_md770rgb_bt_right_markwellis_conformance_validation.bin
+python3 scripts/md770_calibrate.py --plan $md770_plan --firmware $md770_firmware --show-plan
+python3 scripts/md770_calibrate.py --plan $md770_plan --firmware $md770_firmware --list
 ```
 
 The plan is grouped by transport and connection state. Select output with
@@ -188,7 +189,7 @@ the established connection. Recheck the event path after reconnection.
 Run each case with its Mistel input device, replacing the example path:
 
 ```fish
-python3 scripts/md770_calibrate.py --case HC01 --device /dev/input/eventX --out docs/hardware-calibration/HC01.json
+python3 scripts/md770_calibrate.py --plan $md770_plan --firmware $md770_firmware --case HC01 --device /dev/input/eventX --out docs/hardware-calibration/HC01.json
 ```
 
 If input access requires root, run the same command with
@@ -232,7 +233,7 @@ rechecks saved events and accepts only live results for the same plan and
 reference binary; replayed files cannot complete it:
 
 ```fish
-python3 scripts/md770_calibrate.py --results docs/hardware-calibration
+python3 scripts/md770_calibrate.py --plan $md770_plan --firmware $md770_firmware --results docs/hardware-calibration
 ```
 
 This summary measures the full 11-case matrix. After the recommended short

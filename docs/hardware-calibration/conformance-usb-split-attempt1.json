@@ -1,0 +1,7 @@
+{
+  "status": "inconclusive_operator_reported_unintended_keys",
+  "operator_report": "I may have pressed Shift + Left",
+  "capture_aborted": "2026-11-16T21:03:36.311403+00:00",
+  "passed": false,
+  "firmware_failure_established": false
+}
