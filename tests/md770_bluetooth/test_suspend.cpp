@@ -5,6 +5,8 @@
 static uint8_t           mods = 2, weak_mods = 8, keys = 4;
 static uint16_t          consumer = 0xe9, system_usage = 0x82;
 static unsigned          wakes;
+static bool preserve;
+bool host_preserve_keyboard_state(void) { return preserve; }
 static connection_host_t host = CONNECTION_HOST_BLUETOOTH;
 void                     clear_mods(void) {
     mods = 0;
@@ -37,5 +39,9 @@ int main(void) {
     host = CONNECTION_HOST_USB;
     suspend_wakeup_init();
     assert(!mods && !weak_mods && !keys && !consumer && !system_usage && wakes == 2);
-    puts("Actual ChibiOS resume preserves held Bluetooth reports and clears USB reports");
+    preserve = true;
+    mods = 2; weak_mods = 8; keys = 4; consumer = 0xe9; system_usage = 0x82;
+    suspend_wakeup_init();
+    assert(mods == 2 && weak_mods == 8 && keys == 4 && consumer == 0xe9 && system_usage == 0x82 && wakes == 3);
+    puts("ChibiOS wake retains MD770 input and keeps the default USB clearing policy");
 }

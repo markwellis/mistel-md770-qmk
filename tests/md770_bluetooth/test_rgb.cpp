@@ -3,9 +3,6 @@
 #include <cstdio>
 #include <cstring>
 #include "keyboards/mistel/md770rgb_bt/rgb.c"
-#ifdef MD770_LEFT
-#    include "keyboards/mistel/md770rgb_bt/power.c"
-#endif
 
 bool                     pins[64];
 static bool              locked, scan_asleep;
@@ -54,9 +51,7 @@ uint32_t timer_elapsed32(uint32_t start) {
 void md770_scan_set_idle(bool value) {
     scan_asleep = value;
 }
-#ifndef MD770_LEFT
 void md770_power_activity(bool) {}
-#endif
 
 int main(void) {
     md770_rgb_init();
@@ -91,35 +86,29 @@ int main(void) {
         for (auto value : component)
             assert(value == 0);
     assert(pins[C11] && !GPTM1->CTR);
+    bits.clear();
     md770_rgb_sleep(false);
-    assert(pins[C11] && priming);
+    assert(!pins[C11] && !priming && !bits.empty());
     bits.clear();
     md770_rgb_latch();
-    assert(bits.empty());
+    assert(!bits.empty());
+    bits.clear();
     md770_rgb_update();
     assert(!priming && !pins[C11] && !bits.empty());
     md770_rgb_latch();
     md770_rgb_update();
     assert(GPTM1->CTR == 1);
 #ifdef MD770_LEFT
-    md770_power_init();
-    now += 299;
-    md770_power_task();
-    assert(!md770_power_idle());
-    ++now;
-    md770_power_task();
-    assert(md770_power_idle() && scan_asleep && pins[C11]);
+    md770_rgb_sleep(true);
     uint8_t payload[126]{};
     md770_rgb_receive(payload);
-    md770_power_task();
-    assert(md770_power_idle());
+    assert(asleep);
     payload[0] = 128;
     md770_rgb_receive(payload);
-    md770_power_task();
-    assert(!md770_power_idle() && !scan_asleep && priming);
-    assert(md770_rgb_left()[0] == 128);
+    assert(asleep && pins[C11]);
+    assert(colours[0][0] == 128 && md770_rgb_left()[0] == 0);
 #else
     assert(!scan_asleep);
 #endif
-    puts("RGB waveform, gated sleep and interruptible wake priming passed");
+    puts("RGB waveform, sleep pins and synchronous wake priming passed");
 }

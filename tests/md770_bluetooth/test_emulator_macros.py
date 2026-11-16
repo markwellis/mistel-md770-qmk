@@ -76,8 +76,14 @@ class MacroTests(unittest.TestCase):
                     expected = 'host_usb' if configured else saved
                     self.assertEqual(machine.read(machine.symbol('active_host'), 1), self.abi[expected])
                     machine.call('register_code', 4)
-                    machine.call('unregister_code', 4)
                     packets = machine.drain()
+                    if expected == 'host_usb' and not configured:
+                        self.assertEqual(machine.usb_reports, [])
+                        self.assertEqual(machine.read(machine.symbol('usb_pending'), 1), 1)
+                        machine.usb(True)
+                        machine.matrix()
+                    machine.call('unregister_code', 4)
+                    packets.extend(machine.drain())
                     reports = ([bytes(packet[1:]) for packet in packets if packet[0] == 0xA1]
                                if expected == 'host_bluetooth' else machine.usb_reports)
                     self.assertEqual(key_events(reports), [(4, True), (4, False)])
@@ -104,7 +110,7 @@ class MacroTests(unittest.TestCase):
                 for _ in range(10):
                     machine.task(10)
                     if machine.hardware.output(2, 14):
-                        size = machine.read(machine.symbol('current_length'), 1)
+                        size = machine.read(machine.symbol('tx_length'), 1)
                         packet = machine.transfer(bytes(size))
                         if packet[0] == 0xAA:
                             self.assertEqual(packet, [0xAA, 3, 1])
@@ -115,8 +121,9 @@ class MacroTests(unittest.TestCase):
                 machine.drain()
                 machine.usb_reports.clear()
                 machine.call('register_code', 4)
-                machine.call('unregister_code', 4)
                 reports = [bytes(packet[1:]) for packet in machine.drain() if packet[0] == 0xA1]
+                machine.call('unregister_code', 4)
+                reports.extend(bytes(packet[1:]) for packet in machine.drain() if packet[0] == 0xA1)
                 self.assertEqual(key_events(reports), [(4, True), (4, False)])
                 self.assertEqual(machine.usb_reports, [])
 
@@ -157,7 +164,7 @@ class MacroTests(unittest.TestCase):
                         machine.extra(system, usage if pressed else 0)
                     machine.task(10)
                     if machine.hardware.output(2, 14):
-                        size = machine.read(machine.symbol('current_length'), 1)
+                        size = machine.read(machine.symbol('tx_length'), 1)
                         actual.append(bytes(machine.transfer(bytes(size))))
                 self.assertEqual(expected, [bytes([command]) + payload, bytes([command]) + bytes(len(payload))])
                 self.assertEqual(actual, expected)
@@ -195,8 +202,12 @@ class MacroTests(unittest.TestCase):
                 + self.command('up', 4) + self.command('up', 0xE0) + b'\x00')
         machine.load_macro(data)
         machine.play()
-        machine.macro_step()
-        reports = [bytes(packet[1:]) for packet in machine.drain() if packet[0] == 0xA1]
+        reports = []
+        for _ in range(10):
+            machine.macro_step()
+            reports.extend(bytes(packet[1:]) for packet in machine.drain() if packet[0] == 0xA1)
+            if machine.read(machine.symbol('playback_wait')) == 1000:
+                break
         self.assertEqual(key_events(reports), [(0xE0, True), (4, True)])
         started = machine.read(machine.symbol('playback_started'))
         machine.ms = started + 999
@@ -204,8 +215,7 @@ class MacroTests(unittest.TestCase):
         self.assertTrue(machine.playing())
         self.assertEqual(machine.queued(), 0)
         machine.ms = started + 1000
-        machine.macro_step()
-        reports.extend(bytes(packet[1:]) for packet in machine.drain() if packet[0] == 0xA1)
+        reports.extend(self.run_macro(machine))
         self.assertEqual(key_events(reports), [(0xE0, True), (4, True), (4, False), (0xE0, False)])
         self.assertFalse(machine.playing())
 
@@ -233,8 +243,8 @@ class MacroTests(unittest.TestCase):
         machine.macro_step()
         reports = [bytes(packet[1:]) for packet in machine.drain() if packet[0] == 0xA1]
         machine.event(6, row=12, col=2)
-        machine.macro_step(1100)
-        reports.extend(bytes(packet[1:]) for packet in machine.drain() if packet[0] == 0xA1)
+        machine.ms += 1100
+        reports.extend(self.run_macro(machine))
         self.assertEqual(key_events(reports), [(4, True), (4, False)])
         self.assertFalse(machine.playing())
 
@@ -337,13 +347,10 @@ class MacroTests(unittest.TestCase):
                         self.assertTrue(machine.connected())
                         machine.drain()
                     else:
-                        self.assertIn([0xA7, 2, 0, 1], machine.drain())
-                        machine.usb(False)
-                        self.assertIn([0xA7, 2, 0, 2], machine.drain())
-                        self.assertEqual(machine.read(machine.symbol('usb_configured'), 1), 0)
+                        machine.usb(True, suspended=True)
+                        machine.call('suspend_wakeup_init')
                         machine.usb(True)
-                        self.assertIn([0xA7, 2, 0, 1], machine.drain())
-                        self.assertEqual(machine.read(machine.symbol('usb_configured'), 1), 1)
+                        machine.drain()
                 held = MODIFIERS[case['modifier']]
                 if held is not None:
                     machine.call('register_code', held)

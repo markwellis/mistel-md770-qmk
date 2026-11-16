@@ -1,0 +1,120 @@
+{
+  "flash_init": {
+    "commands": [
+      {
+        "command": "ab",
+        "read_bytes": 0
+      },
+      {
+        "command": "9f",
+        "read_bytes": 3
+      },
+      {
+        "command": "06",
+        "read_bytes": 0
+      },
+      {
+        "command": "01 02 00",
+        "read_bytes": 0
+      },
+      {
+        "command": "05",
+        "read_bytes": 1
+      }
+    ],
+    "delays_us": [
+      10
+    ],
+    "power_requests": [],
+    "requested_level": 9,
+    "actual_level": 9
+  },
+  "flash_down": {
+    "commands": [
+      {
+        "command": "b9",
+        "read_bytes": 0
+      }
+    ],
+    "delays_us": [
+      10
+    ],
+    "flag": 0
+  },
+  "rgb_active": [
+    {
+      "pin": "C11",
+      "af": 0,
+      "output": false,
+      "input": false,
+      "pull_up": false,
+      "pull_down": false,
+      "level": false
+    },
+    {
+      "pin": "C12",
+      "af": 0,
+      "output": true,
+      "input": false,
+      "pull_up": false,
+      "pull_down": false,
+      "level": true
+    },
+    {
+      "pin": "C15",
+      "af": 0,
+      "output": true,
+      "input": false,
+      "pull_up": false,
+      "pull_down": false,
+      "level": true
+    },
+    {
+      "pin": "B10",
+      "af": 1,
+      "output": true,
+      "input": false,
+      "pull_up": false,
+      "pull_down": false,
+      "level": true
+    }
+  ],
+  "rgb_down": [
+    {
+      "pin": "C11",
+      "af": 0,
+      "output": false,
+      "input": false,
+      "pull_up": false,
+      "pull_down": false,
+      "level": true
+    },
+    {
+      "pin": "C12",
+      "af": 0,
+      "output": false,
+      "input": false,
+      "pull_up": false,
+      "pull_down": false,
+      "level": true
+    },
+    {
+      "pin": "C15",
+      "af": 0,
+      "output": false,
+      "input": false,
+      "pull_up": false,
+      "pull_down": false,
+      "level": true
+    },
+    {
+      "pin": "B10",
+      "af": 1,
+      "output": false,
+      "input": false,
+      "pull_up": false,
+      "pull_down": false,
+      "level": true
+    }
+  ]
+}

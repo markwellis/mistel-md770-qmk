@@ -18,13 +18,20 @@ class Qmk(Machine):
             raise ValueError('The firmware has no space for a supplied report')
         self.persistent_writes = 0
         self.sleep_action = None
-        self.hook('timer_read32', lambda: self.ms)
+        self.sleep_ticks = 0
+        self.tick_hz = (self.read(self.symbol('md770_system_tick_frequency'))
+                        if 'md770_system_tick_frequency' in self.symbols else
+                        abi['system_tick_hz'] if 'dirty' in self.symbols else 1000)
+        self.hook('timer_read32', lambda: int(self.ms))
+        if 'md770_indicator_ticks' in self.symbols:
+            self.hook('md770_indicator_ticks', lambda: int(self.ms * self.tick_hz / 1000))
         self.hooks[self.function('__port_irq_epilogue')] = lambda: None
         self.hooks[self.function('chThdSleep')] = self._sleep
         self.hooks[self.function('nvm_eeconfig_update_connection')] = self._persist
         self.hook('iqGetTimeout', lambda: -1)
         self.hardware.registers[0x4008802C] = (1 << 14) | (1 << 4)
         self.hardware.registers[0x40088030] = (1 << 16) | (1 << 9)
+        self.hardware.registers[0x40088040] = 0x23
         self.hardware.enabled = (1 << SPI_IRQ) | (1 << 17)
         self.hardware.priorities[SPI_IRQ] = 0x40
         self.hardware.priorities[17] = 0x80
@@ -39,15 +46,36 @@ class Qmk(Machine):
         self.set_host('host_bluetooth')
         self.write(self.symbol('active_host'), abi['host_bluetooth'], 1)
         self._hal()
+        if 'dirty' in self.symbols and 'led_init_ports' in self.symbols:
+            self.call('led_init_ports')
         self.usb(False)
+        if 'usb_driver_set_enabled' in self.symbols:
+            self.hook('usb_driver_set_enabled', self._usb_enable)
+        if 'md770_clock_service' in self.symbols:
+            # Clock and sleep instructions run in the separate ClockFirmware fixture.
+            self.hook('md770_clock_service', lambda: None)
 
     def _sleep(self):
-        self.ms += self.cpu.reg_read(UC_ARM_REG_R0)
+        self.sleep_ticks += self.cpu.reg_read(UC_ARM_REG_R0) * 1000
+        milliseconds, self.sleep_ticks = divmod(self.sleep_ticks, self.tick_hz)
+        self.ms += milliseconds
         if self.sleep_action:
             self.sleep_action()
 
     def _persist(self):
         self.persistent_writes += 1
+
+    def _usb_enable(self):
+        from unicorn.arm_const import UC_ARM_REG_R1
+        enabled = bool(self.cpu.reg_read(UC_ARM_REG_R1))
+        state = self.read(self.symbol('USBD1') + self.abi['usb_driver_state'],
+                          self.abi['usb_driver_state_bytes'])
+        if not enabled or state == self.abi['usb_stop']:
+            self.usb(False)
+            if not enabled:
+                self.write(self.symbol('USBD1') + self.abi['usb_driver_state'],
+                           self.abi['usb_stop'], self.abi['usb_driver_state_bytes'])
+        self.usb_enabled = enabled
 
     def _hal(self):
         abi = self.abi
@@ -85,7 +113,7 @@ class Qmk(Machine):
 
     def task(self, elapsed=0):
         self.ms = (self.ms + elapsed) & 0xFFFFFFFF
-        self.call('radio_task')
+        self.call('bluetooth_task' if 'bluetooth_task' in self.symbols else 'radio_task')
 
     def poll(self):
         self.call(STOP - 2)
@@ -125,14 +153,23 @@ class Qmk(Machine):
     def indicators(self):
         self.call(self.function('md770_indicators_task'))
 
+    def voltage_tick(self, ticks=1):
+        for _ in range(ticks):
+            self.call('md770_power_tick')
+
     def connected(self):
         return self.read(self.symbol('radio_state'), 1) == 4
 
     def queued(self):
+        if 'dirty' in self.symbols:
+            pending = self.read(self.symbol('pending_command'), 1)
+            return self.read(self.symbol('dirty'), 1).bit_count() + int(0xF0 <= pending <= 0xF2)
         return self.read(self.symbol('count'), 1)
 
     def start(self):
         self.call('reset_radio')
+        if 'pending_command' in self.symbols:
+            self.write(self.symbol('pending_command'), 0x80, 1)
         self.task(1000)
         self.task(1500)
         self.task(10)
@@ -146,8 +183,16 @@ class Qmk(Machine):
         for _ in range(100):
             self.task(10)
             if self.hardware.output(2, 14):
-                size = self.read(self.symbol('current_length'), 1)
+                size = self.read(self.symbol('tx_length'), 1)
                 outgoing.append(self.transfer(bytes(size)))
+            elif 'pending_command' in self.symbols:
+                if (self.read(self.symbol('phase'), 1) in (6, 7)
+                        and not self.read(self.symbol('pending_command'), 1)):
+                    return outgoing
+                if (not self.queued() and self.read(self.symbol('pending_command'), 1) == 0x20
+                        and not self.read(self.symbol('deferred_slot'), 1)
+                        and self.read(self.symbol('phase'), 1) == 2):
+                    return outgoing
             elif (not self.queued() and not self.read(self.symbol('resynchronise'), 1)
                   and self.read(self.symbol('phase'), 1) == 2
                   and not self.read(self.symbol('pending_slot'), 1)

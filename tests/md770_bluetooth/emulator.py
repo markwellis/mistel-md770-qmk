@@ -95,7 +95,7 @@ class Spi:
 
     @property
     def interrupt(self):
-        return bool(self.read(20) & self.registers[8] & 0xFC)
+        return bool(self.registers[0] & 1 and self.read(20) & self.registers[8] & 0xFC)
 
 
 class Hardware:
@@ -110,7 +110,7 @@ class Hardware:
         self.input_driven = [0] * 4
         self.registers = {address: 0 for address in
                           [0x40088024, 0x40088028, 0x4008802C, 0x40088030,
-                           0x40088108, *range(0x40022020, 0x40022040, 4)]}
+                           0x40088040, 0x40088108, *range(0x40022020, 0x40022040, 4)]}
         for base in (0x4002C000, 0x4006E000, 0x4006F000):
             for offset in (0, 4, 8, 0x10, *range(0x40, 0x58, 4),
                            0x6C, 0x70, 0x74, 0x78, 0x7C, 0x80, 0x84, 0x88,
@@ -119,6 +119,7 @@ class Hardware:
         for offset in range(0, 16, 4):
             self.registers[0x40076000 + offset] = 0
         self.voltage_mv = 3300
+        self.usb_power = 0x400
         self.lvd = 0
         self.accesses = Counter()
         self.trace = []
@@ -176,7 +177,10 @@ class Hardware:
         self.accesses[("write" if writing else "read", address)] += 1
         if not writing and self.on_read:
             self.on_read(address)
-        if SPI_BASE <= address <= SPI_BASE + 32:
+        if address == 0x40068000:
+            if size != 4 or value != 0x5FA00001:
+                raise Unsupported('Only the watchdog reload write is supplied')
+        elif SPI_BASE <= address <= SPI_BASE + 32:
             if not self.registers[0x4008802C] & 16:
                 raise Unsupported("SPI0 register access with its peripheral clock disabled")
             if size != 4:
@@ -218,6 +222,13 @@ class Hardware:
                 threshold = [2250, 2400, 2550, 2700, 2850, 3000, 3150, 3300][select]
                 low = bool(self.lvd & 0x10000) and self.voltage_mv <= threshold
                 return self.lvd | (0x80000 if low else 0)
+        elif address == 0x400A8000:
+            if size != 4 or (writing and value & ~0x40C):
+                raise Unsupported('USB signalling, including remote wake, is outside the model')
+            if writing:
+                self.usb_power = value
+            else:
+                return self.usb_power
         elif 0x400A8000 <= address < 0x400A9000:
             raise Unsupported('USB signalling, including remote wake, is outside the model')
         elif 0xE000E400 <= address < 0xE000E420:
@@ -316,6 +327,9 @@ class Machine:
 
     def symbol(self, name):
         matches = self.symbols.get(name, [])
+        if not matches:
+            matches = [address for key, addresses in self.symbols.items()
+                       if key.startswith(name + '.lto_priv.') for address in addresses]
         if len(matches) != 1:
             raise Unsupported(f"Expected one ELF symbol {name!r}, found {len(matches)}")
         return matches[0]
@@ -345,7 +359,7 @@ class Machine:
 
     def _next_irq(self):
         hw = self.hardware
-        if hw.spi.interrupt and SPI_IRQ not in [irq for irq, _ in self.active]:
+        if hw.registers[0x4008802C] & (1 << 4) and hw.spi.interrupt and SPI_IRQ not in [irq for irq, _ in self.active]:
             hw.pending |= 1 << SPI_IRQ
         available = hw.pending & hw.enabled
         if not available or self.cpu.reg_read(UC_ARM_REG_PRIMASK):

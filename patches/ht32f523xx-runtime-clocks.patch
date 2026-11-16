@@ -1,0 +1,106 @@
+--- a/os/hal/ports/HT32/LLD/TIMv1/hal_gpt_lld.c
++++ b/os/hal/ports/HT32/LLD/TIMv1/hal_gpt_lld.c
+@@ -174,7 +174,7 @@
+ void gpt_lld_start_timer(GPTDriver *gptp, gptcnt_t interval) {
+     gptp->BFTM->SR = 0;
+     gptp->BFTM->CNTR = 0;
+-    gptp->BFTM->CMP = (HT32_CK_AHB_FREQUENCY / gptp->config->frequency) * interval;
++    gptp->BFTM->CMP = (HT32_GPT_CLOCK / gptp->config->frequency) * interval;
+     gptp->BFTM->CR = BFTM_CR_CEN | BFTM_CR_MIEN;
+ }
+ 
+@@ -203,7 +203,7 @@
+ void gpt_lld_polled_delay(GPTDriver *gptp, gptcnt_t interval) {
+     gptp->BFTM->SR = 0;
+     gptp->BFTM->CNTR = 0;
+-    gptp->BFTM->CMP = (HT32_CK_AHB_FREQUENCY / gptp->config->frequency) * interval;
++    gptp->BFTM->CMP = (HT32_GPT_CLOCK / gptp->config->frequency) * interval;
+     gptp->BFTM->CR = BFTM_CR_CEN | BFTM_CR_OSM;
+     while(!(gptp->BFTM->SR & BFTM_SR_MIF))
+         ;
+--- a/os/hal/ports/HT32/LLD/TIMv1/hal_gpt_lld.h
++++ b/os/hal/ports/HT32/LLD/TIMv1/hal_gpt_lld.h
+@@ -24,6 +24,10 @@
+ 
+ #ifndef HAL_GPT_LLD_H
+ #define HAL_GPT_LLD_H
++
++#ifndef HT32_GPT_CLOCK
++#define HT32_GPT_CLOCK HT32_CK_AHB_FREQUENCY
++#endif
+ 
+ #if (HAL_USE_GPT == TRUE) || defined(__DOXYGEN__)
+ 
+@@ -138,7 +142,7 @@
+  * @notapi
+  */
+ #define gpt_lld_change_interval(gptp, interval) \
+-    ((gptp)->BFTM->CMP = (HT32_CK_AHB_FREQUENCY / (gptp)->config->frequency) * (interval))
++    ((gptp)->BFTM->CMP = (HT32_GPT_CLOCK / (gptp)->config->frequency) * (interval))
+ 
+ /**
+  * @brief   Returns the interval of GPT peripheral.
+@@ -149,7 +153,7 @@
+  * @notapi
+  */
+ #define gpt_lld_get_interval(gptp) \
+-    ((gptcnt_t)(gptp)->BFTM->CMP / (HT32_CK_AHB_FREQUENCY / (gptp)->config->frequency))
++    ((gptcnt_t)(gptp)->BFTM->CMP / (HT32_GPT_CLOCK / (gptp)->config->frequency))
+ 
+ /**
+  * @brief   Returns the counter value of GPT peripheral.
+@@ -162,7 +166,7 @@
+  * @notapi
+  */
+ #define gpt_lld_get_counter(gptp) \
+-    ((gptcnt_t)((gptp)->BFTM->CNTR / (HT32_CK_AHB_FREQUENCY / (gptp)->config->frequency)))
++    ((gptcnt_t)((gptp)->BFTM->CNTR / (HT32_GPT_CLOCK / (gptp)->config->frequency)))
+ 
+ /*===========================================================================*/
+ /* External declarations.                                                    */
+--- a/os/hal/ports/HT32/LLD/TIMv1/hal_st_lld.c
++++ b/os/hal/ports/HT32/LLD/TIMv1/hal_st_lld.c
+@@ -23,6 +23,10 @@
+  */
+ 
+ #include "hal.h"
++
++#ifndef HT32_ST_TICKS_PER_IRQ
++#define HT32_ST_TICKS_PER_IRQ 1U
++#endif
+ 
+ #if (OSAL_ST_MODE != OSAL_ST_MODE_NONE) || defined(__DOXYGEN__)
+ 
+@@ -61,7 +65,9 @@
+   OSAL_IRQ_PROLOGUE();
+ 
+   osalSysLockFromISR();
+-  osalOsTimerHandlerI();
++  for (uint32_t ticks = HT32_ST_TICKS_PER_IRQ; ticks; --ticks) {
++    osalOsTimerHandlerI();
++  }
+   osalSysUnlockFromISR();
+ 
+   OSAL_IRQ_EPILOGUE();
+--- a/os/hal/ports/HT32/LLD/USART_F5xxxx/hal_serial_lld.c
++++ b/os/hal/ports/HT32/LLD/USART_F5xxxx/hal_serial_lld.c
+@@ -23,6 +23,10 @@
+  */
+ 
+ #include "hal.h"
++
++#ifndef HT32_SERIAL_CLOCK
++#define HT32_SERIAL_CLOCK HT32_CK_USART_FREQUENCY
++#endif
+ 
+ #if (HAL_USE_SERIAL == TRUE) || defined(__DOXYGEN__)
+ 
+@@ -118,7 +122,7 @@
+ static void usartInit(SerialDriver *sdp, const SerialConfig *config) {
+     USART_TypeDef *u = sdp->usart;
+ 
+-    u->DLR = (uint32_t)(HT32_CK_USART_FREQUENCY / config->speed);                      /* Data Rate */
++    u->DLR = (uint32_t)(HT32_SERIAL_CLOCK / config->speed);                      /* Data Rate */
+     u->CR  = (UART_CR_MODE_NORMAL | UART_CR_URTXEN | UART_CR_URRXEN | UART_CR_WLS_8B); /* 8-bit, one stop, no parity */
+     u->FCR = USART_FCR_TXR | USART_FCR_RXR;                                            // Reset FIFOs.
+     u->IER = USART_IER_RXDRIE | USART_IER_TXDEIE | USART_IER_TXCIE;

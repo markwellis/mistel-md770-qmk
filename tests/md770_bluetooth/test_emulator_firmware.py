@@ -40,11 +40,6 @@ class FirmwareTests(unittest.TestCase):
         machine.transfer(bytes.fromhex('b6 00 02'))
         return machine
 
-    def assert_reset(self, machine):
-        self.assertFalse(machine.connected())
-        self.assertTrue(machine.hardware.output(3, 1))
-        self.assertFalse(machine.hardware.output(2, 14))
-
     def test_keyboard_packets_match_stock_with_batched_irqs(self):
         for batch in (1, 3, 6):
             with self.subTest(batch=batch):
@@ -85,7 +80,7 @@ class FirmwareTests(unittest.TestCase):
                 packets = qmk.drain()
                 stock.command(0x40 + slot)
                 expected = [0xAA, 3, slot]
-                self.assertEqual(packets[-1], expected)
+                self.assertEqual(packets[0], expected)
                 self.assertEqual(stock.transfer(bytes(3)), expected)
                 self.assertEqual(qmk.persistent_writes, 1)
 
@@ -128,7 +123,7 @@ class FirmwareTests(unittest.TestCase):
                     for _ in range(20):
                         qmk.task(10)
                         if qmk.hardware.output(2, 14):
-                            size = qmk.read(qmk.symbol('current_length'), 1)
+                            size = qmk.read(qmk.symbol('tx_length'), 1)
                             packet = qmk.transfer(bytes(size))
                             if packet[0] == 0xAA:
                                 break
@@ -156,7 +151,7 @@ class FirmwareTests(unittest.TestCase):
                 qmk.task(2000)
         self.assertEqual(stock.read(0x200001E4, 1), 7)
         qmk.keyboard(bytes.fromhex('00 00 04 00 00 00 00 00'))
-        self.assertEqual(qmk.queued(), 0)
+        self.assertFalse(qmk.call('md770_radio_key_ready', 4))
         stock.call(0x36B8, 0x41)
         stock.task()
         qmk.select(1)
@@ -174,8 +169,9 @@ class FirmwareTests(unittest.TestCase):
                 qmk.transfer(status)
                 stock.transfer(status)
                 self.assertEqual(stock.read(0x200001E6, 1), remaining)
-                stock.command(0x80)
+                stock.command(0xF0)
                 qmk.usb(True)
+                qmk.keyboard(bytes(8))
                 qmk.task(10)
                 stock.task(4000)
                 qmk.task(2000)
@@ -191,9 +187,10 @@ class FirmwareTests(unittest.TestCase):
                     stock.task(4000)
                     qmk.task(2000)
                 self.assertEqual(stock.read(0x200001E4, 1), 7)
-                stock.call(0x36B8, 0x80)
+                stock.call(0x36B8, 0x41)
                 stock.task()
                 qmk.usb(False)
+                qmk.select(1)
                 qmk.task()
                 self.assertTrue(stock.hardware.output(3, 1))
                 self.assertTrue(qmk.hardware.output(3, 1))
@@ -230,11 +227,14 @@ class FirmwareTests(unittest.TestCase):
         self.assertEqual(hardware.spi.registers[24], 0x410)
         self.assertEqual(hardware.spi.registers[0], 1)
 
-    def test_usb_status_notices_match_stock(self):
-        qmk, stock = self.qmk(), self.stock()
-        for configured in (True, False, True, False):
+    def test_startup_usb_status_notices_match_stock(self):
+        for configured in (True, False):
             with self.subTest(configured=configured):
+                qmk, stock = self.qmk(connected=False), self.stock()
                 qmk.usb(configured)
+                qmk.call('reset_radio')
+                qmk.task(1000)
+                qmk.task(1500)
                 qmk.task(10)
                 stock.usb(configured)
                 stock.command(0x80)
@@ -250,7 +250,7 @@ class FirmwareTests(unittest.TestCase):
                 for _ in range(20):
                     qmk.task(10)
                     if qmk.hardware.output(2, 14):
-                        length = qmk.read(qmk.symbol('current_length'), 1)
+                        length = qmk.read(qmk.symbol('tx_length'), 1)
                         if qmk.transfer(bytes(length)) == [0xAA, 3, slot]:
                             break
                 else:
@@ -352,12 +352,14 @@ class FirmwareTests(unittest.TestCase):
                 self.assertEqual(qmk.hardware.lvd, stock.hardware.lvd)
                 qmk.hardware.voltage_mv = stock.hardware.voltage_mv = thresholds[level] - 1
                 qmk.matrix()
+                qmk.voltage_tick(49)
                 stock.voltage_tick(49)
                 stock.power()
                 qmk.ms += 24
                 qmk.matrix()
                 self.assertEqual(stock.read(0x2000001E, 1), level)
                 self.assertEqual(qmk.read(qmk.symbol('battery_level'), 1), level)
+                qmk.voltage_tick()
                 stock.voltage_tick()
                 stock.power()
                 qmk.ms += 1
@@ -371,7 +373,7 @@ class FirmwareTests(unittest.TestCase):
         for _ in range(20):
             qmk.task(10)
             if qmk.hardware.output(2, 14):
-                length = qmk.read(qmk.symbol('current_length'), 1)
+                length = qmk.read(qmk.symbol('tx_length'), 1)
                 packet = qmk.transfer(bytes(length))
                 if packet == [0xAA, 3, 2]:
                     break
@@ -413,30 +415,16 @@ class FirmwareTests(unittest.TestCase):
                 self.assertEqual(stock.transfer(bytes(9)), expected)
                 self.assertEqual(stock.read(0x20000218, 1), 0x20)
 
-    def test_queue_backpressure_yields_to_module_byte_clocks(self):
+    def test_report_acceptance_yields_without_sleeping(self):
         qmk = self.qmk()
-        reports = [bytes([0, 0, key, 0, 0, 0, 0, 0]) for key in range(4, 21)]
-        for report in reports[:16]:
-            qmk.keyboard(report)
-        self.assertEqual(qmk.queued(), 16)
-        current, completed = [], []
-
-        def clock_byte():
-            if not qmk.hardware.output(2, 14):
-                return
-            qmk.hardware.spi.selected = True
-            current.append(qmk.hardware.clock(0))
-            if len(current) == 9:
-                qmk.hardware.spi.selected = False
-                completed.append(current.copy())
-                current.clear()
-
-        qmk.sleep_action = clock_byte
-        qmk.keyboard(reports[16])
-        qmk.sleep_action = None
-        self.assertTrue(qmk.connected())
-        self.assertEqual(qmk.queued(), 16)
-        self.assertEqual(completed + qmk.drain(), [[0xA1, *report] for report in reports])
+        qmk.keyboard(bytes([0, 0, 4, 0, 0, 0, 0, 0]))
+        started = qmk.ms
+        for _ in range(100):
+            self.assertFalse(qmk.call('md770_radio_key_ready', 4))
+        self.assertEqual(qmk.ms, started)
+        qmk.select(2, pair=True)
+        self.assertEqual(qmk.read(qmk.symbol('latest_keyboard') + 2, 1), 4)
+        self.assertEqual(qmk.drain()[-1], [0xA1, 0, 0, 4, 0, 0, 0, 0, 0])
 
     def test_radio_startup_survives_timer_wrap(self):
         qmk = self.qmk(connected=False)
@@ -446,23 +434,25 @@ class FirmwareTests(unittest.TestCase):
         qmk.keyboard(bytes(8))
         self.assertEqual(qmk.drain(), [[0xA1, *bytes(8)]])
 
-    def test_reconnect_discards_stale_queue_and_resynchronises(self):
+    def test_status_changes_retain_accepted_input_without_synthetic_reports(self):
         qmk = self.qmk()
-        qmk.keyboard(bytes.fromhex('00 00 04 00 00 00 00 00'))
-        qmk.keyboard(bytes(8))
+        report = bytes.fromhex('00 00 04 00 00 00 00 00')
+        qmk.keyboard(report)
         qmk.transfer(bytes.fromhex('b6 00 00'))
         self.assertFalse(qmk.connected())
-        self.assertEqual(qmk.queued(), 0)
+        self.assertEqual(qmk.queued(), 1)
         qmk.transfer(bytes.fromhex('b6 00 02'))
-        packets = qmk.drain()
-        self.assertEqual(packets, [[0xA1, *bytes(8)], [0xA2, *bytes(4)], [0xA3, 0]] * 2)
+        self.assertEqual(qmk.drain(), [[0xA1, *report]])
 
-    def test_short_keyboard_frame_resets_radio(self):
+    def test_short_keyboard_frame_rearms_without_a_reset_pulse(self):
         qmk = self.qmk()
         qmk.keyboard(bytes(8))
         qmk.task(10)
         qmk.transfer(bytes(8))
-        self.assert_reset(qmk)
+        self.assertTrue(qmk.connected())
+        self.assertFalse(qmk.hardware.output(3, 1))
+        self.assertFalse(qmk.hardware.output(2, 14))
+        self.assertEqual(qmk.drain(), [[0xA1, *bytes(8)]])
 
     def test_transfer_timeout_resets_radio(self):
         qmk = self.qmk()
@@ -471,7 +461,9 @@ class FirmwareTests(unittest.TestCase):
         qmk.task(1999)
         self.assertTrue(qmk.connected())
         qmk.task(1)
-        self.assert_reset(qmk)
+        self.assertTrue(qmk.connected())
+        self.assertTrue(qmk.hardware.output(3, 1))
+        self.assertFalse(qmk.hardware.output(2, 14))
 
     def test_request_pin_must_remain_a_gpio_output(self):
         qmk = self.qmk()
@@ -516,7 +508,8 @@ class FirmwareTests(unittest.TestCase):
                 self.assertIsNone(hw.on_read)
                 self.assertEqual(status_reads, 2)
                 if error:
-                    self.assert_reset(qmk)
+                    self.assertTrue(qmk.connected())
+                    self.assertFalse(qmk.hardware.output(3, 1))
                 else:
                     self.assertTrue(qmk.connected())
                     self.assertEqual(qmk.queued(), 0)
@@ -549,25 +542,30 @@ class FirmwareTests(unittest.TestCase):
                          [('enter', 17), ('enter', 21), ('return', 21), ('return', 17)])
         self.assertEqual(qmk.hardware.registers[0x40076004], 0)
 
-    def test_actual_idle_timer_uses_96000_ticks(self):
-        qmk = self.qmk()
-        qmk.matrix()
-        qmk.ms += 600000
-        qmk.matrix()
-        self.assertEqual(self.abi['gpt_counter_bytes'], 4)
-        self.assertEqual(qmk.hardware.registers[0x4007600C], 96000)
-        qmk.keyboard(bytes(8))
-        qmk.matrix()
-        self.assertEqual(qmk.hardware.registers[0x4007600C], 39441)
+    def test_pending_spi_irq_skips_a_gated_or_disabled_peripheral(self):
+        for clocked in (False, True):
+            with self.subTest(clocked=clocked):
+                qmk = self.qmk()
+                qmk.hardware.spi.registers[0] = 0
+                if not clocked:
+                    qmk.hardware.registers[0x4008802C] &= ~(1 << 4)
+                qmk.hardware.spi.rx.extend((0xB6, 0, 1))
+                qmk.hardware.pending |= 1 << SPI_IRQ
+                qmk.poll()
+                self.assertEqual(list(qmk.hardware.spi.rx), [0xB6, 0, 1])
+                self.assertEqual(qmk.read(qmk.symbol('radio_state'), 1), 4)
+                self.assertIn(('enter', SPI_IRQ), [(kind, irq) for kind, irq, _ in qmk.interrupt_trace])
 
     def test_lvd_requires_25_ms_before_changing_level(self):
         qmk = self.qmk()
         qmk.hardware.voltage_mv = 3100
         qmk.matrix()
         self.assertEqual(qmk.read(qmk.symbol('battery_level'), 1), 7)
+        qmk.voltage_tick(48)
         qmk.ms += 24
         qmk.matrix()
         self.assertEqual(qmk.read(qmk.symbol('battery_level'), 1), 7)
+        qmk.voltage_tick(2)
         qmk.ms += 1
         qmk.matrix()
         self.assertEqual(qmk.read(qmk.symbol('battery_level'), 1), 6)
@@ -580,7 +578,7 @@ class FirmwareTests(unittest.TestCase):
         qmk.hardware.pin(1, 12, True)
         qmk.hardware.pin(2, 13, False)
         qmk.matrix()
-        started = qmk.read(qmk.symbol('burst_started'))
+        started = qmk.ms
         for elapsed, expected in ((0, 6000), (24, 6000), (25, 0), (50, 6000),
                                    (75, 0), (100, 6000), (125, 0), (3125, 6000)):
             with self.subTest(elapsed=elapsed):
@@ -609,11 +607,12 @@ class FirmwareTests(unittest.TestCase):
     def test_remote_wake_is_explicitly_outside_the_model(self):
         qmk = self.qmk()
         qmk.hardware.pin(1, 12, True)
+        qmk.write(qmk.symbol('supply'), 3, 1)
+        qmk.set_host('host_usb')
         qmk.usb(True, suspended=True, remote_wakeup=True)
         qmk.matrix()
-        qmk.write(qmk.symbol('scanned'), 1, 1)
         with self.assertRaisesRegex(Unsupported, 'USB signalling, including remote wake'):
-            qmk.matrix()
+            qmk.call('register_code', 4)
 
     def test_wrong_stock_image_is_rejected(self):
         with self.assertRaisesRegex(ValueError, 'recorded US 7.02'):

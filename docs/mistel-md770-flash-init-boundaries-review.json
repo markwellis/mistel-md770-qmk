@@ -1,0 +1,185 @@
+{
+  "boundary": "Actual d478 and9c68 instructions; d4e4 SPI transaction results and8bd0 delays supplied.",
+  "cases": [
+    {
+      "bad_IDs_supplied": 0,
+      "busy_reads_supplied": 0,
+      "ID_reads": 1,
+      "AB_count": 1,
+      "write_enable_count": 1,
+      "write_status_count": 1,
+      "status_reads": 1,
+      "10us_waits": 1,
+      "100us_waits": 0,
+      "flag_after_return": 1,
+      "first_commands": [
+        [
+          "ab",
+          0
+        ],
+        [
+          "9f",
+          3
+        ],
+        [
+          "06",
+          0
+        ],
+        [
+          "01 02 00",
+          0
+        ],
+        [
+          "05",
+          1
+        ]
+      ],
+      "last_commands": [
+        [
+          "9f",
+          3
+        ],
+        [
+          "06",
+          0
+        ],
+        [
+          "01 02 00",
+          0
+        ],
+        [
+          "05",
+          1
+        ]
+      ]
+    },
+    {
+      "bad_IDs_supplied": 2,
+      "busy_reads_supplied": 2,
+      "ID_reads": 3,
+      "AB_count": 3,
+      "write_enable_count": 1,
+      "write_status_count": 1,
+      "status_reads": 3,
+      "10us_waits": 3,
+      "100us_waits": 2,
+      "flag_after_return": 1,
+      "first_commands": [
+        [
+          "ab",
+          0
+        ],
+        [
+          "9f",
+          3
+        ],
+        [
+          "ab",
+          0
+        ],
+        [
+          "9f",
+          3
+        ],
+        [
+          "ab",
+          0
+        ],
+        [
+          "9f",
+          3
+        ],
+        [
+          "06",
+          0
+        ],
+        [
+          "01 02 00",
+          0
+        ]
+      ],
+      "last_commands": [
+        [
+          "01 02 00",
+          0
+        ],
+        [
+          "05",
+          1
+        ],
+        [
+          "05",
+          1
+        ],
+        [
+          "05",
+          1
+        ]
+      ]
+    },
+    {
+      "bad_IDs_supplied": 1024,
+      "busy_reads_supplied": 600,
+      "ID_reads": 1024,
+      "AB_count": 1024,
+      "write_enable_count": 1,
+      "write_status_count": 1,
+      "status_reads": 600,
+      "10us_waits": 1024,
+      "100us_waits": 600,
+      "flag_after_return": 1,
+      "first_commands": [
+        [
+          "ab",
+          0
+        ],
+        [
+          "9f",
+          3
+        ],
+        [
+          "ab",
+          0
+        ],
+        [
+          "9f",
+          3
+        ],
+        [
+          "ab",
+          0
+        ],
+        [
+          "9f",
+          3
+        ],
+        [
+          "ab",
+          0
+        ],
+        [
+          "9f",
+          3
+        ]
+      ],
+      "last_commands": [
+        [
+          "05",
+          1
+        ],
+        [
+          "05",
+          1
+        ],
+        [
+          "05",
+          1
+        ],
+        [
+          "05",
+          1
+        ]
+      ]
+    }
+  ]
+}

@@ -7,6 +7,7 @@ trap 'rm -rf "$md770_test_dir"' EXIT
 python3 - "$md770_test_dir/keymap_data.h" <<'PY'
 import json
 import pathlib
+import re
 import sys
 
 root = pathlib.Path("../qmk_firmware/keyboards/mistel/md770rgb_bt")
@@ -18,6 +19,9 @@ for layer, codes in enumerate(keymap["layers"]):
         row, col = key["matrix"]
         lines.append(f"[{layer}][{row}][{col}] = {code},")
 lines.append("};")
+source = pathlib.Path("../qmk_firmware/quantum/send_string/send_string.c").read_text()
+for table in re.findall(r"__attribute__\(\(weak\)\) const uint8_t ascii_to_\w+\[\d+\] PROGMEM = \{.*?\n\};", source, re.S):
+    lines.append(table.replace("__attribute__((weak)) ", "").replace(" PROGMEM", ""))
 pathlib.Path(sys.argv[1]).write_text("\n".join(lines) + "\n")
 PY
 

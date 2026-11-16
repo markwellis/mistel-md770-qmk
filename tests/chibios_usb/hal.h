@@ -61,10 +61,11 @@ static inline void osalThreadDequeueNextI(threads_queue_t *q, msg_t m) {
     (void)q;
     (void)m;
 }
+extern msg_t (*usb_wait_hook)(void);
 static inline msg_t osalThreadEnqueueTimeoutS(threads_queue_t *q, sysinterval_t t) {
     (void)q;
     (void)t;
-    return MSG_TIMEOUT;
+    return usb_wait_hook ? usb_wait_hook() : MSG_TIMEOUT;
 }
 void usbStartReceiveI(USBDriver *, usbep_t, uint8_t *, size_t);
 void usbStartTransmitI(USBDriver *, usbep_t, const uint8_t *, size_t);

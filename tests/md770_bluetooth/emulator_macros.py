@@ -21,6 +21,7 @@ class MacroQmk(Qmk):
         if self.record + abi['record_bytes'] > self.symbol('__heap_end__'):
             raise Unsupported('No space for a supplied macro key event')
         self.usb_reports = []
+        self.usb_extra_reports = []
         self.usb_nkro_count = 0
         driver = self.symbol('chibios_driver')
         self.write(self.symbol('driver'), driver)
@@ -28,6 +29,8 @@ class MacroQmk(Qmk):
         self.hooks[keyboard_send] = self._usb_keyboard
         nkro_send = self.read(driver + abi['driver_nkro']) & ~1
         self.hooks[nkro_send] = self._usb_nkro
+        extra_send = self.read(driver + abi['driver_extra']) & ~1
+        self.hooks[extra_send] = self._usb_extra
 
     def _read_macro_byte(self):
         offset = self.cpu.reg_read(UC_ARM_REG_R0) - self.macro_base
@@ -40,6 +43,7 @@ class MacroQmk(Qmk):
         mods = self.read(report + self.abi['report_mods'], 1)
         keys = self.cpu.mem_read(report + self.abi['report_keys'], 6)
         self.usb_reports.append(bytes([mods, 0, *keys]))
+        self._usb_accepted(1)
 
     def _usb_nkro(self):
         report = self.cpu.reg_read(UC_ARM_REG_R0)
@@ -49,6 +53,18 @@ class MacroQmk(Qmk):
                 for bit in range(8) if value & (1 << bit)]
         self.usb_reports.append(bytes([mods, 0, *keys, *([0] * max(0, 6 - len(keys)))]))
         self.usb_nkro_count += 1
+        self._usb_accepted(1)
+
+    def _usb_extra(self):
+        report = self.cpu.reg_read(UC_ARM_REG_R0)
+        self.usb_extra_reports.append((self.read(report + self.abi['extra_report_id'], 1),
+                                       self.read(report + self.abi['extra_usage'], 2)))
+        self._usb_accepted(4 if self.usb_extra_reports[-1][0] == self.abi['report_system'] else 2)
+
+    def _usb_accepted(self, family):
+        if 'usb_pending' in self.symbols:
+            address = self.symbol('usb_pending')
+            self.write(address, self.read(address, 1) & ~family, 1)
 
     def nkro(self, enabled):
         address = self.symbol('keymap_config')
@@ -82,7 +98,9 @@ class MacroQmk(Qmk):
         self.call('md770_programming_task')
 
     def playing(self):
-        return bool(self.read(self.symbol('playing'), 1))
+        return (bool(self.read(self.symbol('playing'), 1)) or
+                ('playback_cancelling' in self.symbols and
+                 bool(self.read(self.symbol('playback_cancelling'), 1))))
 
     def output_mode(self, bluetooth):
         host = 'host_bluetooth' if bluetooth else 'host_usb'

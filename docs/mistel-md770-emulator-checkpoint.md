@@ -1,5 +1,32 @@
 # Resume checkpoint: Bluetooth and ARM emulator
 
+The requested checkpoint is saved as `779831a` here and `7f95caf037` in
+`qmk_firmware`. The reviewed corrections are now in QMK `5919f04d30`.
+This repository retains the matching personal macro player, regression tests,
+stock probes, dependency patches and verification records.
+
+The final software run passed both keymaps: 125 groups and 449 parameterised
+subtests each. All four ordinary production targets built. Separate retained
+links cover macro/input producers and both halves' clock/sleep paths. Native
+radio, USB queues, flash, split-link, programming and host-tool checks passed.
+The split comparison covers 7,546 stock observations; clock checks include
+238 stock debounce samples per half and real kernel/IRQ execution.
+Two Astra reviews at maximum effort found no remaining verified blocker in
+the new source and tests. See
+[the final record](mistel-md770-stock-conformance-fixes.json) for hashes,
+reproduction, covered boundaries and explicit QMK macro policies.
+
+No new firmware was flashed. Installed-image hashes are unchanged; measured
+hardware calibration remains pending. RF delivery, reconnection, first-key
+wake, electrical power behaviour, battery runtime and switch wiring remain
+unverified. Passing these bounded comparisons does not establish full stock
+or board equivalence.
+
+Reproduce with `nix-shell --run 'bash tests/md770_bluetooth/run-software.sh'`.
+New builds and records use `_conformance` names. The upstream dependency pin
+is retained; the keymap setup lists all four portable ChibiOS patches.
+The following sections record earlier checkpoints and installed images.
+
 Stopped at the owner's request on 2026-11-15. No firmware was flashed and
 no PRs were opened during that session. Continue from this checkpoint
 rather than restarting the stock research or firmware implementation.

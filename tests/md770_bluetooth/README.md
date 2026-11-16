@@ -2,7 +2,7 @@
 
 `run.sh` compiles the actual QMK keyboard drivers and ChibiOS resume function
 against supplied registers, a FIFO model, GPIO, time and host services. It
-uses address, undefined-behaviour and bounds sanitizers. C++ register proxies
+uses address, undefined-behaviour and bounds sanitisers. C++ register proxies
 provide FIFO read/write effects without changing the production C source.
 The firmware itself is compiled as C in both-half QMK builds.
 
@@ -35,9 +35,21 @@ plan generation:
 nix-shell --run 'bash tests/md770_bluetooth/run-software.sh'
 ```
 
-This checks both right-hand keymaps, the native driver/programming tests,
-stock probes and host tools. It writes the two emulator verification records
-and the [hardware calibration plan](../../docs/mistel-md770-hardware-calibration.md).
+This builds both halves and keymaps with ordinary production flags, then
+separate right-half links retaining the macro and input entry points.
+It runs the component, native driver/programming, USB queue, split-link,
+flash power, clock/wake, stock probe and host-tool checks. Candidate records
+use `mistel-md770-conformance-*` names; installed-image records are historical.
+The generated hardware plan contains predictions awaiting measured calibration.
+
+`run-clock.sh` executes the board and HAL clock/sleep instructions separately.
+Oscillator readiness, timer completion, RTOS sleep and wake events are supplied;
+the ordinary component fixture explicitly skips this clock boundary. Clock
+records list each check and its limits. USB IRQ tests execute suspend, resume
+and SOF callbacks with actual HAL queues; physical transfer completion is supplied.
+The remote-wake request test supplies CSR storage and observes requests only.
+Flash tests execute the board wrapper and generic driver with supplied chip
+responses, including stock's ID/status initialisation and retry limits.
 
 `emulator*.py` and `emulator_abi.c` execute compiled QMK and stock components
 against the same bounded peripheral model. The Nix shell supplies Unicorn,
@@ -71,8 +83,8 @@ The earlier checkpoint had 35 model groups, 31 production-firmware groups and
 17 macro/host groups per keymap, with 376 parameterised subtests. The expanded
 stock conformance audit currently has 87 groups and 419 parameterised checks
 and still fails; see `docs/mistel-md770-installed-stock-conformance-reviewed.json`.
-The native `pair_boundary` case checks elapsed hold time, accounting for the
-stock counter starting at one. Passing the earlier suite did not establish
+The current pairing regressions execute the compiled Pn layer and hold boundary.
+Passing the earlier suite did not establish
 full stock Bluetooth parity. The cases cover exception
 frames and flags, MSP/PSP, stack alignment, nested and deferred interrupts,
 GPIO input enables and pulls, NVIC priorities, nominal LVD thresholds and
@@ -82,8 +94,8 @@ startup reset edges, USB status notices, pairing delay, 128 seeded keyboard
 reports and LED/LVD boundaries. The 18 consumer usages check QMK's mapping
 against explicit bitmaps and stock framing; stock's usage-to-bitmap mapping
 is not executed. Other cases cover queue backpressure, reconnects,
-final-byte/error races, timer wrap, real scan-handler pre-emption and idle
-timer values. The delayed-reset regression injects a busy reset bit and
+final-byte/error races, timer wrap and real scan-handler pre-emption.
+The delayed-reset regression injects a busy reset bit and
 configuration loss, checking that the actual SPI setup polls completion.
 
 The completed Astra review is in

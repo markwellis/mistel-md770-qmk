@@ -2,8 +2,8 @@
 #include "dynamic_keymap.h"
 #include "keyboards/mistel/md770rgb_bt/keymaps/default/keymap.h"
 #include "keyboards/mistel/md770rgb_bt/md770rgb_bt.h"
-#include "keymap_data.h"
 #include "send_string.h"
+#include "keymap_data.h"
 #include "connection.h"
 #include <assert.h>
 #include <stdio.h>
@@ -35,6 +35,16 @@ connection_host_t connection_get_host(void) {
 bool md770_radio_can_enqueue(void) {
     return radio_reports <= 8;
 }
+bool md770_radio_key_ready(uint16_t code) {
+    (void)code;
+    return radio_reports <= 8;
+}
+bool md770_power_key_ready(uint16_t code) {
+    (void)code;
+    return true;
+}
+void host_task(void) {}
+void md770_playback_cancel_physical(void);
 static struct {
     uint8_t  code;
     bool     down;
@@ -203,7 +213,6 @@ uint16_t keycode_config(uint16_t code) {
 static uint16_t event(uint8_t row, uint8_t col, bool pressed) {
     uint8_t layer = cached_layers[row][col];
     if (pressed) {
-        weak_mods = 0;
         matrix[row] |= 1U << col;
         layer_state_t active = layer_state | default_layer_state;
         for (int candidate = 18; candidate >= 0; --candidate) {
@@ -213,6 +222,8 @@ static uint16_t event(uint8_t row, uint8_t col, bool pressed) {
             }
         }
         cached_layers[row][col] = layer;
+        if (!IS_QK_MACRO(keycodes[layer][row][col])) md770_playback_cancel_physical();
+        weak_mods = 0;
     } else {
         matrix[row] &= ~(1U << col);
     }

@@ -43,6 +43,15 @@ static uint16_t               playback_offset, playback_end;
 static keypos_t               playback_trigger;
 static uint32_t               playback_started, playback_wait;
 static uint8_t                playback_keys[32], playback_mods;
+typedef struct {
+    uint8_t code;
+    bool down;
+} playback_event_t;
+static playback_event_t playback_sequence[10];
+static uint8_t playback_steps, playback_step;
+static bool playback_cancelling, playback_final_report, playback_pending;
+static uint8_t playback_pending_slot;
+static keypos_t playback_pending_trigger;
 
 layer_state_t md770_programming_layers(layer_state_t layers, md770_profile_t selected) {
     layers &= ~((7UL << FN1) | (7UL << PN1) | (7UL << DEFAULT_PROFILE));
@@ -114,8 +123,47 @@ static uint8_t macro_byte(uint16_t offset) {
     return value;
 }
 
+static bool playback_ready(uint8_t code) {
+#    ifdef BLUETOOTH_ENABLE
+    return md770_radio_key_ready(code) && md770_power_key_ready(code);
+#    else
+    return true;
+#    endif
+}
+
+static void playback_event(uint8_t code, bool down) {
+    if (IS_MODIFIER_KEYCODE(code)) {
+        uint8_t modifier = MOD_BIT(code);
+        if (down) {
+            playback_mods |= modifier & ~get_weak_mods();
+            add_weak_mods(modifier);
+        } else {
+            del_weak_mods(modifier & playback_mods);
+            playback_mods &= ~modifier;
+        }
+        send_keyboard_report();
+    } else {
+        uint8_t bit = 1U << (code % 8);
+        if (down) {
+            playback_keys[code / 8] |= bit;
+            register_code(code);
+        } else if (playback_keys[code / 8] & bit) {
+            playback_keys[code / 8] &= ~bit;
+            unregister_code(code);
+        }
+    }
+}
+
 void md770_playback_cancel(void) {
-    playing = false;
+    playing = playback_pending = false;
+    playback_steps = playback_step = 0;
+    playback_cancelling = playback_final_report = true;
+}
+
+void md770_playback_cancel_physical(void) {
+    if (!playing && !playback_cancelling && !playback_pending) return;
+    playing = playback_pending = playback_cancelling = playback_final_report = false;
+    playback_steps = playback_step = 0;
     for (uint16_t code = 0; code <= UINT8_MAX; ++code) {
         if (playback_keys[code / 8] & (1U << (code % 8))) unregister_code(code);
     }
@@ -125,34 +173,96 @@ void md770_playback_cancel(void) {
     send_keyboard_report();
 }
 
-static void playback_task(void) {
-    if (!playing || timer_elapsed32(playback_started) < playback_wait) return;
+static void playback_start(void) {
     uint16_t capacity = dynamic_keymap_macro_get_buffer_size();
-    for (uint8_t budget = 0; budget < 16 && playing; ++budget) {
-#    ifdef BLUETOOTH_ENABLE
-        if (connection_get_host() == CONNECTION_HOST_BLUETOOTH && !md770_radio_can_enqueue()) {
-            return;
+    uint8_t slot = playback_pending_slot;
+    playback_offset = 0;
+    while (slot && playback_offset < capacity - 1) {
+        if (!macro_byte(playback_offset++)) --slot;
+    }
+    playback_end = playback_offset;
+    while (playback_end < capacity - 1 && macro_byte(playback_end)) ++playback_end;
+    playing = !slot && playback_end < capacity - 1;
+    playback_trigger = playback_pending_trigger;
+    playback_wait = 0;
+    playback_pending = false;
+}
+
+static void playback_add(uint8_t code, bool down) {
+    playback_sequence[playback_steps++] = (playback_event_t){code, down};
+}
+
+static void playback_tap(uint8_t code) {
+    if (IS_MODIFIER_KEYCODE(code) && (get_weak_mods() & MOD_BIT(code))) return;
+    if (!IS_MODIFIER_KEYCODE(code) && (playback_keys[code / 8] & (1U << (code % 8)))) playback_add(code, false);
+    playback_add(code, true);
+    playback_add(code, false);
+}
+
+static void playback_task(void) {
+    uint16_t capacity = dynamic_keymap_macro_get_buffer_size();
+    for (uint8_t budget = 0; budget < 16; ++budget) {
+        if (playback_cancelling) {
+            bool released = false;
+            for (uint16_t code = 0; code <= UINT8_MAX; ++code) {
+                if (!(playback_keys[code / 8] & (1U << (code % 8)))) continue;
+                if (!playback_ready(code)) return;
+                playback_event(code, false);
+                released = true;
+                break;
+            }
+            if (released) continue;
+            if (playback_mods) {
+                if (!playback_ready(KC_LCTL)) return;
+                del_weak_mods(playback_mods);
+                playback_mods = 0;
+                send_keyboard_report();
+            }
+            if (playback_final_report) {
+                if (!playback_ready(KC_LCTL)) return;
+                send_keyboard_report();
+                playback_final_report = false;
+            }
+            playback_cancelling = false;
         }
-#    endif
+        if (!playback_cancelling && playback_pending) playback_start();
+        if (!playing || timer_elapsed32(playback_started) < playback_wait) return;
+        if (playback_step < playback_steps) {
+            playback_event_t event = playback_sequence[playback_step];
+            if (!playback_ready(event.code)) return;
+            playback_event(event.code, event.down);
+            ++playback_step;
+            continue;
+        }
+        playback_step = playback_steps = 0;
         if (playback_offset >= playback_end || macro_byte(capacity - 1)) {
             md770_playback_cancel();
-            return;
+            continue;
         }
-        uint8_t code = macro_byte(playback_offset++);
+        uint16_t offset = playback_offset;
+        uint8_t code = macro_byte(offset++);
         if (!code) {
             md770_playback_cancel();
-        } else if (code != SS_QMK_PREFIX) {
+            continue;
+        }
+        if (code != SS_QMK_PREFIX) {
             if (code >= 128) {
                 md770_playback_cancel();
-                return;
+                continue;
             }
-            uint8_t mods = get_mods();
-            send_char(code);
-            set_mods(mods);
-            send_keyboard_report();
-        } else if (playback_offset + 2 <= playback_end) {
-            uint8_t command = macro_byte(playback_offset++);
-            code            = macro_byte(playback_offset++);
+            uint8_t modifiers = 0;
+            if ((pgm_read_byte(&ascii_to_shift_lut[code / 8]) & (1U << (code % 8)))) modifiers |= MOD_BIT(KC_LSFT);
+            if ((pgm_read_byte(&ascii_to_altgr_lut[code / 8]) & (1U << (code % 8)))) modifiers |= MOD_BIT(KC_RALT);
+            modifiers &= ~get_weak_mods();
+            if (modifiers & MOD_BIT(KC_LSFT)) playback_add(KC_LSFT, true);
+            if (modifiers & MOD_BIT(KC_RALT)) playback_add(KC_RALT, true);
+            playback_tap(pgm_read_byte(&ascii_to_keycode_lut[code]));
+            if (modifiers & MOD_BIT(KC_RALT)) playback_add(KC_RALT, false);
+            if (modifiers & MOD_BIT(KC_LSFT)) playback_add(KC_LSFT, false);
+            if ((pgm_read_byte(&ascii_to_dead_lut[code / 8]) & (1U << (code % 8)))) playback_tap(KC_SPC);
+        } else if (offset + 2 <= playback_end) {
+            uint8_t command = macro_byte(offset++);
+            code = macro_byte(offset++);
             if (command == SS_DELAY_CODE) {
                 uint32_t delay = 0;
                 while (code >= '0' && code <= '9') {
@@ -161,44 +271,28 @@ static void playback_task(void) {
                         return;
                     }
                     delay = delay * 10 + code - '0';
-                    if (playback_offset == playback_end) break;
-                    code = macro_byte(playback_offset++);
+                    if (offset == playback_end) break;
+                    code = macro_byte(offset++);
                 }
-                // Delays must leave the foreground split-link task running.
                 playback_wait    = delay;
                 playback_started = timer_read32();
+                playback_offset  = offset;
                 return;
             }
             if (command == SS_DOWN_CODE || command == SS_UP_CODE) {
-                uint8_t bit = 1U << (code % 8);
-                if (IS_MODIFIER_KEYCODE(code)) {
-                    uint8_t modifier = MOD_BIT(code);
-                    if (command == SS_DOWN_CODE) {
-                        playback_mods |= modifier & ~get_weak_mods();
-                        add_weak_mods(modifier);
-                    } else {
-                        del_weak_mods(modifier & playback_mods);
-                        playback_mods &= ~modifier;
-                    }
-                    send_keyboard_report();
-                } else if (command == SS_DOWN_CODE) {
-                    playback_keys[code / 8] |= bit;
-                    register_code(code);
-                } else {
-                    if (playback_keys[code / 8] & bit) unregister_code(code);
-                    playback_keys[code / 8] &= ~bit;
-                }
+                if (command == SS_DOWN_CODE && !IS_MODIFIER_KEYCODE(code) && (playback_keys[code / 8] & (1U << (code % 8)))) playback_add(code, false);
+                playback_add(code, command == SS_DOWN_CODE);
             } else if (command == SS_TAP_CODE) {
-                uint8_t mods = get_mods();
-                tap_code(code);
-                set_mods(mods);
-                send_keyboard_report();
+                playback_tap(code);
             } else {
                 md770_playback_cancel();
+                continue;
             }
         } else {
             md770_playback_cancel();
+            continue;
         }
+        playback_offset = offset;
         playback_wait = 0;
     }
 }
@@ -454,7 +548,7 @@ bool md770_programming_process(uint16_t keycode, keyrecord_t *record) {
     matrix_row_t bit     = (matrix_row_t)1U << key.col;
     bool         trigger = KEYEQ(key, playback_trigger);
     bool         control = keycode == MO(FN) || keycode == MO(PN) || IS_MODIFIER_KEYCODE(keycode_config(keycode));
-    if (playing && (record->event.pressed || (!trigger && !control))) {
+    if (playing && !IS_QK_MACRO(keycode) && (record->event.pressed || (!trigger && !control))) {
         // QMK clears weak modifiers before processing a physical press.
         if (record->event.pressed) playback_mods = 0;
         md770_playback_cancel();
@@ -504,20 +598,13 @@ bool md770_programming_process(uint16_t keycode, keyrecord_t *record) {
     }
     if (state == IDLE) {
         if (IS_QK_MACRO(keycode)) {
-            if (record->event.pressed && !has_anykey() && !host_last_consumer_usage() && !host_last_system_usage()) {
+            if (record->event.pressed && keycode - QK_MACRO < DYNAMIC_KEYMAP_MACRO_COUNT &&
+                ((!has_anykey() && !host_last_consumer_usage() && !host_last_system_usage()) || playing || playback_cancelling)) {
                 md770_playback_cancel();
-                uint16_t capacity = dynamic_keymap_macro_get_buffer_size();
-                uint8_t  slot     = keycode - QK_MACRO;
-                playback_offset   = 0;
-                while (slot && playback_offset < capacity - 1) {
-                    if (!macro_byte(playback_offset++)) --slot;
-                }
-                playback_end = playback_offset;
-                while (playback_end < capacity - 1 && macro_byte(playback_end))
-                    ++playback_end;
-                playing          = keycode - QK_MACRO < DYNAMIC_KEYMAP_MACRO_COUNT && !slot && playback_end < capacity - 1;
+                playback_pending_slot = keycode - QK_MACRO;
+                playback_pending_trigger = key;
                 playback_trigger = key;
-                playback_wait    = 0;
+                playback_pending = true;
             }
             return false;
         }

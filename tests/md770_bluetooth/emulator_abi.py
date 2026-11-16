@@ -23,7 +23,17 @@ NAMES = ['usb_configuration', 'usb_status', 'usb_configure_state',
          'string_down', 'string_up', 'string_delay', 'macro_count',
          'driver_nkro', 'nkro_mods', 'nkro_bits', 'nkro_bit_bytes',
          'usb_protocol', 'usb_boot_protocol', 'usb_report_protocol', 'usb_protocol_bytes',
-         'matrix_rows', 'matrix_cols', 'host_none']
+         'matrix_rows', 'matrix_cols', 'host_none', 'usb_stop', 'usb_selected',
+         'event_bytes', 'event_time', 'record_event', 'select_usb', 'select_bluetooth',
+         'bluetooth_profile1', 'driver_extra', 'extra_report_id', 'extra_usage', 'system_tick_hz',
+         'momentary_pn', 'momentary_fn', 'pn_layer', 'usb_event_wakeup', 'usb_event_configured',
+         'endpoint_bytes', 'endpoint_queue', 'endpoint_config', 'endpoint_in_state',
+         'endpoint_number', 'endpoint_timed_out', 'queue_free', 'queue_suspended', 'queue_count',
+         'usb_driver_config', 'usb_transmitting', 'usb_in_params', 'usb_epc', 'usb_tx_size',
+         'keyboard_endpoint', 'shared_endpoint', 'report_nkro', 'in_endpoint_count',
+         'usb_event_suspend', 'usb_event_reset', 'out_endpoint_count', 'out_endpoint_bytes',
+         'out_endpoint_queue', 'out_endpoint_config', 'out_endpoint_number',
+         'out_queue_suspended', 'usb_out_params', 'usb_receiving']
 
 
 def firmware_binary(elf_path, image):

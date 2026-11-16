@@ -1,0 +1,379 @@
+{
+  "stock_sha256": "8fafdca096756f23626802d5b586b270b0bd512fe5d1c0327db4eafcd4f689b2",
+  "boundary": "Actual 4740/478c radio power instructions; time, SPI slave and RTOS boundaries supplied; no physical validation",
+  "passed": true,
+  "cases": [
+    {
+      "kind": "ready",
+      "initial_timer_half_ms_ticks": 0,
+      "before": {
+        "public": 4,
+        "pending": 32,
+        "callback": 4,
+        "timer_half_ms_ticks": 0,
+        "request_pin": false,
+        "reset_pin": false,
+        "spi_clock": true
+      },
+      "down": {
+        "public": 4,
+        "pending": 32,
+        "callback": 4,
+        "timer_half_ms_ticks": 20,
+        "request_pin": false,
+        "reset_pin": false,
+        "spi_clock": false
+      },
+      "up": {
+        "public": 4,
+        "pending": 32,
+        "callback": 4,
+        "timer_half_ms_ticks": 20,
+        "request_pin": false,
+        "reset_pin": false,
+        "spi_clock": true
+      }
+    },
+    {
+      "kind": "ready",
+      "initial_timer_half_ms_ticks": 300,
+      "before": {
+        "public": 4,
+        "pending": 32,
+        "callback": 4,
+        "timer_half_ms_ticks": 300,
+        "request_pin": false,
+        "reset_pin": false,
+        "spi_clock": true
+      },
+      "down": {
+        "public": 4,
+        "pending": 32,
+        "callback": 4,
+        "timer_half_ms_ticks": 20,
+        "request_pin": false,
+        "reset_pin": false,
+        "spi_clock": false
+      },
+      "up": {
+        "public": 4,
+        "pending": 32,
+        "callback": 4,
+        "timer_half_ms_ticks": 20,
+        "request_pin": false,
+        "reset_pin": false,
+        "spi_clock": true
+      }
+    },
+    {
+      "kind": "ready",
+      "initial_timer_half_ms_ticks": 4000,
+      "before": {
+        "public": 4,
+        "pending": 32,
+        "callback": 4,
+        "timer_half_ms_ticks": 4000,
+        "request_pin": false,
+        "reset_pin": false,
+        "spi_clock": true
+      },
+      "down": {
+        "public": 4,
+        "pending": 32,
+        "callback": 4,
+        "timer_half_ms_ticks": 20,
+        "request_pin": false,
+        "reset_pin": false,
+        "spi_clock": false
+      },
+      "up": {
+        "public": 4,
+        "pending": 32,
+        "callback": 4,
+        "timer_half_ms_ticks": 20,
+        "request_pin": false,
+        "reset_pin": false,
+        "spi_clock": true
+      }
+    },
+    {
+      "kind": "off",
+      "initial_timer_half_ms_ticks": 0,
+      "before": {
+        "public": 4,
+        "pending": 0,
+        "callback": 0,
+        "timer_half_ms_ticks": 0,
+        "request_pin": false,
+        "reset_pin": true,
+        "spi_clock": false
+      },
+      "down": {
+        "public": 4,
+        "pending": 0,
+        "callback": 4,
+        "timer_half_ms_ticks": 20,
+        "request_pin": false,
+        "reset_pin": true,
+        "spi_clock": false
+      },
+      "up": {
+        "public": 4,
+        "pending": 0,
+        "callback": 4,
+        "timer_half_ms_ticks": 20,
+        "request_pin": false,
+        "reset_pin": true,
+        "spi_clock": true
+      }
+    },
+    {
+      "kind": "off",
+      "initial_timer_half_ms_ticks": 300,
+      "before": {
+        "public": 4,
+        "pending": 0,
+        "callback": 0,
+        "timer_half_ms_ticks": 300,
+        "request_pin": false,
+        "reset_pin": true,
+        "spi_clock": false
+      },
+      "down": {
+        "public": 4,
+        "pending": 0,
+        "callback": 4,
+        "timer_half_ms_ticks": 20,
+        "request_pin": false,
+        "reset_pin": true,
+        "spi_clock": false
+      },
+      "up": {
+        "public": 4,
+        "pending": 0,
+        "callback": 4,
+        "timer_half_ms_ticks": 20,
+        "request_pin": false,
+        "reset_pin": true,
+        "spi_clock": true
+      }
+    },
+    {
+      "kind": "off",
+      "initial_timer_half_ms_ticks": 4000,
+      "before": {
+        "public": 4,
+        "pending": 0,
+        "callback": 0,
+        "timer_half_ms_ticks": 4000,
+        "request_pin": false,
+        "reset_pin": true,
+        "spi_clock": false
+      },
+      "down": {
+        "public": 4,
+        "pending": 0,
+        "callback": 4,
+        "timer_half_ms_ticks": 20,
+        "request_pin": false,
+        "reset_pin": true,
+        "spi_clock": false
+      },
+      "up": {
+        "public": 4,
+        "pending": 0,
+        "callback": 4,
+        "timer_half_ms_ticks": 20,
+        "request_pin": false,
+        "reset_pin": true,
+        "spi_clock": true
+      }
+    },
+    {
+      "kind": "failed",
+      "initial_timer_half_ms_ticks": 0,
+      "before": {
+        "public": 7,
+        "pending": 0,
+        "callback": 0,
+        "timer_half_ms_ticks": 0,
+        "request_pin": false,
+        "reset_pin": false,
+        "spi_clock": false
+      },
+      "down": {
+        "public": 7,
+        "pending": 0,
+        "callback": 4,
+        "timer_half_ms_ticks": 20,
+        "request_pin": false,
+        "reset_pin": false,
+        "spi_clock": false
+      },
+      "up": {
+        "public": 7,
+        "pending": 0,
+        "callback": 4,
+        "timer_half_ms_ticks": 20,
+        "request_pin": false,
+        "reset_pin": false,
+        "spi_clock": true
+      }
+    },
+    {
+      "kind": "failed",
+      "initial_timer_half_ms_ticks": 300,
+      "before": {
+        "public": 7,
+        "pending": 0,
+        "callback": 0,
+        "timer_half_ms_ticks": 300,
+        "request_pin": false,
+        "reset_pin": false,
+        "spi_clock": false
+      },
+      "down": {
+        "public": 7,
+        "pending": 0,
+        "callback": 4,
+        "timer_half_ms_ticks": 20,
+        "request_pin": false,
+        "reset_pin": false,
+        "spi_clock": false
+      },
+      "up": {
+        "public": 7,
+        "pending": 0,
+        "callback": 4,
+        "timer_half_ms_ticks": 20,
+        "request_pin": false,
+        "reset_pin": false,
+        "spi_clock": true
+      }
+    },
+    {
+      "kind": "failed",
+      "initial_timer_half_ms_ticks": 4000,
+      "before": {
+        "public": 7,
+        "pending": 0,
+        "callback": 0,
+        "timer_half_ms_ticks": 4000,
+        "request_pin": false,
+        "reset_pin": false,
+        "spi_clock": false
+      },
+      "down": {
+        "public": 7,
+        "pending": 0,
+        "callback": 4,
+        "timer_half_ms_ticks": 20,
+        "request_pin": false,
+        "reset_pin": false,
+        "spi_clock": false
+      },
+      "up": {
+        "public": 7,
+        "pending": 0,
+        "callback": 4,
+        "timer_half_ms_ticks": 20,
+        "request_pin": false,
+        "reset_pin": false,
+        "spi_clock": true
+      }
+    },
+    {
+      "kind": "pending50",
+      "initial_timer_half_ms_ticks": 0,
+      "before": {
+        "public": 4,
+        "pending": 80,
+        "callback": 4,
+        "timer_half_ms_ticks": 0,
+        "request_pin": false,
+        "reset_pin": false,
+        "spi_clock": true
+      },
+      "down": {
+        "public": 4,
+        "pending": 80,
+        "callback": 4,
+        "timer_half_ms_ticks": 4000,
+        "request_pin": true,
+        "reset_pin": false,
+        "spi_clock": false
+      },
+      "up": {
+        "public": 4,
+        "pending": 80,
+        "callback": 4,
+        "timer_half_ms_ticks": 4000,
+        "request_pin": true,
+        "reset_pin": false,
+        "spi_clock": true
+      }
+    },
+    {
+      "kind": "pending50",
+      "initial_timer_half_ms_ticks": 300,
+      "before": {
+        "public": 4,
+        "pending": 80,
+        "callback": 4,
+        "timer_half_ms_ticks": 300,
+        "request_pin": false,
+        "reset_pin": false,
+        "spi_clock": true
+      },
+      "down": {
+        "public": 4,
+        "pending": 80,
+        "callback": 4,
+        "timer_half_ms_ticks": 300,
+        "request_pin": false,
+        "reset_pin": false,
+        "spi_clock": false
+      },
+      "up": {
+        "public": 4,
+        "pending": 80,
+        "callback": 4,
+        "timer_half_ms_ticks": 300,
+        "request_pin": false,
+        "reset_pin": false,
+        "spi_clock": true
+      }
+    },
+    {
+      "kind": "pending50",
+      "initial_timer_half_ms_ticks": 4000,
+      "before": {
+        "public": 4,
+        "pending": 80,
+        "callback": 4,
+        "timer_half_ms_ticks": 4000,
+        "request_pin": false,
+        "reset_pin": false,
+        "spi_clock": true
+      },
+      "down": {
+        "public": 4,
+        "pending": 80,
+        "callback": 4,
+        "timer_half_ms_ticks": 4000,
+        "request_pin": false,
+        "reset_pin": false,
+        "spi_clock": false
+      },
+      "up": {
+        "public": 4,
+        "pending": 80,
+        "callback": 4,
+        "timer_half_ms_ticks": 4000,
+        "request_pin": false,
+        "reset_pin": false,
+        "spi_clock": true
+      }
+    }
+  ]
+}

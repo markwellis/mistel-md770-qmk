@@ -145,6 +145,13 @@ class CpuTests(unittest.TestCase):
         with self.assertRaisesRegex(Unsupported, 'recursively'):
             self.machine.call('thread')
 
+    def test_lto_private_symbol_resolution_requires_one_address(self):
+        self.machine.symbols['private_state.lto_priv.0'] = [0x20000100]
+        self.assertEqual(self.machine.symbol('private_state'), 0x20000100)
+        self.machine.symbols['private_state.lto_priv.1'] = [0x20000200]
+        with self.assertRaisesRegex(Unsupported, 'found 2'):
+            self.machine.symbol('private_state')
+
     def test_wrong_exception_return_is_rejected(self):
         machine = self.machine
         machine.hardware.pending = 1 << 17
@@ -327,6 +334,14 @@ class RegisterTests(unittest.TestCase):
         self.assertEqual(hw.spi.errors, 0)
         self.assertEqual(list(hw.spi.tx), [])
 
+    def test_watchdog_boundary_accepts_only_the_reload_command(self):
+        self.hardware.access(0x40068000, 4, 0x5FA00001)
+        self.assertIn((0x40068000, 0x5FA00001), self.hardware.trace)
+        with self.assertRaisesRegex(Unsupported, 'watchdog reload'):
+            self.hardware.access(0x40068000, 4)
+        with self.assertRaisesRegex(Unsupported, 'watchdog reload'):
+            self.hardware.access(0x40068000, 4, 0)
+
 
 class SpiTests(unittest.TestCase):
     def setUp(self):
@@ -353,6 +368,13 @@ class SpiTests(unittest.TestCase):
         self.assertTrue(self.spi.interrupt)
         self.spi.write(20, 0xFF)
         self.assertFalse(self.spi.interrupt)
+
+    def test_disabled_spi_does_not_reassert_its_interrupt(self):
+        self.spi.clock(0xB6)
+        self.assertTrue(self.spi.interrupt)
+        self.spi.write(0, 0)
+        self.assertFalse(self.spi.interrupt)
+        self.assertEqual(list(self.spi.rx), [0xB6])
 
     def test_empty_rx_and_fifo_boundary_are_rejected(self):
         with self.assertRaisesRegex(Unsupported, 'empty RX FIFO'):

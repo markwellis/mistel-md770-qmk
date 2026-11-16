@@ -1,0 +1,69 @@
+{
+  "elf_sha256": "329f37b3ffc26b77484a3b10f619fbed21c1581bc2d4d150b24e42659f7a99d4",
+  "boundary": "Actual compiled HAL queues, USB callbacks and report submission; physical USB transmit is captured at usbStartTransmitI.",
+  "initial_empty": 0,
+  "in_flight_present": 1,
+  "occupied_after_first": 1,
+  "completed_empty": 0,
+  "wrapped_occupied": 2,
+  "wrapped_present": 1,
+  "suspended_preserved": 2,
+  "suspended_present": 1,
+  "ready_before_sof": 0,
+  "ready_after_sof": 1,
+  "drained_empty": 0,
+  "consumer_not_nkro": 0,
+  "consumer_present": 1,
+  "nkro_present": 1,
+  "nkro_completed_empty": 0,
+  "timeout_discard_occupied": 1,
+  "timeout_final_complete_empty": 0,
+  "reset_discards": 0,
+  "reset_empty": 0,
+  "transmissions": [
+    {
+      "ep": 1,
+      "data": "0000040000000000"
+    },
+    {
+      "ep": 1,
+      "data": "0000050000000000"
+    },
+    {
+      "ep": 1,
+      "data": "0000060000000000"
+    },
+    {
+      "ep": 1,
+      "data": "0000070000000000"
+    },
+    {
+      "ep": 1,
+      "data": "0000080000000000"
+    },
+    {
+      "ep": 1,
+      "data": "0000080000000000"
+    },
+    {
+      "ep": 1,
+      "data": "0000090000000000"
+    },
+    {
+      "ep": 2,
+      "data": "040100"
+    },
+    {
+      "ep": 2,
+      "data": "0600000000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "ep": 1,
+      "data": "00000a0000000000"
+    },
+    {
+      "ep": 1,
+      "data": "00000f0000000000"
+    }
+  ]
+}

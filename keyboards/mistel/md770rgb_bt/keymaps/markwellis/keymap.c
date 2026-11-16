@@ -381,3 +381,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 #endif
     return true;
 }
+
+#ifdef BLUETOOTH_ENABLE
+bool md770_radio_pairing_chord(void) {
+    return layer_state_is(PN);
+}
+#endif

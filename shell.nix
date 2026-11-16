@@ -30,6 +30,7 @@ in
 pkgs.mkShell {
   packages = [
     pkgs.qmk
+    pkgs.gcc
     pok3rtool
     (pkgs.python3.withPackages (ps: [
       ps.unicorn

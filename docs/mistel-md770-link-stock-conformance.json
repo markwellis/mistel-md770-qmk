@@ -1,0 +1,78 @@
+{
+  "date": "2026-11-16T19:52:30.296089+00:00",
+  "passed": true,
+  "scope": "Native QMK link source versus stock left PB8 and both halves periodic-send instructions; USB transport and UART enqueue boundaries supplied",
+  "stock_sha256": "febc84d9dc1fd23152218232839279ecb59f255615a6d6c5b4d951a848c85064",
+  "right_stock_sha256": "8fafdca096756f23626802d5b586b270b0bd512fe5d1c0327db4eafcd4f689b2",
+  "qmk_link_sha256": "ab1756e6934b3dc7b1af4541646603df856eb71201df7c14a95e05f459792504",
+  "test_sources_sha256": {
+    "check_stock.py": "50cc67807a01e6dfe651f4ee412b228151d4ea3513ef2c5456ca485586682c8f",
+    "test.cpp": "479d815202702ce175f700e7840b1b19f9b6243453ef87ef72adbb359f076742",
+    "quantum.h": "1d279cb2e4fd7fcbb73ea7e136a00e6cae018fcb90119e665aeebcac4a1ba5b1",
+    "usb_main.h": "e37ddf0f90efa48cba805e6845502e3340c16a77911d2c9cc681c781969c9a47"
+  },
+  "cases": [
+    {
+      "case": "initial_low_wrap",
+      "observations": 336,
+      "trace_sha256": "aa5703b074c81d7273ad7b1f29f211b6685dd9e1b71e551deac2fb38298be1e9"
+    },
+    {
+      "case": "initial_low_then_high",
+      "observations": 82,
+      "trace_sha256": "f9947ce72d1ddfe179ae40926520043b426c243e46f0fd9e78319ce34d6e6344"
+    },
+    {
+      "case": "threshold_and_glitch",
+      "observations": 192,
+      "trace_sha256": "e14e77e02093d852405091dd0f7c350baf90acd538058eaeb754e0b8c683f877"
+    },
+    {
+      "case": "seed_0",
+      "observations": 1163,
+      "trace_sha256": "0bc882b3baf72cf4e0808d72c0e9dd9aa34f185122adfc12a3d4d98173659bf9"
+    },
+    {
+      "case": "seed_1",
+      "observations": 1215,
+      "trace_sha256": "0351e1d9cbf1f8ba49a09a432b496d0d10f194a8bef430b0068cf209e7d982ea"
+    },
+    {
+      "case": "seed_2",
+      "observations": 1226,
+      "trace_sha256": "7d471e09015b292d44dcb3412b7a10ab34bbd8b9141d02c74c7194494157ad5a"
+    },
+    {
+      "case": "seed_3",
+      "observations": 1271,
+      "trace_sha256": "cbf58be66e7f2f4587be69b8a7d48f1806cf237902937dbac0d270ddf03209b4"
+    }
+  ],
+  "right_cases": [
+    {
+      "case": "coalesced_boundaries",
+      "observations": 13,
+      "trace_sha256": "8cf314c9c29e806fa2842e6aa556b17a9d622cfe23bcb2c4b3601816bd5cda50"
+    },
+    {
+      "case": "seed_0",
+      "observations": 512,
+      "trace_sha256": "384152335eedb75a56af3f082c165b4bc01a1b144a463cdac6cc22a26932d08a"
+    },
+    {
+      "case": "seed_1",
+      "observations": 512,
+      "trace_sha256": "ff37c46c3ddb2e9453ef0ac7558c531bb6fce8a25342cfc2908ddda0fddfb5bd"
+    },
+    {
+      "case": "seed_2",
+      "observations": 512,
+      "trace_sha256": "0cedba3d123de9cbe9adbe1b2d3c7097856db33f4ca455945a8928a92cd15c01"
+    },
+    {
+      "case": "seed_3",
+      "observations": 512,
+      "trace_sha256": "55b6aeb061e36cd19036640d9c740abf17b6dff4fd433aa68434826da9da428f"
+    }
+  ]
+}

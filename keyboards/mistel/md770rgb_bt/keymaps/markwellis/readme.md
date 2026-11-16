@@ -54,10 +54,13 @@ git -C ../qmk_firmware submodule update --init --recursive
 git -C ../qmk_firmware/lib/chibios-contrib fetch https://github.com/markwellis/ChibiOS-Contrib.git qmk-ht32f523x2-reset-register
 git -C ../qmk_firmware/lib/chibios-contrib checkout --detach 410d3636a15485aefc74559a52e38c8a642b8ad9
 git -C ../qmk_firmware/lib/chibios-contrib apply - < patches/ht32f523xx-bftm-counter-width.patch
+git -C ../qmk_firmware/lib/chibios-contrib apply - < patches/ht32f523xx-runtime-clocks.patch
+git -C ../qmk_firmware/lib/chibios-contrib apply - < patches/ht32f523xx-usb-stop.patch
 ```
 
 The checkout supplies the reviewed reset-address correction over
-QMK's current dependency. The additional patch fixes its 32-bit BFTM counter type.
+QMK's current dependency. The patches supply the 32-bit BFTM counter type,
+runtime timer/UART clocks, idle tick handling and USB stop from active states.
 QMK reports that submodule as modified until its
 upstream dependency catches up; keep that local dependency selection out
 of the keyboard submission. Running `git submodule update` on this temporary

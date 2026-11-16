@@ -28,6 +28,7 @@
 #define HSV_PURPLE 191, 255, 255
 
 typedef uint8_t  matrix_row_t;
+typedef struct { uint8_t mods, reserved, keys[6]; } report_keyboard_t;
 typedef uint32_t layer_state_t;
 typedef struct {
     uint8_t col, row;
@@ -151,3 +152,5 @@ uint8_t scale8(uint8_t value, uint8_t scale);
 
 #define KEY_EVENT 1
 #define IS_KEYEVENT(event) ((event).type == KEY_EVENT)
+
+void host_task(void);

@@ -6,6 +6,18 @@
 #include <vector>
 
 #define MATRIX_ROWS 16
+#define MATRIX_COLS 7
+#define CH_CFG_ST_FREQUENCY 2000
+#define MD770_WATCHDOG_RELOAD 0x5fa00001U
+#define IS_BASIC_KEYCODE(code) ((code) >= 4 && (code) <= 0xa4)
+#define IS_MODIFIER_KEYCODE(code) ((code) >= 0xe0 && (code) <= 0xe7)
+#define IS_SYSTEM_KEYCODE(code) ((code) >= 0xa5 && (code) <= 0xa7)
+#define IS_CONSUMER_KEYCODE(code) ((code) >= 0xa8 && (code) <= 0xdf)
+#define IS_QK_MACRO(code) ((code) >= 0x7700 && (code) <= 0x777f)
+#define REPORT_ID_KEYBOARD 1
+#define REPORT_ID_NKRO 5
+#define REPORT_ID_SYSTEM 2
+#define REPORT_ID_CONSUMER 3
 #define QK_KB 0x7e00
 #define QK_BLUETOOTH_PROFILE1 0x7793
 #define QK_BLUETOOTH_PROFILE3 0x7795
@@ -44,14 +56,22 @@
 #define D3 51
 #define LED_CAPS_LOCK_PIN C8
 typedef uint8_t matrix_row_t;
+typedef unsigned pin_t;
 typedef struct {
     uint8_t report_id, mods, reserved, keys[6];
 } report_keyboard_t;
 typedef struct {
-    struct {
-        bool pressed;
-    } event;
+    uint8_t col, row;
+} keypos_t;
+typedef struct {
+    keypos_t key;
+    bool pressed;
+} keyevent_t;
+typedef struct {
+    keyevent_t event;
 } keyrecord_t;
+typedef struct { uint8_t mods, bits[32]; } report_nkro_t;
+typedef struct { uint8_t report_id; uint16_t usage; } report_extra_t;
 typedef union {
     uint8_t raw;
     struct {
@@ -125,7 +145,7 @@ struct {
     ResetRegister APBPRSTR0;
 } inline rst [[maybe_unused]];
 struct {
-    unsigned APBCCR0, APBCCR1;
+    unsigned APBCCR0, APBCCR1, HSICR;
 } inline ckcu [[maybe_unused]];
 struct {
     unsigned CTR, CNTR, CNTCFR, MDCFR, TRCFR, CHPOLR, CHnOCFR[4], CHCTR, DICTR, PSCR, CRR, CHnCCR[4];
@@ -136,13 +156,21 @@ struct {
 struct {
     unsigned LVDCSR;
 } inline pwrcu [[maybe_unused]];
-struct {
-    unsigned status, configuration;
+struct { unsigned CR; } inline watchdog [[maybe_unused]];
+#define WDT (&watchdog)
+struct USBDriver {
+    unsigned status, configuration, state;
 } inline USBD1 [[maybe_unused]];
+enum { USB_STOP, USB_READY, USB_ACTIVE, USB_SUSPENDED };
 #define SPI0 (&spi)
 #define RSTCU (&rst)
 #define CKCU (&ckcu)
 #define PWRCU (&pwrcu)
+struct { unsigned CSR; } inline usb_registers __attribute__((unused));
+#define USB (&usb_registers)
+#define USBCSR_PDWN 4
+#define USBCSR_LPMODE 8
+#define USBCSR_DPPUEN 0x400
 #define GPTM1 (&gptm1)
 #define GPIOA (&gpioa)
 
@@ -170,3 +198,15 @@ void     pwmEnableChannel(PWMDriver *, unsigned, uint16_t);
 void     suspend_power_down_user(void);
 void     suspend_wakeup_init_user(void);
 bool     shutdown_user(bool);
+matrix_row_t matrix_get_row(uint8_t row);
+uint16_t get_event_keycode(keyevent_t event, bool update);
+uint8_t layer_switch_get_layer(keypos_t key);
+uint16_t keymap_key_to_keycode(uint8_t layer, keypos_t key);
+void host_task(void);
+void host_system_send(uint16_t usage);
+void host_consumer_send(uint16_t usage);
+void host_set_system_usage(uint16_t usage);
+void host_set_consumer_usage(uint16_t usage);
+void host_resend_extra(uint8_t reports);
+void resend_keyboard_report(void);
+uint32_t chVTGetSystemTimeX(void);

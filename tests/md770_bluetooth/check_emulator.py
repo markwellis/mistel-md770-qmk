@@ -14,6 +14,8 @@ import unicorn
 import test_emulator
 from test_emulator_firmware import FirmwareTests
 from test_emulator_macros import MacroTests
+from test_emulator_conformance import ConformanceTests
+from test_emulator_usb import UsbTests
 from emulator_scenarios import hardware_plan
 from emulator_abi import firmware_binary
 
@@ -34,6 +36,7 @@ def main() -> int:
     parser.add_argument('--qmk-home', type=Path, default=FirmwareTests.qmk_home)
     parser.add_argument('--elf', type=Path, help='Right-half QMK ELF; defaults to the default keymap build')
     parser.add_argument('--macro-elf', type=Path, help='Validation ELF retaining the compiled macro entry points')
+    parser.add_argument('--conformance', action='store_true', help='Include the new transition regressions')
     parser.add_argument('--stock', type=Path, default=FirmwareTests.stock_path)
     parser.add_argument('--json', type=Path, help='Write a machine-readable verification record')
     parser.add_argument('--plan', type=Path, help='Export hardware calibration cases after the full software suite passes')
@@ -50,6 +53,14 @@ def main() -> int:
             MacroTests.qmk_home = args.qmk_home
             MacroTests.elf_path = args.macro_elf
             suite.addTests(unittest.defaultTestLoader.loadTestsFromTestCase(MacroTests))
+        if args.conformance:
+            ConformanceTests.qmk_home = args.qmk_home
+            ConformanceTests.elf_path = args.macro_elf or args.elf
+            ConformanceTests.stock_path = args.stock
+            suite.addTests(unittest.defaultTestLoader.loadTestsFromTestCase(ConformanceTests))
+            UsbTests.qmk_home = args.qmk_home
+            UsbTests.elf_path = args.macro_elf or args.elf
+            suite.addTests(unittest.defaultTestLoader.loadTestsFromTestCase(UsbTests))
     result = unittest.TextTestRunner(verbosity=2, resultclass=ScenarioResult).run(suite)
     if args.json:
         record = {

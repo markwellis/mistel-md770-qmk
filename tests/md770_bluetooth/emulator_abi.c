@@ -6,6 +6,8 @@
 #include <send_string.h>
 #include <keycode_config.h>
 #include <stddef.h>
+#include "tmk_core/protocol/chibios/usb_main.h"
+#include "keyboards/mistel/md770rgb_bt/keymaps/default/keymap.h"
 
 const uint32_t emulator_abi[] = {
     offsetof(USBDriver, configuration), offsetof(USBDriver, status),
@@ -33,6 +35,26 @@ const uint32_t emulator_abi[] = {
     sizeof(((struct usb_device_state *)0)->protocol),
     MATRIX_ROWS, MATRIX_COLS,
     CONNECTION_HOST_NONE,
+    USB_STOP, USB_SELECTED, sizeof(keyevent_t), offsetof(keyevent_t, time),
+    offsetof(keyrecord_t, event), QK_OUTPUT_USB, QK_OUTPUT_BLUETOOTH,
+    QK_BLUETOOTH_PROFILE1,
+    offsetof(host_driver_t, send_extra), offsetof(report_extra_t, report_id), offsetof(report_extra_t, usage),
+    CH_CFG_ST_FREQUENCY,
+    MO(PN), MO(FN), PN, USB_EVENT_WAKEUP, USB_EVENT_CONFIGURED,
+    sizeof(usb_endpoint_in_t), offsetof(usb_endpoint_in_t, obqueue),
+    offsetof(usb_endpoint_in_t, ep_config), offsetof(usb_endpoint_in_t, ep_in_state),
+    offsetof(usb_endpoint_in_t, config) + offsetof(usb_endpoint_config_t, ep),
+    offsetof(usb_endpoint_in_t, timed_out), offsetof(output_buffers_queue_t, bcounter),
+    offsetof(output_buffers_queue_t, suspended), offsetof(output_buffers_queue_t, bn),
+    offsetof(USBDriver, config), offsetof(USBDriver, transmitting),
+    offsetof(USBDriver, in_params), offsetof(USBDriver, epc),
+    offsetof(USBInEndpointState, txsize), USB_ENDPOINT_IN_KEYBOARD, USB_ENDPOINT_IN_SHARED,
+    REPORT_ID_NKRO, USB_ENDPOINT_IN_COUNT, USB_EVENT_SUSPEND, USB_EVENT_RESET,
+    USB_ENDPOINT_OUT_COUNT, sizeof(usb_endpoint_out_t),
+    offsetof(usb_endpoint_out_t, ibqueue), offsetof(usb_endpoint_out_t, ep_config),
+    offsetof(usb_endpoint_out_t, config) + offsetof(usb_endpoint_config_t, ep),
+    offsetof(input_buffers_queue_t, suspended), offsetof(USBDriver, out_params),
+    offsetof(USBDriver, receiving),
 };
 
 const keymap_config_t emulator_nkro_flag = {.nkro = true};
