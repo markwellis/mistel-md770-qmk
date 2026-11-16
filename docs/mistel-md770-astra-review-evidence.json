@@ -1,0 +1,57 @@
+{
+  "scope": "Historical software-only Astra review; no physical radio, USB signalling or battery validation",
+  "review_model": "gpt-6-astra",
+  "reasoning_effort": "max",
+  "sources": [
+    {
+      "source": "tests/md770_bluetooth/review/power.py",
+      "sha256": "8f319d4fc3567b54d3d6f6fea0124cc8ccbab61210386cabb7a2f58f47a1bc48",
+      "results": "docs/mistel-md770-astra-power.json",
+      "results_sha256": "b80ed039495582de8509dff60d322314b13ae8f6ff738174f727420a79a824cc"
+    },
+    {
+      "source": "tests/md770_bluetooth/review/usb_power.py",
+      "sha256": "830395733f9cf5a110a746fcb092992df86d9d650f66cedd39fe999d59e4af53",
+      "results": "docs/mistel-md770-astra-usb-power.json",
+      "results_sha256": "6019deb9a53cae974a62add514949ea3615cfbee58a3467d35f10057ad4cdbcb"
+    },
+    {
+      "source": "tests/md770_bluetooth/review/power_filter.py",
+      "sha256": "e02a4b61419337fdfdcc6b26b502c0d7f8d7d6fec681bb1f1c953ac01602bea3",
+      "results": "docs/mistel-md770-astra-power-filter.json",
+      "results_sha256": "2068508f7ceb8251725383852179eb79abf6a696937454ec4590b3bdb2bb5639"
+    },
+    {
+      "source": "tests/md770_bluetooth/review/left_power.py",
+      "sha256": "e2dd5d0b8350d35a7f464edb0b2bea117d3bc41321d9134fd7f04acf0844fd42"
+    },
+    {
+      "source": "tests/md770_bluetooth/review/radio.py",
+      "sha256": "8dd819c9df4780013ccd1a2f7f96476958b171c876d083ef19f1893ae54a9f60",
+      "results": "docs/mistel-md770-astra-radio.json",
+      "results_sha256": "99f9d3b5c5b909aa1e4d41f2daaf542df4c38a9a222d8897318ebc623ac43360"
+    }
+  ],
+  "frozen_candidate_patch": {
+    "path": "tests/md770_bluetooth/review/frozen_candidate.patch",
+    "sha256": "38d7f00d674cfae4dface9e73afb9638a9c2114bbc5d765ae04226bbd0ecd2b9"
+  },
+  "installed_elf_sha256": "181c40b170487b210dc817f0956505be21770b570cd067b6179f0a4d359dc484",
+  "candidate_elf_sha256": "4cdac0829403d0be725c9b3bfeeedf670172f502790d2992f779649c88482846",
+  "stock_reference_sha256": {
+    "right_sha256": "8fafdca096756f23626802d5b586b270b0bd512fe5d1c0327db4eafcd4f689b2",
+    "left_sha256": "febc84d9dc1fd23152218232839279ecb59f255615a6d6c5b4d951a848c85064",
+    "load_address": "0x3200"
+  },
+  "replayed_power_results_match_original_review": true,
+  "corrected_cache_negative_control": "docs/mistel-md770-astra-corrected-cache-oracle.json",
+  "restored_baseline_checks": {
+    "native_passed": true,
+    "native_groups": 30,
+    "installed_audit": "docs/mistel-md770-installed-stock-conformance-reviewed.json",
+    "groups": 87,
+    "parameterised_subtests": 419,
+    "failing_cases": 28,
+    "errors": 0
+  }
+}

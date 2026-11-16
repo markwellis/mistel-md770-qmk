@@ -1,0 +1,326 @@
+--- a/keyboards/mistel/md770rgb_bt/bluetooth.c
++++ b/keyboards/mistel/md770rgb_bt/bluetooth.c
+@@ -4,6 +4,9 @@
+ #include "bluetooth.h"
+ #include "connection.h"
+ #include <string.h>
++#ifdef MD770_DIAGNOSTICS
++#    include "host.h"
++#endif
+ 
+ enum radio_phase { RESET_HIGH, RESET_LOW, READY, RECEIVING, TRANSMITTING, PAIR_DELAY };
+ enum { QUEUE_SIZE = 16, RX_SIZE = 10, KEYBOARD = 0xa1, CONSUMER = 0xa2, SYSTEM = 0xa3 };
+@@ -24,6 +27,16 @@
+ static uint8_t          pending_slot, held_slot, current_command, current_length;
+ static bool             pair_requested, usb_notice, usb_configured, resynchronise, retry;
+ static bool             stopped;
++#ifdef MD770_DIAGNOSTICS
++static uint32_t diagnostic_resets, diagnostic_irqs, diagnostic_tasks, diagnostic_profile_events, diagnostic_profile_code;
++static uint32_t diagnostic_irq_status, diagnostic_irq_control, diagnostic_task_status, diagnostic_error_phase;
++static uint32_t diagnostic_profile_seen, diagnostic_profile_consumed;
++static uint32_t diagnostic_keyboard_calls, diagnostic_keyboard_drops, diagnostic_keyboard_state;
++static uint32_t diagnostic_keycode, diagnostic_key_position, diagnostic_report_started, diagnostic_report_completed;
++static uint32_t diagnostic_last_rx, diagnostic_b7_count, diagnostic_test_started, diagnostic_test_completed;
++static uint8_t diagnostic_nonzero[8], diagnostic_wire_nonzero[8], diagnostic_test_mode;
++static bool diagnostic_test_released;
++#endif
+ 
+ static void radio_task(void);
+ 
+@@ -46,6 +59,11 @@
+ 
+ OSAL_IRQ_HANDLER(HT32_SPI0_IRQ_VECTOR) {
+     OSAL_IRQ_PROLOGUE();
++#ifdef MD770_DIAGNOSTICS
++    ++diagnostic_irqs;
++    diagnostic_irq_status = SPI0->SR;
++    diagnostic_irq_control = SPI0->CR1;
++#endif
+     if (SPI0->SR & 0xf8) {
+         failed    = true;
+         SPI0->IER = 0;
+@@ -71,6 +89,9 @@
+ }
+ 
+ static void reset_radio(void) {
++#ifdef MD770_DIAGNOSTICS
++    ++diagnostic_resets;
++#endif
+     chSysLock();
+     SPI0->IER = 0;
+     SPI0->CR0 = 0;
+@@ -87,6 +108,9 @@
+ 
+ static void enqueue(uint8_t command, const void *data, uint8_t length) {
+     if (!bluetooth_is_connected() || pending_slot) {
++#ifdef MD770_DIAGNOSTICS
++        if (command == KEYBOARD) ++diagnostic_keyboard_drops;
++#endif
+         resynchronise = true;
+         return;
+     }
+@@ -114,6 +138,16 @@
+     latest_keyboard[0] = report->mods;
+     latest_keyboard[1] = 0;
+     memcpy(latest_keyboard + 2, report->keys, 6);
++#ifdef MD770_DIAGNOSTICS
++    ++diagnostic_keyboard_calls;
++    diagnostic_keyboard_state = radio_state;
++    for (uint8_t i = 0; i < 8; ++i) {
++        if (latest_keyboard[i]) {
++            memcpy(diagnostic_nonzero, latest_keyboard, 8);
++            break;
++        }
++    }
++#endif
+     enqueue(KEYBOARD, latest_keyboard, sizeof(latest_keyboard));
+     md770_power_activity(true);
+ }
+@@ -152,6 +186,13 @@
+ }
+ 
+ static void receive_status(const uint8_t *data, uint8_t length) {
++#ifdef MD770_DIAGNOSTICS
++    if (length && data[0]) {
++        diagnostic_last_rx = 0;
++        memcpy(&diagnostic_last_rx, data, MIN(length, 4));
++        if (data[0] == 0xb7) ++diagnostic_b7_count;
++    }
++#endif
+     if (length >= 2 && data[0] == 0xb1) {
+         radio_leds = data[1];
+         md770_radio_led_update();
+@@ -182,6 +223,17 @@
+     for (uint8_t i = 0; i < length; ++i) {
+         tx[i] = data[i];
+     }
++#ifdef MD770_DIAGNOSTICS
++    if (command == KEYBOARD) {
++        ++diagnostic_report_started;
++        for (uint8_t i = 1; i < length; ++i) {
++            if (data[i]) {
++                memcpy(diagnostic_wire_nonzero, data + 1, 8);
++                break;
++            }
++        }
++    }
++#endif
+     tx_length       = length;
+     current_length  = length;
+     current_command = command;
+@@ -218,10 +270,23 @@
+ }
+ 
+ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
++#ifdef MD770_DIAGNOSTICS
++    diagnostic_keycode = keycode;
++    diagnostic_key_position = record->event.key.col | (uint32_t)record->event.key.row << 8 | (uint32_t)record->event.pressed << 16;
++    bool diagnostic_profile = keycode >= QK_BLUETOOTH_PROFILE1 && keycode <= QK_BLUETOOTH_PROFILE3;
++    if (diagnostic_profile) ++diagnostic_profile_seen;
++#endif
+     if (!process_record_user(keycode, record)) {
++#ifdef MD770_DIAGNOSTICS
++        if (diagnostic_profile) ++diagnostic_profile_consumed;
++#endif
+         return false;
+     }
+     if (keycode >= QK_BLUETOOTH_PROFILE1 && keycode <= QK_BLUETOOTH_PROFILE3) {
++#ifdef MD770_DIAGNOSTICS
++        ++diagnostic_profile_events;
++        diagnostic_profile_code = keycode;
++#endif
+         uint8_t slot = keycode - QK_BLUETOOTH_PROFILE1 + 1;
+         if (record->event.pressed) {
+             held_slot    = slot;
+@@ -287,6 +352,10 @@
+     }
+     chSysUnlock();
+     if (error || ((phase == TRANSMITTING || phase == RECEIVING) && timer_elapsed32(phase_started) >= 2000)) {
++#ifdef MD770_DIAGNOSTICS
++        diagnostic_task_status = SPI0->SR;
++        diagnostic_error_phase = phase;
++#endif
+         reset_radio();
+         return;
+     }
+@@ -304,6 +373,9 @@
+                 if (radio_state < 2) {
+                     radio_state = 2;
+                 }
++#ifdef MD770_DIAGNOSTICS
++                if (current_command == KEYBOARD) ++diagnostic_report_completed;
++#endif
+                 if (is_report(current_command) && count) {
+                     head = (head + 1) % QUEUE_SIZE;
+                     --count;
+@@ -366,7 +438,56 @@
+     }
+ }
+ 
++#ifdef MD770_DIAGNOSTICS
++static void diagnostic_report(bool pressed) {
++    uint8_t usage = diagnostic_test_mode == 2 ? KC_J : KC_A;
++    if (diagnostic_test_mode == 2) {
++        if (pressed) register_code(usage);
++        else unregister_code(usage);
++        return;
++    }
++    report_keyboard_t report = {0};
++    if (pressed) report.keys[0] = usage;
++    if (diagnostic_test_mode == 1) {
++        bluetooth_send_keyboard(&report);
++    } else if (count < QUEUE_SIZE) {
++        radio_packet_t *packet = &queue[(head + count) % QUEUE_SIZE];
++        memset(packet, 0, sizeof(*packet));
++        packet->data[0] = KEYBOARD;
++        packet->data[3] = pressed ? usage : 0;
++        packet->length = 9;
++        ++count;
++    }
++}
++
++bool md770_radio_test(uint8_t mode) {
++    if (mode < 1 || mode > 3 || diagnostic_test_mode || count) return false;
++    if (mode == 2) {
++        connection_set_host_noeeprom(CONNECTION_HOST_BLUETOOTH);
++        host_task();
++    }
++    diagnostic_test_mode = mode;
++    diagnostic_test_started = timer_read32();
++    diagnostic_test_released = false;
++    diagnostic_report(true);
++    return true;
++}
++#endif
++
+ void bluetooth_task(void) {
++#ifdef MD770_DIAGNOSTICS
++    ++diagnostic_tasks;
++    if (diagnostic_test_mode) {
++        if (!diagnostic_test_released && timer_elapsed32(diagnostic_test_started) >= 200 && count < QUEUE_SIZE) {
++            diagnostic_report(false);
++            diagnostic_test_released = true;
++        }
++        if (diagnostic_test_released && !count && phase == READY) {
++            diagnostic_test_mode = 0;
++            ++diagnostic_test_completed;
++        }
++    }
++#endif
+     if (stopped) {
+         return;
+     }
+@@ -402,3 +523,102 @@
+     chSysUnlock();
+     stopped = true;
+ }
++
++#ifdef MD770_DIAGNOSTICS
++void md770_radio_snapshot(uint8_t page, uint32_t values[7]) {
++    switch (page) {
++        case 0:
++            values[0] = timer_read32();
++            values[1] = phase;
++            values[2] = radio_state;
++            values[3] = pending_slot;
++            values[4] = pair_requested;
++            values[5] = held_slot;
++            values[6] = count;
++            break;
++        case 1:
++            values[0] = SPI0->CR0;
++            values[1] = SPI0->CR1;
++            values[2] = SPI0->FCR;
++            values[3] = SPI0->SR;
++            values[4] = SPI0->FSR;
++            values[5] = SPI0->IER;
++            values[6] = rx_length | (uint32_t)selected << 8 | (uint32_t)failed << 9;
++            break;
++        case 2:
++            values[0] = GPIOA->DINR;
++            values[1] = GPIOB->DINR;
++            values[2] = GPIOC->DINR;
++            values[3] = GPIOC->DOUTR;
++            values[4] = GPIOD->DOUTR;
++            values[5] = GPIOC->INER;
++            values[6] = CKCU->APBCCR0;
++            break;
++        case 3:
++            values[0] = diagnostic_resets;
++            values[1] = diagnostic_irqs;
++            values[2] = diagnostic_tasks;
++            values[3] = diagnostic_profile_events;
++            values[4] = diagnostic_profile_code;
++            values[5] = phase_started;
++            values[6] = last_frame;
++            break;
++        case 4:
++            values[0] = connection_get_host();
++            values[1] = connection_get_host_raw();
++            values[2] = md770_charge_indicated();
++            values[3] = md770_power_idle();
++            values[4] = md770_power_usb_suspended();
++            values[5] = USBD1.configuration;
++            values[6] = GPIOB->INER;
++            break;
++        case 5:
++            values[0] = AFIO->GPxCFGR[0][0];
++            values[1] = AFIO->GPxCFGR[0][1];
++            values[2] = AFIO->GPxCFGR[1][0];
++            values[3] = AFIO->GPxCFGR[1][1];
++            values[4] = AFIO->GPxCFGR[2][1];
++            values[5] = AFIO->GPxCFGR[3][0];
++            values[6] = GPIOB->DIRCR;
++            break;
++        case 6:
++            values[0] = diagnostic_irq_status;
++            values[1] = diagnostic_irq_control;
++            values[2] = diagnostic_task_status;
++            values[3] = diagnostic_error_phase;
++            values[4] = SPI0->CPR;
++            values[5] = RSTCU->APBPRSTR0;
++            values[6] = SPI0->FTOCR;
++            break;
++        case 10:
++            values[0] = diagnostic_keyboard_calls;
++            values[1] = diagnostic_keyboard_drops;
++            values[2] = diagnostic_keyboard_state;
++            values[3] = diagnostic_keycode;
++            values[4] = diagnostic_key_position;
++            memcpy(values + 5, diagnostic_nonzero, 8);
++            break;
++        case 11:
++            values[0] = diagnostic_report_started;
++            values[1] = diagnostic_report_completed;
++            values[2] = diagnostic_last_rx;
++            values[3] = diagnostic_b7_count;
++            values[4] = current_command;
++            values[5] = current_length;
++            values[6] = tx_position | (uint32_t)tx_length << 8 | (uint32_t)rx_length << 16;
++            break;
++        case 12:
++            values[0] = diagnostic_test_mode;
++            values[1] = diagnostic_test_completed;
++            values[2] = diagnostic_test_started;
++            values[3] = diagnostic_test_released;
++            values[4] = count;
++            memcpy(values + 5, diagnostic_wire_nonzero, 8);
++            break;
++        case 7:
++            values[5] = diagnostic_profile_seen;
++            values[6] = diagnostic_profile_consumed;
++            break;
++    }
++}
++#endif
+--- a/keyboards/mistel/md770rgb_bt/md770rgb_bt.h
++++ b/keyboards/mistel/md770rgb_bt/md770rgb_bt.h
+@@ -51,3 +51,8 @@
+ bool md770_radio_can_enqueue(void);
+ bool md770_radio_usb_allowed(void);
+ #endif
++
++#ifdef MD770_DIAGNOSTICS
++void md770_radio_snapshot(uint8_t page, uint32_t values[7]);
++bool md770_radio_test(uint8_t mode);
++#endif

@@ -1,0 +1,104 @@
+{
+  "installed": {
+    "suspended": {
+      "stock_usb_public_state": 0,
+      "stock_usb_configured_getter": 1,
+      "stock_charge_eligible": 0,
+      "stock_selected_output": 2,
+      "stock_blue": 0,
+      "qmk_usb_configuration": 1,
+      "qmk_charge_eligible": 1,
+      "qmk_selected_output": 3,
+      "qmk_blue": 6000
+    },
+    "stock_resume_interrupt_state": 2,
+    "resumed": {
+      "stock_usb_public_state": 5,
+      "stock_selected_output": 1,
+      "stock_saved_output": 1,
+      "stock_persistent_writes": 1,
+      "qmk_selected_output": 3,
+      "qmk_persistent_writes": 0,
+      "qmk_usb_enum": 2,
+      "qmk_bluetooth_enum": 3
+    },
+    "qmk_actual_inline_usb_wakeup_branch": {
+      "report_before_resume": "02 00 04 00 00 00 00 00",
+      "report_after_resume_and_B_press": "00 00 05 00 00 00 00 00",
+      "real_mods": 0,
+      "matrix_previous": 3,
+      "slice_start": "0xb59e",
+      "slice_end": "0xb5aa"
+    },
+    "usb_host_power_removed": {
+      "stock_selected_output": 2,
+      "stock_usb_public_state": 1,
+      "stock_usb_control": 5,
+      "qmk_selected_output": 3,
+      "qmk_usb_configuration": 1
+    },
+    "powerbank_inserted_without_new_usb_enumeration": {
+      "stock_selected_output": 2,
+      "stock_usb_public_state": 1,
+      "stock_usb_control": 0,
+      "qmk_selected_output": 2,
+      "qmk_usb_configuration": 1
+    }
+  },
+  "candidate": {
+    "suspended": {
+      "stock_usb_public_state": 0,
+      "stock_usb_configured_getter": 1,
+      "stock_charge_eligible": 0,
+      "stock_selected_output": 2,
+      "stock_blue": 0,
+      "qmk_usb_configuration": 1,
+      "qmk_charge_eligible": 1,
+      "qmk_selected_output": 3,
+      "qmk_blue": 6000
+    },
+    "stock_resume_interrupt_state": 2,
+    "resumed": {
+      "stock_usb_public_state": 5,
+      "stock_selected_output": 1,
+      "stock_saved_output": 1,
+      "stock_persistent_writes": 1,
+      "qmk_selected_output": 3,
+      "qmk_persistent_writes": 0,
+      "qmk_usb_enum": 2,
+      "qmk_bluetooth_enum": 3
+    },
+    "qmk_actual_inline_usb_wakeup_branch": {
+      "report_before_resume": "02 00 04 00 00 00 00 00",
+      "report_after_resume_and_B_press": "00 00 05 00 00 00 00 00",
+      "real_mods": 0,
+      "matrix_previous": 3,
+      "slice_start": "0xb608",
+      "slice_end": "0xb614"
+    },
+    "usb_host_power_removed": {
+      "stock_selected_output": 2,
+      "stock_usb_public_state": 1,
+      "stock_usb_control": 5,
+      "qmk_selected_output": 3,
+      "qmk_usb_configuration": 1
+    },
+    "powerbank_inserted_without_new_usb_enumeration": {
+      "stock_selected_output": 2,
+      "stock_usb_public_state": 1,
+      "stock_usb_control": 0,
+      "qmk_selected_output": 2,
+      "qmk_usb_configuration": 1
+    }
+  },
+  "stock_usb_pending_report_during_suspend": {
+    "keys": "02 00 04 00 00 00 00 00",
+    "dirty": 1,
+    "resume_requested": true
+  },
+  "stock_usb_pending_report_after_resume": {
+    "keys": "02 00 04 00 00 00 00 00",
+    "dirty": 1,
+    "usb_public_state": 5
+  }
+}

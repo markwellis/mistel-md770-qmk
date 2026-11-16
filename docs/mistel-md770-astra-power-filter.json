@@ -1,0 +1,26 @@
+{
+  "installed": {
+    "lvd_low_10ms_high_10ms_low_10ms_main_poll_at_0_and_30ms": {
+      "stock_battery_level": 7,
+      "stock_lvd_filter_remaining_ticks": 30,
+      "qmk_battery_level": 6
+    },
+    "powered_transition_deferred_by_PA10_at_idle_deadline": {
+      "stock_deep_idle_requests": [],
+      "stock_supply_state": 1,
+      "qmk_scan_reload": 96000
+    }
+  },
+  "candidate": {
+    "lvd_low_10ms_high_10ms_low_10ms_main_poll_at_0_and_30ms": {
+      "stock_battery_level": 7,
+      "stock_lvd_filter_remaining_ticks": 30,
+      "qmk_battery_level": 6
+    },
+    "powered_transition_deferred_by_PA10_at_idle_deadline": {
+      "stock_deep_idle_requests": [],
+      "stock_supply_state": 1,
+      "qmk_scan_reload": 96000
+    }
+  }
+}

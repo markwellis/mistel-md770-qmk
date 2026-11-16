@@ -1,0 +1,65 @@
+{
+  "date": "2026-11-16T14:12:16.355992+00:00",
+  "capture_started": "2026-11-16T14:08:50.851099+00:00",
+  "capture_mode": "live",
+  "scope": "Physical left A and right J delivery on power-bank power; normal validation firmware; press/release interleaving accepted, not macro calibration",
+  "flash_record": "docs/mistel-md770-validation-restored-flash-right.json",
+  "devices": [
+    {
+      "name": "Mistel 1 Keyboard",
+      "bus": 5,
+      "vendor": 2652,
+      "product": 34050,
+      "unique": "20:73:10:01:5b:bf"
+    }
+  ],
+  "mistel_usb_absent": true,
+  "events": [
+    {
+      "type": 1,
+      "code": 30,
+      "value": 1,
+      "time": 1794838335.205012
+    },
+    {
+      "type": 1,
+      "code": 30,
+      "value": 0,
+      "time": 1794838335.285055
+    },
+    {
+      "type": 1,
+      "code": 36,
+      "value": 1,
+      "time": 1794838335.955019
+    },
+    {
+      "type": 1,
+      "code": 36,
+      "value": 0,
+      "time": 1794838336.034741
+    }
+  ],
+  "actual_key_events": [
+    [
+      30,
+      1
+    ],
+    [
+      30,
+      0
+    ],
+    [
+      36,
+      1
+    ],
+    [
+      36,
+      0
+    ]
+  ],
+  "aj_delivered": true,
+  "extra_key_events": [],
+  "keys_held_at_end": [],
+  "passed": true
+}

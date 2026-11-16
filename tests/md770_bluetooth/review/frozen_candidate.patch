@@ -1,0 +1,103 @@
+diff --git a/keyboards/mistel/md770rgb_bt/bluetooth.c b/keyboards/mistel/md770rgb_bt/bluetooth.c
+--- a/keyboards/mistel/md770rgb_bt/bluetooth.c
++++ b/keyboards/mistel/md770rgb_bt/bluetooth.c
+@@ -5,7 +5,7 @@
+ #include "connection.h"
+ #include <string.h>
+ 
+-enum radio_phase { RESET_HIGH, RESET_LOW, READY, RECEIVING, TRANSMITTING, PAIR_DELAY };
++enum radio_phase { RESET_HIGH, RESET_LOW, READY, RECEIVING, TRANSMITTING, PAIR_DELAY, FAILED };
+ enum { QUEUE_SIZE = 16, RX_SIZE = 10, KEYBOARD = 0xa1, CONSUMER = 0xa2, SYSTEM = 0xa3 };
+ 
+ typedef struct {
+@@ -24,6 +24,7 @@
+ static uint8_t          pending_slot, held_slot, current_command, current_length;
+ static bool             pair_requested, usb_notice, usb_configured, resynchronise, retry;
+ static bool             stopped;
++static uint8_t          startup_attempts = 4;
+ 
+ static void radio_task(void);
+ 
+@@ -85,8 +86,12 @@
+     phase_started              = timer_read32();
+ }
+ 
++static bool radio_reports_ready(void) {
++    return phase >= READY && phase <= PAIR_DELAY;
++}
++
+ static void enqueue(uint8_t command, const void *data, uint8_t length) {
+-    if (!bluetooth_is_connected() || pending_slot) {
++    if (!radio_reports_ready() || pending_slot) {
+         resynchronise = true;
+         return;
+     }
+@@ -99,7 +104,7 @@
+     if (count == QUEUE_SIZE) {
+         reset_radio();
+     }
+-    if (!bluetooth_is_connected()) {
++    if (!radio_reports_ready()) {
+         resynchronise = true;
+         return;
+     }
+@@ -169,6 +174,8 @@
+         } else if (data[1] == 1) {
+             radio_leds = data[2];
+             md770_radio_led_update();
++        } else if (data[1] == 2) {
++            startup_attempts = data[2];
+         }
+     }
+ }
+@@ -197,6 +204,15 @@
+     if (slot < 1 || slot > 3) {
+         return;
+     }
++    if (phase == FAILED) {
++        startup_attempts = 4;
++        reset_radio();
++    } else if (radio_reports_ready()) {
++        startup_attempts = 0;
++        radio_state = pair ? 3 : 2;
++    }
++    radio_leds = 0;
++    md770_radio_led_update();
+     if (phase == PAIR_DELAY) {
+         phase = READY;
+     }
+@@ -236,6 +252,7 @@
+ }
+ 
+ void bluetooth_init(void) {
++    startup_attempts = 4;
+     gpio_write_pin_low(C14);
+     gpio_set_pin_output(C14);
+     gpio_write_pin_high(D1);
+@@ -252,6 +269,13 @@
+     if (configured != usb_configured) {
+         usb_configured = configured;
+         usb_notice     = true;
++        if (phase == FAILED) {
++            startup_attempts = 4;
++            reset_radio();
++        }
++    }
++    if (phase == FAILED) {
++        return;
+     }
+     if (phase == RESET_HIGH || phase == RESET_LOW) {
+         if (timer_elapsed32(phase_started) < (phase == RESET_HIGH ? 1000 : 1500)) {
+@@ -262,6 +286,12 @@
+             phase         = RESET_LOW;
+             phase_started = timer_read32();
+         } else {
++            if (!startup_attempts) {
++                radio_state = 7;
++                phase = FAILED;
++                return;
++            }
++            --startup_attempts;
+             chSysLock();
+             arm_receiver();
+             chSysUnlock();

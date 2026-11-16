@@ -1,0 +1,33 @@
+{
+  "date": "2026-11-16T13:36:37.236895+00:00",
+  "half": "right",
+  "qmk_source_commit": "3f9fb0f449061752370c3359d6a981d387fe5e7d",
+  "image": "qmk_firmware/.build/mistel_md770rgb_bt_right_markwellis_radio_diagnostics_reports.bin",
+  "application_bytes": 48836,
+  "application_sha256": "04b6c4d8dc102f02ba2602b1aeb6b9cdd4b821c073bb3d0561d6fc575e887ee6",
+  "tool": "pinned pok3rtool from shell.nix",
+  "flash_cli_exit_code": 0,
+  "updater_identity": "04d9:1419",
+  "physical_usb_location": "3-1.1.3",
+  "write_scope": "application and version pages only",
+  "settings_reset_authorised": true,
+  "settings_reset_status": "No further reset requested; owner reports two previous full resets",
+  "hardware_functional_validation": "Pending guided run",
+  "success": true,
+  "diagnostic_build": true,
+  "boot_info_matches_record": true,
+  "encoded_application_sum": "0x086b787b",
+  "encoded_application_crc32": "0x1c5cb65c",
+  "application_sum_and_crc_verified_after_metadata_write": true,
+  "version_page_sha256": "470442bf654b0c3f1768d7876052a73300df6348ffba8040fec615ab0b3d7945",
+  "generated_version": "QMK",
+  "version_metadata_verified": true,
+  "application_start_requested": true,
+  "normal_usb_identity": {
+    "idVendor": "04d9",
+    "idProduct": "0419",
+    "product": "MD770 RGB BT (QMK)",
+    "bcdDevice": "0010"
+  },
+  "normal_usb_return_verified": true
+}

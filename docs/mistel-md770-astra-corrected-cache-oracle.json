@@ -1,0 +1,9 @@
+{
+  "scope": "Negative control: corrected cache oracle must reject the withdrawn candidate",
+  "elf_sha256": "5caff7c53698a30df88735e04e664b8a84230cb8526204a3122c129ecb79f7b3",
+  "test_passed": false,
+  "failing_cases": 6,
+  "errors": 0,
+  "reproduction_passed": true,
+  "test_source_sha256": "4b82913a461d16252f8dcf21232865a5233f8f387663af6916ac64a2cdca60a5"
+}

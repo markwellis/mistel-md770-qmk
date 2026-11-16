@@ -1,19 +1,122 @@
 # MD770 Bluetooth and charging implementation
 
 The implementation is in `qmk_firmware`, branch `mistel-md770-support`.
-The personal keymap remains in this repository. No candidate has been flashed;
-the installed firmware remains the previously verified wired build.
+The personal keymap remains in this repository. Both halves were flashed on
+2026-11-16. The right now runs the normal macro validation image with the
+SPI reset fix and no diagnostic commands; settings were retained. Application
+sum/CRC, QMK metadata and normal USB return passed. See the
+[latest right flash](mistel-md770-validation-restored-flash-right.json),
+[left flash](mistel-md770-bluetooth-flash-left.json) and
+[normal build](mistel-md770-validation-build.json). The right binary matches
+the current calibration plan. Both halves passed live Bluetooth typing on a
+USB power bank, with no Mistel USB device connected, no extra keys and no keys
+held afterwards; see `docs/mistel-md770-powerbank-typing.json`. There is no
+internal cell. Macro, reconnection and suspend calibration remain pending.
 
-## Behaviour
+Reliable normal Bluetooth operation is not established. In the later
+[switch check](mistel-md770-switch-usb-radio-check.json), the radio connected
+and answered a ping with the switch OFF under USB power, but physical keys
+failed over Bluetooth with both OFF and ON. Slot selection and reopening
+the recreated input endpoint did not restore delivery. Pn+2 restored a
+captured USB J press/release. The owner reports intermittent behaviour;
+Bluetooth remains unfinished despite the earlier individual successes.
+
+The first hardware check exposed an SPI reset ordering defect: programming
+CR1 before reset completed left CR1=0 and caused slave-abort errors. Polling
+reset completion restores CR1=0x108 and stable startup on hardware. A
+delayed-reset fault-injection regression fails against the old ARM image and
+passes against the correction in `patches/md770-spi-reset-wait.patch`.
+The owner confirmed the steady blue indicator also appears on an identical
+stock keyboard. Missing pairing flashes were traced to using Pn+1 (Bluetooth
+output) instead of Pn+F1 (slot1); the corrected shortcut starts pairing.
+
+Three automatic diagnostic pulse paths passed on hardware: the Bluetooth
+sender, real QMK report routing and a queue comparison without the connection
+guard. Each produced the expected Bluetooth key press/release events and raw
+HID reports, with no USB key events. A physical right J also passed, followed
+by a traced physical Pn+1 selection that changed USB output to Bluetooth and
+delivered J. The earlier no-input result was not reproduced with route and
+key processing visible. No further report-path correction was made. Evidence
+is linked from `docs/mistel-md770-bluetooth-hardware-bringup.json`.
+
+The three pulse recordings match the emulator's predicted key-event order;
+see `docs/mistel-md770-diagnostic-pulse-agreement.json`. This comparison is for
+those paths on the identified diagnostic image. Macro recording/playback,
+full boot, timing, USB signalling and analogue power remain outside that
+measured agreement. The normal validation image is now restored.
+
+Host capture discovery needed explicit device closing because the installed
+evdev API lacks a context manager. All 44 host checks pass after correction.
+Diagnostic reply matching also now tolerates unrelated Raw HID messages.
+The earlier empty captures are retained with their scope and timing; they do
+not supersede the later successful traced checks.
+
+## Stock conformance audit
+
+The requirement is all stock Bluetooth functionality. The earlier passing
+component checks did not establish that. Two independent `gpt-6-astra`
+reviews at maximum reasoning effort concluded that neither the installed
+firmware nor the unflashed candidate has stock parity. The
+[full review](mistel-md770-astra-stock-parity-review.json) records findings,
+stock addresses, correction boundaries and unproved scope.
+
+| Area | Verified differences |
+| --- | --- |
+| Reports and status | Rejected reports outside public state 4, lost queued releases and synthetic release/press sequences when status changes |
+| Recovery and controls | Full resets for recoverable frames/errors, lost pairing intent after timeout and a pairing request emitted during shutdown |
+| Playback and backpressure | Macros consumed while reports are discarded; a full queue blocks USB handover for 2000 supplied milliseconds |
+| Input state | Held modifiers lost across output changes and USB wake; overlapping consumer/system keys lose held bits |
+| Shortcuts | Pairing ignores the current chord; short selection does not wait for all keys to be released |
+| USB and power handover | Starved USB notices, missing persistence/cancellation, and retained configuration used as active USB state |
+| Idle and voltage | Missing radio-activity refresh, different pairing-expiry/PA10 policy, and a foreground filter that misses interrupted low voltage |
+| Indicators | Feedback depends on SPI progress; priority, phase retention and charging-burst start differ |
+
+The candidate introduced two additional regressions: clearing pairing's retry
+budget and clearing the displayed Caps cache. After a short selection, its
+retry limit combined with the existing SPI-error reset produced permanent
+failure from one recoverable error. It was never flashed and has been
+withdrawn. Its [frozen patch](../tests/md770_bluetooth/review/frozen_candidate.patch)
+and [image manifest](mistel-md770-stock-parity-candidate-build.json) are
+retained only for reproducing that review.
+
+The working QMK source was restored to the installed baseline, verified by
+its source hash. The existing SPI reset-completion wait and ChibiOS fixes
+remain. This withdrawal is not a parity fix. The installed images and their
+calibration plan are unchanged; Bluetooth remains unfinished.
+
+The [reviewed installed-image audit](mistel-md770-installed-stock-conformance-reviewed.json)
+ran 87 groups and 419 parameterised checks and reported 28 failing cases
+after correcting the false LED oracle. Those are repeated cases, not 28
+distinct defects. The initial 34-failure record included the six invalid
+LED-field comparisons and is historical. Some older tests still assert
+QMK behaviour without a stock oracle; the independent review identifies
+those gaps rather than treating the remaining passing cases as full coverage.
+
+Two diagnoses were withdrawn. Stock seeds its hold counter at one, making
+the existing 3000 ms elapsed pairing threshold correct. Stock also retains
+its displayed Caps cache when selection clears a different public LED byte;
+retaining that visible state in the original implementation was correct.
+
+The [evidence index](mistel-md770-astra-review-evidence.json) identifies the
+retained radio, power and USB replay sources and observations. The replays
+reproduce the reviewed discrepancies; their successful execution does not
+mean conformance. The reviews do not establish the cause of the last missing
+physical J, full boot or deep-sleep restoration, RF behaviour, electrical
+USB/SPI timing or battery performance. No further firmware was flashed and
+no additional manual key tests were requested during the review.
+
+## Current design
 
 The right half retains the resident Bluetooth module. The MCU sends stock
 A1 keyboard, A2 consumer and A3 system reports over SPI0 slave FIFO transfers.
 USB retains NKRO; Bluetooth uses six-key rollover. The transport starts and
 recovers asynchronously, so an absent or disabled radio does not block USB
-initialisation. Its bounded queue preserves press/release order, pumps the
-transport under backpressure and sends zero reports before restoring the
-current state after reconnection. Incoming status messages cause the outgoing
-report to be retried, as in stock; they are not acknowledgements.
+initialisation. It uses a bounded report queue and pumps the transport under
+backpressure. The status-change paths currently discard queued reports and
+send zero reports before replaying the current state; Astra has reproduced
+lost releases and synthetic key transitions from those decisions. Incoming
+messages are currently treated as collisions based on any nonzero prefix;
+stock treats some invalid fields as non-collisions. These paths need correction.
 
 | Control | Action |
 | --- | --- |
@@ -124,6 +227,11 @@ automatically.
 
 ## Remaining hardware checks
 
+Use the [short hardware pass](mistel-md770-hardware-calibration.md) for five
+scenarios focused on the new transport and wake path. It reuses the earlier
+wired/personal hardware baseline. The optional full 11-case macro matrix
+covers all 57 factor pairs after all 72 combinations pass in software.
+
 Bluetooth typing, held modifiers, media, slot changes, pairing/reconnection,
 USB handover and the visible indicators need testing with these QMK images.
 The earlier successful stock power-bank test is a hardware baseline, not
@@ -133,3 +241,6 @@ The battery is absent. Physical charging, termination, actual voltage
 thresholds, battery wake/current and runtime remain untested. PA10's external
 role and the charger's identity remain hardware questions; the implementation
 uses the recovered stock polarity and transition rule.
+
+Battery-dependent checks are deferred until a battery is available. They do
+not block software review or externally powered Bluetooth testing.

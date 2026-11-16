@@ -1,0 +1,62 @@
+{
+  "date": "2026-11-16T12:33:02.627744+00:00",
+  "scope": "Direct left A then right J press/release over Bluetooth; functional smoke test only",
+  "capture_mode": "live",
+  "case": {
+    "id": "BT_BRINGUP_AJ",
+    "transport": "bluetooth",
+    "expected_key_events": [
+      [
+        4,
+        true
+      ],
+      [
+        4,
+        false
+      ],
+      [
+        13,
+        true
+      ],
+      [
+        13,
+        false
+      ]
+    ]
+  },
+  "devices": [
+    {
+      "name": "Mistel 1 Keyboard",
+      "bus": 5,
+      "vendor": 2652,
+      "product": 34050
+    }
+  ],
+  "events": [],
+  "flash_record": "docs/mistel-md770-radio-controls-flash-right.json",
+  "passed": false,
+  "lost_events": false,
+  "oracle_events_match": false,
+  "expected_evdev_key_events": [
+    [
+      30,
+      1
+    ],
+    [
+      30,
+      0
+    ],
+    [
+      36,
+      1
+    ],
+    [
+      36,
+      0
+    ]
+  ],
+  "actual_evdev_key_events": [],
+  "first_mismatch": 0,
+  "host_info": "Device 20:73:10:01:5B:BF (public)\n\tName: Mistel 1\n\tAlias: Mistel 1\n\tClass: 0x00000540 (1344)\n\tIcon: input-keyboard\n\tPaired: yes\n\tBonded: yes\n\tTrusted: yes\n\tBlocked: no\n\tConnected: yes\n\tWakeAllowed: yes\n\tLegacyPairing: yes\n\tCablePairing: no\n\tUUID: Service Discovery Serve.. (00001000-0000-1000-8000-00805f9b34fb)\n\tUUID: Human Interface Device... (00001124-0000-1000-8000-00805f9b34fb)\n\tUUID: PnP Information           (00001200-0000-1000-8000-00805f9b34fb)\n\tModalias: usb:v0A5Cp8502d0001\n",
+  "hardware_interpretation": "Inconclusive: no events during the capture window, but overlap with the physical keystrokes was not established. The owner later typed aj into chat without changing the connection after the routing capture expired."
+}

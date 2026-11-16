@@ -1,0 +1,86 @@
+{
+  "date": "2026-11-16T13:29:38.192418+00:00",
+  "passed": true,
+  "scope": "Compiled diagnostic pulse construction and routing with supplied radio acceptance; not a physical result",
+  "elf_sha256": "cbf24b0461d90a687787f91af6bb775264fc4ad41cbead7a879cdc4af80a4362",
+  "abi_provenance": {
+    "assumption": "Current headers and compiler must match the supplied ELF build; rebuild after changes",
+    "elf_sha256": "cbf24b0461d90a687787f91af6bb775264fc4ad41cbead7a879cdc4af80a4362",
+    "compiler": "arm-none-eabi-gcc (Arm GNU Toolchain 15.2.Rel1 (Build arm-15.86)) 15.2.1 20251203",
+    "flags_sha256": "6e987dacbec8a912e98d16b78d6b5b61c84309aae67d2bd5392bba90bd3d096f",
+    "preprocessed_probe_sha256": "3d5f66834bf00221f90059e79954373dec488c3c38338000f66913888f6f01d0"
+  },
+  "cases": [
+    {
+      "mode": 1,
+      "supplied_radio_state": 4,
+      "events": [
+        [
+          4,
+          true
+        ],
+        [
+          4,
+          false
+        ]
+      ],
+      "keyboard_calls": 2,
+      "keyboard_drops": 0
+    },
+    {
+      "mode": 2,
+      "supplied_radio_state": 4,
+      "events": [
+        [
+          13,
+          true
+        ],
+        [
+          13,
+          false
+        ]
+      ],
+      "keyboard_calls": 2,
+      "keyboard_drops": 0
+    },
+    {
+      "mode": 3,
+      "supplied_radio_state": 4,
+      "events": [
+        [
+          4,
+          true
+        ],
+        [
+          4,
+          false
+        ]
+      ],
+      "keyboard_calls": 0,
+      "keyboard_drops": 0
+    },
+    {
+      "mode": 1,
+      "supplied_radio_state": 5,
+      "events": [],
+      "keyboard_calls": 2,
+      "keyboard_drops": 2
+    },
+    {
+      "mode": 3,
+      "supplied_radio_state": 5,
+      "events": [
+        [
+          4,
+          true
+        ],
+        [
+          4,
+          false
+        ]
+      ],
+      "keyboard_calls": 0,
+      "keyboard_drops": 0
+    }
+  ]
+}

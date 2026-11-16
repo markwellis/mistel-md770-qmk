@@ -320,6 +320,15 @@ static void radio_tests(const std::string &test) {
         clocks({0xb6, 0, 0}, true);
         tick();
         assert(!bluetooth_is_connected());
+    } else if (test == "pair_boundary") {
+        keyrecord_t record{{true}};
+        process_record_kb(QK_BLUETOOTH_PROFILE1, &record);
+        tick(2999);
+        assert(held_slot == 1 && !pair_requested);
+        tick();
+        assert(!held_slot && pair_requested);
+        tick();
+        assert(!held_slot && pair_requested);
     } else if (test == "replace_pair") {
         md770_radio_select(1, true);
         for (unsigned i = 0; i < 100 && phase != PAIR_DELAY; ++i)

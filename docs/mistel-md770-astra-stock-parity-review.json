@@ -1,0 +1,405 @@
+{
+  "date": "2026-11-16",
+  "verdict": "Neither the installed firmware nor the withdrawn candidate has stock Bluetooth parity",
+  "reviewers": [
+    {
+      "task": "astra_stock_parity_review",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "max",
+      "scope": "Radio reports, controls, recovery, input and test oracles"
+    },
+    {
+      "task": "astra_power_usb_review",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "max",
+      "scope": "Power, USB, indicators, idle and left wake"
+    }
+  ],
+  "stock": {
+    "right_sha256": "8fafdca096756f23626802d5b586b270b0bd512fe5d1c0327db4eafcd4f689b2",
+    "left_sha256": "febc84d9dc1fd23152218232839279ecb59f255615a6d6c5b4d951a848c85064",
+    "load_address": "0x3200"
+  },
+  "baseline": {
+    "qmk_commit": "3f9fb0f449061752370c3359d6a981d387fe5e7d",
+    "retained_patch": "patches/md770-spi-reset-wait.patch",
+    "source_matches_installed_manifest": true,
+    "manifest": "docs/mistel-md770-validation-build.json",
+    "status": "Existing baseline with verified defects; restoring it is not a parity fix"
+  },
+  "candidate": {
+    "status": "Withdrawn; never flashed",
+    "frozen_bluetooth_c_sha256": "743999b75e3b8feae51a0f31ac1ab3998138d504920cdfb11cc43bad3995b567",
+    "patch": "tests/md770_bluetooth/review/frozen_candidate.patch",
+    "manifest": "docs/mistel-md770-stock-parity-candidate-build.json"
+  },
+  "evidence_index": "docs/mistel-md770-astra-review-evidence.json",
+  "findings": [
+    {
+      "id": "R01",
+      "priority": "P1",
+      "applies_to": "Installed and withdrawn candidate",
+      "title": "Status changes lose releases and synthesise key transitions",
+      "qmk": [
+        "keyboards/mistel/md770rgb_bt/bluetooth.c:enqueue",
+        "keyboards/mistel/md770rgb_bt/bluetooth.c:receive_status",
+        "keyboards/mistel/md770rgb_bt/bluetooth.c:radio_task"
+      ],
+      "stock": [
+        "0x56a8",
+        "0x9dec",
+        "0x9f88"
+      ],
+      "observations": [
+        "Stock sends reports in public states2..6; installed QMK accepts only state4.",
+        "After A-down completes, queue A-up then receive b6 00 00: stock sends the release; QMK clears it.",
+        "After Shift+A completes, receive b6 00 00 then b6 00 02 with no key change: stock sends nothing; QMK sends zero keyboard/system/consumer reports then the held state again."
+      ],
+      "required": "Treat report eligibility, retained releases and resynchronisation as one conformance problem; public state4 is not authority to discard or replay HID state."
+    },
+    {
+      "id": "R02",
+      "priority": "P1",
+      "applies_to": "Installed and withdrawn candidate",
+      "title": "Recovery conflates short frames, SPI errors, receive-only activity and command timeout",
+      "qmk": [
+        "keyboards/mistel/md770rgb_bt/bluetooth.c:reset_radio",
+        "keyboards/mistel/md770rgb_bt/bluetooth.c:radio_task"
+      ],
+      "stock": [
+        "0x3c04",
+        "0x40a4",
+        "0x9d24",
+        "0x9f58"
+      ],
+      "observations": [
+        "Short zero A1 completion: stock retains pending report, lowers PC14, keeps PD1 low, rearms and guards retry for20callbacks.",
+        "SPI error during A1: stock retains pending report, keeps PC14 high and PD1 low, rearms through backend cleanup and guards retry.",
+        "Receive-only CS with no outgoing command has no stock command timeout; QMK resets after2000ms.",
+        "Full command timeout pulses PD1 but stock retains public status and pending control; QMK clears them.",
+        "Stock visible Caps cache and timer survive transport and callback restarts.",
+        "Stock initial startup has four attempts and consumes B6field2 counter updates; the installed driver retries indefinitely and ignores that field."
+      ],
+      "required": "Implement cause-specific recovery and preserve the appropriate command, request-pin and display state."
+    },
+    {
+      "id": "R03",
+      "priority": "P1",
+      "applies_to": "Installed and withdrawn candidate",
+      "title": "Control intent is lost on timeout and is not cancelled cleanly on shutdown",
+      "qmk": [
+        "keyboards/mistel/md770rgb_bt/bluetooth.c:reset_radio",
+        "keyboards/mistel/md770rgb_bt/bluetooth.c:radio_task",
+        "keyboards/mistel/md770rgb_bt/bluetooth.c:md770_radio_shutdown"
+      ],
+      "stock": [
+        "0x9f58",
+        "0x40a4"
+      ],
+      "observations": [
+        "With retry budget3, time out slot2 pairing selection: stock retries aa 03 02; QMK sends A7 then remains ready with pending_slot0 and pair_requested1.",
+        "Interrupted aa 00 01 has the same intent-lifetime problem.",
+        "Native QMK shutdown during PAIR_DELAY sends aa 00 01 before release reports; exact stock shutdown equivalence was not established."
+      ],
+      "required": "Retain a control until completion or explicit cancellation, and cancel all pairing stages on shutdown or supersession."
+    },
+    {
+      "id": "R04",
+      "priority": "P1/P2",
+      "applies_to": "Installed and withdrawn candidate",
+      "title": "Unavailable transport consumes macros and full queues delay USB escape",
+      "qmk": [
+        "keyboards/mistel/md770rgb_bt/bluetooth.c:md770_radio_can_enqueue",
+        "keyboards/mistel/md770rgb_bt/bluetooth.c:enqueue",
+        "tmk_core/protocol/host.c:host_update_active_driver"
+      ],
+      "observations": [
+        "Compiled abc macro during RESET_HIGH completes after7ms with queue0 and latest all-up; no events remain to replay.",
+        "Stock ordinary-key input during reset retains A-down and defers A-up until the press can be built.",
+        "With16queued reports, requesting USB spends2000ms in clear_keyboard/enqueue before switching the active driver."
+      ],
+      "comparison_scope": "Stock ordinary-key deferral was executed; the full stock macro player was not. The stall is bounded in the supplied scheduler and does not prove an indefinite hardware hang.",
+      "required": "Include transport/control readiness in playback backpressure; preserve undelivered input and make foreground host selection responsive."
+    },
+    {
+      "id": "R05",
+      "priority": "P2",
+      "applies_to": "Installed and withdrawn candidate",
+      "title": "Manual output changes erase physically held modifiers",
+      "qmk": [
+        "tmk_core/protocol/host.c:host_update_active_driver"
+      ],
+      "stock": [
+        "0x5ef8"
+      ],
+      "observations": [
+        "Hold Shift on Bluetooth, select USB then Bluetooth without releasing Shift, press J: stock sends mods02/J; QMK clears real modifiers and sends mods00/J."
+      ],
+      "required": "Separate old-host release from deletion of physical key/modifier state."
+    },
+    {
+      "id": "R06",
+      "priority": "P2",
+      "applies_to": "Installed and withdrawn candidate",
+      "title": "Pairing and short selection do not follow the current chord predicates",
+      "qmk": [
+        "keyboards/mistel/md770rgb_bt/bluetooth.c:process_record_kb",
+        "keyboards/mistel/md770rgb_bt/bluetooth.c:bluetooth_task"
+      ],
+      "stock": [
+        "0x5884",
+        "0x5d40",
+        "0x567c",
+        "0x634c"
+      ],
+      "observations": [
+        "Release Pn at100ms while F1 remains held to3000ms: QMK pairs; stock does not match the current chord.",
+        "Stock defers short selection while another ordinary key is held and consumes it after all keys are released; QMK selects immediately on profile-key release.",
+        "QMK's numerical3000ms threshold is correct; the missing predicates are the defect."
+      ],
+      "required": "Use current chord, key-change timing and deferred all-keys-up/report-readiness conditions."
+    },
+    {
+      "id": "R07",
+      "priority": "P2",
+      "applies_to": "Installed and withdrawn candidate",
+      "title": "Overlapping consumer and system controls lose held bits",
+      "qmk": [
+        "quantum/action.c:process_action",
+        "quantum/action.c:register_code",
+        "quantum/action.c:unregister_code",
+        "keyboards/mistel/md770rgb_bt/bluetooth.c:bluetooth_send_consumer",
+        "keyboards/mistel/md770rgb_bt/bluetooth.c:bluetooth_send_system"
+      ],
+      "stock": [
+        "0x56a8"
+      ],
+      "observations": [
+        "Press first control, press second, release first: stock bitmap01\u219203\u219202; QMK01\u219202\u219200.",
+        "Verified consumer EC/ED against0183/018a and system E9/EA against0081/0082.",
+        "All18 individual consumer press/release mappings matched actual stock handling."
+      ],
+      "required": "Preserve usage and press/release identity before conversion to anonymous usage0, for both physical actions and macros."
+    },
+    {
+      "id": "R08",
+      "priority": "P2",
+      "applies_to": "Installed and withdrawn candidate",
+      "title": "USB notices can be starved behind reports",
+      "qmk": [
+        "keyboards/mistel/md770rgb_bt/bluetooth.c:radio_task"
+      ],
+      "stock": [
+        "0x9dec"
+      ],
+      "observations": [
+        "Stock prioritises a pending A7 notice over dirty A1 data. New QMK reports kept usb_notice set through40frames/400ms and can continue doing so."
+      ],
+      "required": "Give control notices explicit scheduling priority."
+    },
+    {
+      "id": "U01",
+      "priority": "P1",
+      "applies_to": "Installed and withdrawn candidate",
+      "title": "USB resume loses held keys and modifiers",
+      "qmk": [
+        "platforms/chibios/suspend.c",
+        "quantum/keyboard.c",
+        "tmk_core/protocol/chibios/usb_driver.c"
+      ],
+      "stock": [
+        "0x989c",
+        "0x9a44"
+      ],
+      "observations": [
+        "Actual inlined QMK wake branch clears real/weak modifiers and report keys while matrix_previous remains unchanged.",
+        "Shift+A before resume then B while still holding them produces00 00 05... instead of retaining Shift+A.",
+        "Stock IRQ suspend/resume retains02 00 04... and its dirty flag, and requests remote resume for a pending report."
+      ],
+      "required": "Preserve or correctly reconstruct physical input through USB wake.",
+      "limitation": "Physical USB remote-wake signalling and timing were not measured."
+    },
+    {
+      "id": "U02",
+      "priority": "P2",
+      "applies_to": "Installed and withdrawn candidate",
+      "title": "USB power handover omits stock state, persistence and control cancellation",
+      "qmk": [
+        "keyboards/mistel/md770rgb_bt/power.c",
+        "keyboards/mistel/md770rgb_bt/bluetooth.c:radio_task"
+      ],
+      "stock": [
+        "0x84fc",
+        "0x8420",
+        "0x987c",
+        "0x989c"
+      ],
+      "observations": [
+        "Accepted USB configuration saves USB output; for public radio state3/4 stock also cancels pending pairing/control and invokes transport recovery. QMK selects USB without those actions.",
+        "During USB suspend stock public state5\u21920 clears charge eligibility; QMK retains configuration1 and eligibility.",
+        "Resume through state2\u21925 saves/selects USB in stock; QMK can remain on Bluetooth.",
+        "Retained configuration after USB power removal can make QMK choose USB on power-bank reconnection without enumeration, while stock remains Bluetooth.",
+        "Manual Pn+2 is a different path and does not perform stock's automatic radio reset."
+      ],
+      "required": "Use the active USB/power state transitions rather than retained configuration alone, and reproduce persistence/cancellation.",
+      "limitation": "The battery-backed physical unplug sequence remains unverified."
+    },
+    {
+      "id": "P01",
+      "priority": "P2",
+      "applies_to": "Installed and withdrawn candidate",
+      "title": "Radio activity, pairing expiry and PA10-deferred power do not follow stock idle policy",
+      "qmk": [
+        "keyboards/mistel/md770rgb_bt/power.c",
+        "keyboards/mistel/md770rgb_bt/bluetooth.c",
+        "keyboards/mistel/md770rgb_bt/indicators.c"
+      ],
+      "stock": [
+        "0x40a4",
+        "0x634c",
+        "0x84fc",
+        "0xc928"
+      ],
+      "observations": [
+        "Stock refreshes activity in non-idle radio callback states; QMK lacks equivalent radio activity refresh.",
+        "After pairing indication times out, stock caps remaining idle time at6000half-ms ticks; QMK can retain about260seconds.",
+        "PB12high/PA10high/public4 at the idle boundary defers the stock supply transition without requesting idle; QMK can idle using cached external=false.",
+        "QMK refreshes activity continuously for held keys; stock's ordinary matrix activity is change-driven."
+      ],
+      "required": "Reproduce coupled activity/expiry/power transitions.",
+      "limitation": "Complete deep-idle scan/clock restoration and physical held-key sleep duration were not executed."
+    },
+    {
+      "id": "P02",
+      "priority": "P2",
+      "applies_to": "Installed and withdrawn candidate",
+      "title": "Foreground low-voltage polling does not enforce continuously low voltage",
+      "qmk": [
+        "keyboards/mistel/md770rgb_bt/power.c"
+      ],
+      "stock": [
+        "0x8650"
+      ],
+      "observations": [
+        "For low10ms/high10ms/low10ms and foreground calls only at0/30ms, stock stays battery level7 with30filter ticks remaining; both QMK images drop to6."
+      ],
+      "required": "Make filter sampling independent of foreground delays."
+    },
+    {
+      "id": "I01",
+      "priority": "P2",
+      "applies_to": "Installed and withdrawn candidate",
+      "title": "Slot and pairing indication depends on SPI progress",
+      "qmk": [
+        "keyboards/mistel/md770rgb_bt/bluetooth.c:md770_radio_indicate",
+        "keyboards/mistel/md770rgb_bt/bluetooth.c:radio_task"
+      ],
+      "stock": [
+        "0x5d40",
+        "0x634c"
+      ],
+      "observations": [
+        "Stock installs indication when accepting the user command. QMK waits for AA transmission after queued reports, so absent clocks can delay or suppress feedback."
+      ],
+      "required": "Start feedback at the stock command-acceptance boundary."
+    },
+    {
+      "id": "I02",
+      "priority": "P3",
+      "applies_to": "Installed and withdrawn candidate",
+      "title": "Indicator priority and retained phases differ",
+      "qmk": [
+        "keyboards/mistel/md770rgb_bt/indicators.c"
+      ],
+      "stock": [
+        "0xd7e4",
+        "0x6d04",
+        "0x634c"
+      ],
+      "observations": [
+        "Low battery during pairing: stock red/blue0/6000; QMK6000/6000.",
+        "First charging burst requested1000ms after initialisation: stock blue6000; QMK0.",
+        "Reselect in an off phase at350ms: stock stays off with300half-ms ticks remaining; QMK immediately turns blue on."
+      ],
+      "required": "Reproduce mode priority and retained timer/phase state."
+    },
+    {
+      "id": "C01",
+      "priority": "P1",
+      "applies_to": "Withdrawn candidate only",
+      "title": "Pairing incorrectly clears the retry budget",
+      "qmk": [
+        "keyboards/mistel/md770rgb_bt/bluetooth.c:md770_radio_select"
+      ],
+      "stock": [
+        "0x36b8"
+      ],
+      "observations": [
+        "Short selection clears stock's retry byte; pairing preserves it. Pairing from3 leaves stock3 but candidate0."
+      ],
+      "required": "Preserve the short-selection/pairing asymmetry.",
+      "compound_effect": "After a completed short selection and one recoverable idle SPI error, candidate becomes phase6/public7/counter0; stock stays callback4/public2/counter0. The finite retry patch amplified the existing over-aggressive reset."
+    },
+    {
+      "id": "C02",
+      "priority": "P3",
+      "applies_to": "Withdrawn candidate only",
+      "title": "Selection clears the displayed Caps cache using the wrong stock field",
+      "qmk": [
+        "keyboards/mistel/md770rgb_bt/bluetooth.c:md770_radio_select",
+        "keyboards/mistel/md770rgb_bt/indicators.c"
+      ],
+      "stock": [
+        "0x200001e5 public byte",
+        "0x2000068b displayed cache"
+      ],
+      "observations": [
+        "Short selection during a Caps pulse: stock/installed red6000; candidate red0. PublicLED clears but display cache/timer remain."
+      ],
+      "required": "Compare equivalent observable state; preserve the display cache and its timer."
+    }
+  ],
+  "additional_protocol_difference": {
+    "priority": "Unproved physical significance",
+    "observation": "Known invalid B6fields4/ff and B7fields1/3 leave stock's transmitting callback unchanged, allowing a full-length report acknowledgement. QMK retries every nonzero prefix. Unknown opcode99 does collide in stock.",
+    "required": "Preserve parser-family validity distinctions without inventing RF meanings."
+  },
+  "withdrawn_findings": [
+    {
+      "claim": "Pairing must start at3001ms",
+      "correction": "Stock seeds its counter to1;6000elapsed half-ms ticks produce6001 and correctly trigger at3000ms."
+    },
+    {
+      "claim": "Original selection incorrectly retains visible LED state",
+      "correction": "The test compared stock publicLED1e5 with QMK's displayed cache, which corresponds to stock68b. Original visible retention is correct; the proposed clear was a regression."
+    }
+  ],
+  "coverage_failures": [
+    "Supplied connected state before most scenarios hid state-transition defects.",
+    "Stable-state report tests did not exercise transitions during pending releases or active transfers.",
+    "Injected report buffers and direct pending-command writes established framing rather than full input/control behaviour.",
+    "Reconnect, short-frame and wake tests asserted implementation behaviour without the stock oracle.",
+    "The original selection test compared non-equivalent LED state and omitted pairing's retry-counter asymmetry.",
+    "Macro combinations reconnected before playback rather than interrupting it during playback.",
+    "Test counts are input-case counts, not complete transition or functionality coverage."
+  ],
+  "limitations": [
+    "These findings do not establish the root cause of the last live missing Bluetooth J; internal installed driver state was not observed.",
+    "Radio reachability with the switch OFF under USB does not prove key delivery or identify switch wiring.",
+    "Full boot, RF/bonding, electrical SPI timing, USB signalling, charger behaviour, battery runtime and complete deep-sleep restoration remain unproved.",
+    "PA10's external role and interconnect supply/wake wiring remain unidentified.",
+    "Left software idle/link wake routes differ, but physical reachability with PB12low depends on board wiring.",
+    "No further firmware was flashed and no new manual key tests were requested during these reviews."
+  ],
+  "correction_order": [
+    "Replace false oracles with end-to-end stock input, control and observable-output comparisons.",
+    "Correct report preservation, control lifetime and cause-specific recovery together.",
+    "Correct input readiness, handover and usage-release identity.",
+    "Correct USB/power/indicator transitions and sampling policy.",
+    "Run the expanded independent stock conformance audit before another candidate is offered for hardware validation."
+  ],
+  "qmk_paths_relative_to": "qmk_firmware",
+  "evidence_paths_relative_to": "mistel-md770-qmk",
+  "reviewed_installed_audit": "docs/mistel-md770-installed-stock-conformance-reviewed.json",
+  "corrected_cache_negative_control": "docs/mistel-md770-astra-corrected-cache-oracle.json"
+}

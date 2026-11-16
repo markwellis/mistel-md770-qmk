@@ -1,0 +1,48 @@
+{
+  "date": "2026-11-16T15:29:51.371589+00:00",
+  "capture_started": "2026-11-16T15:26:16.423837+00:00",
+  "scope": "Live key event observation on USB and Bluetooth; switch position reported by owner",
+  "switch_position": "on",
+  "usb_power": true,
+  "build_manifest": "docs/mistel-md770-validation-build.json",
+  "devices": [
+    {
+      "name": "Mistel 1 Keyboard",
+      "bus": 5,
+      "vendor": 2652,
+      "product": 34050,
+      "unique": "20:73:10:01:5b:bf"
+    },
+    {
+      "name": "Mistel MD770 RGB BT (QMK) Keyboard",
+      "bus": 3,
+      "vendor": 1241,
+      "product": 1049,
+      "unique": "00000000000000000000000000000000"
+    },
+    {
+      "name": "Mistel MD770 RGB BT (QMK) Consumer Control",
+      "bus": 3,
+      "vendor": 1241,
+      "product": 1049,
+      "unique": "00000000000000000000000000000000"
+    },
+    {
+      "name": "Mistel MD770 RGB BT (QMK) System Control",
+      "bus": 3,
+      "vendor": 1241,
+      "product": 1049,
+      "unique": "00000000000000000000000000000000"
+    },
+    {
+      "name": "Mistel MD770 RGB BT (QMK)",
+      "bus": 3,
+      "vendor": 1241,
+      "product": 1049,
+      "unique": "00000000000000000000000000000000"
+    }
+  ],
+  "events": [],
+  "bluez_info_at_end": "Device 20:73:10:01:5B:BF (public)\n\tName: Mistel 1\n\tAlias: Mistel 1\n\tClass: 0x00000540 (1344)\n\tIcon: input-keyboard\n\tPaired: yes\n\tBonded: yes\n\tTrusted: yes\n\tBlocked: no\n\tConnected: yes\n\tWakeAllowed: yes\n\tLegacyPairing: yes\n\tCablePairing: no\n\tUUID: Service Discovery Serve.. (00001000-0000-1000-8000-00805f9b34fb)\n\tUUID: Human Interface Device... (00001124-0000-1000-8000-00805f9b34fb)\n\tUUID: PnP Information           (00001200-0000-1000-8000-00805f9b34fb)\n\tModalias: usb:v0A5Cp8502d0001\n",
+  "input_was_grabbed": false
+}

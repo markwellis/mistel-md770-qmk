@@ -106,6 +106,9 @@ struct StatusRegister {
     }
 };
 struct ResetRegister {
+    operator uint32_t() const {
+        return 0;
+    }
     void operator=(uint32_t) {
         fifo_rx.clear();
         fifo_tx.clear();

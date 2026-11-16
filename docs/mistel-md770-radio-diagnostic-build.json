@@ -1,0 +1,11 @@
+{
+  "image": "mistel_md770rgb_bt_right_markwellis_radio_diagnostics.bin",
+  "application_bytes": 47700,
+  "sha256": "36c602ba6105ca4acb665ee926eb1e7b4e157f6b05c5a2c93112f1abe62fa906",
+  "elf_sha256": "f2604344a08f1a50a0cbbef7e56327de33c45b1d3792cfecbbf9778702757ab4",
+  "build_flags": [
+    "EXTRAFLAGS=-DMD770_DIAGNOSTICS",
+    "EXTRALDFLAGS=-Wl,--undefined=md770_radio_snapshot"
+  ],
+  "scope": "Passive radio/clock/GPIO snapshots and counters; diagnostic build, not the calibration candidate"
+}

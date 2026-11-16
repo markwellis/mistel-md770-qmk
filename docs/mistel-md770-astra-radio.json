@@ -1,0 +1,31 @@
+{
+  "scope": "Historical software-only review; no hardware inference",
+  "candidate_elf_sha256": "5caff7c53698a30df88735e04e664b8a84230cb8526204a3122c129ecb79f7b3",
+  "single_spi_error_after_short_selection": {
+    "qmk_phase_public_attempts": [
+      6,
+      7,
+      0
+    ],
+    "stock_callback_public_attempts": [
+      4,
+      2,
+      0
+    ],
+    "candidate_rejected": true
+  },
+  "corrected_stock_pairing_boundary": [
+    {
+      "elapsed_half_ms_ticks": 5999,
+      "initial_counter": 1,
+      "counter_after_elapsed": 6000,
+      "pending_command": 0
+    },
+    {
+      "elapsed_half_ms_ticks": 6000,
+      "initial_counter": 1,
+      "counter_after_elapsed": 6001,
+      "pending_command": 81
+    }
+  ]
+}

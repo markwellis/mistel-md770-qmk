@@ -1,0 +1,91 @@
+{
+  "date": "2026-11-16T16:06:56.592508+00:00",
+  "status": "Withdrawn unsafe candidate; preserved for the independent review only; never flashed",
+  "qmk_source_commit": "3f9fb0f449061752370c3359d6a981d387fe5e7d",
+  "source_sha256": {
+    "qmk_firmware/keyboards/mistel/md770rgb_bt/bluetooth.c": "743999b75e3b8feae51a0f31ac1ab3998138d504920cdfb11cc43bad3995b567"
+  },
+  "patches": [
+    {
+      "path": "patches/md770-spi-reset-wait.patch",
+      "sha256": "b7405d6d77f1d957a62c0915808ff4021dc5cf84ae2b15970358cf677efcb055"
+    },
+    {
+      "path": "tests/md770_bluetooth/review/frozen_candidate.patch",
+      "sha256": "38d7f00d674cfae4dface9e73afb9638a9c2114bbc5d765ae04226bbd0ecd2b9"
+    }
+  ],
+  "images": [
+    {
+      "target": "mistel_md770rgb_bt_right_default_stock_parity",
+      "binary_bytes": 46096,
+      "binary_sha256": "c06d2841f3af1e5ce4a1891e9b991c04fd448bc549cb5171c8458daf48418d00",
+      "elf_sha256": "5caff7c53698a30df88735e04e664b8a84230cb8526204a3122c129ecb79f7b3",
+      "cflags_sha256": "ec0760c5f2fa79657d00017f6c65122f6f331a1eb8c13380e0c60808a9f11f1f",
+      "diagnostic_hooks": false
+    },
+    {
+      "target": "mistel_md770rgb_bt_right_default_validation_stock_parity",
+      "binary_bytes": 45960,
+      "binary_sha256": "63f1eaa7d10ad6b176a5f0309bb0f94b1d024879151fe77ef069155b275f0404",
+      "elf_sha256": "87749f673075c4d2fe09114948b28fa36064304aaba5cf82b45e790a6151f57d",
+      "cflags_sha256": "9186abd288f6812b21269c4ff875e90e3fb95afd2d15e70ea871796c49ec7867",
+      "diagnostic_hooks": false
+    },
+    {
+      "target": "mistel_md770rgb_bt_right_markwellis_stock_parity",
+      "binary_bytes": 47356,
+      "binary_sha256": "f60a5517cab89d2162bdc65b0610fd15998f00afc4d279cf63b39cf7f51bf29c",
+      "elf_sha256": "4274324a0e4906d5b8c0c27d728acb455bfa41f8858232693aefee18bb84866d",
+      "cflags_sha256": "f393e5e6081bf67c20972dde7b66e39558239c76c400430701ae8c97610b8a77",
+      "diagnostic_hooks": false
+    },
+    {
+      "target": "mistel_md770rgb_bt_right_markwellis_validation_stock_parity",
+      "binary_bytes": 47220,
+      "binary_sha256": "c52738c3fd477c73e9a3523135fc77dd20328001a8a7225e4a1324f1731f3383",
+      "elf_sha256": "4cdac0829403d0be725c9b3bfeeedf670172f502790d2992f779649c88482846",
+      "cflags_sha256": "c34a18719fc87bcc7c46c3e8d9d79917a07a27d5b2c38dcae57d259972524bbd",
+      "diagnostic_hooks": false
+    }
+  ],
+  "candidate_audit": "docs/mistel-md770-stock-conformance-audit-before.json",
+  "installed_image_audit": "docs/mistel-md770-installed-stock-conformance-audit.json",
+  "candidate_audit_passed": false,
+  "remaining_known_failures": [
+    "Transport reset clears radio status retained by stock",
+    "Astra found additional release and recoverable-transfer mismatches",
+    "Candidate incorrectly clears retry budget for pairing as well as short selection",
+    "Astra verified synthetic release/press reports on public-state4 crossings",
+    "Candidate clears the displayed Caps LED cache to match a different stock public-status byte; this is a regression",
+    "Public-state changes discard pending releases and replay held-state reports as synthetic transitions",
+    "Short frames and SPI errors reset instead of the stock rearm/retry path",
+    "Timed-out selection or pairing commands are not retained for retry",
+    "USB state notices can be starved behind reports",
+    "Physical modifiers and overlapping media/system controls are not preserved across relevant transitions"
+  ],
+  "installed_build_unchanged": "docs/mistel-md770-validation-build.json",
+  "native_pair_boundary_initial_result": "Superseded false test: stock seeds the hold counter to1, so3000ms elapsed is correct; native expectation corrected",
+  "native_checks": {
+    "date": "2026-11-16T16:10:39.535651+00:00",
+    "passed": true,
+    "groups": 30,
+    "scope": "Native driver, resume and RGB cases; does not establish full stock parity",
+    "test_sources_sha256": {
+      "tests/md770_bluetooth/test.cpp": "d418bc712c5d27cca9687639f8b74f23d92f574ce98c4690844c3a632223c25f",
+      "tests/md770_bluetooth/run.sh": "0c2177212f6869381d561bb8a871751655b6e691c8547e915703fc1c5272154f"
+    }
+  },
+  "review_corrections": [
+    "The original pairing threshold is correct after including the stock press-counter initial value",
+    "The original visible Caps cache retention during selection is correct; the publicLED equivalence test is invalid"
+  ],
+  "withdrawal": {
+    "date": "2026-11-16T16:43:13.771110+00:00",
+    "source_restored_to_installed_baseline": true,
+    "restored_source_sha256": "f80c3b4931b801be6f025e8b1e96e2f4872e534a9a35b3b09b879b6b1bae9572",
+    "status": "Known-defective installed baseline restored; this is not a parity fix",
+    "existing_spi_reset_wait_retained": true,
+    "candidate_was_flashed": false
+  }
+}

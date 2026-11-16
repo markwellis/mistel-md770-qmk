@@ -105,7 +105,9 @@ class Hardware:
         self.pending = 0
         self.priorities = [0] * 32
         self.gpio = [{offset: 0 for offset in range(0, 0x2C, 4)} for _ in range(4)]
+        self.gpio[0][4] = self.gpio[0][8] = 0x3300
         self.inputs = [0] * 4
+        self.input_driven = [0] * 4
         self.registers = {address: 0 for address in
                           [0x40088024, 0x40088028, 0x4008802C, 0x40088030,
                            0x40088108, *range(0x40022020, 0x40022040, 4)]}
@@ -124,10 +126,37 @@ class Hardware:
 
     def pin(self, port, pad, high):
         mask = 1 << pad
+        if high is None:
+            self.input_driven[port] &= ~mask
+            return
+        self.input_driven[port] |= mask
         self.inputs[port] = (self.inputs[port] & ~mask) | (mask if high else 0)
 
+    def _gpio_input(self, port):
+        registers = self.gpio[port]
+        enabled, pull_up, pull_down = registers[4], registers[8], registers[12]
+        output = registers[0x20]
+        driven = registers[0] & ~(registers[0x10] & output)
+        external = self.input_driven[port]
+        if enabled & driven & external & (output ^ self.inputs[port]):
+            raise Unsupported('Conflicting GPIO output and external drive')
+        if enabled & ~(driven | external | pull_up | pull_down) & 0xFFFF:
+            raise Unsupported('Cannot read a floating GPIO input')
+        return ((output & driven) | (self.inputs[port] & external & ~driven)
+                | (pull_up & ~driven & ~external)) & enabled & 0xFFFF
+
     def output(self, port, pad):
-        return bool(self.gpio[port][0x20] & (1 << pad))
+        registers = self.gpio[port]
+        mask = 1 << pad
+        if not registers[0] & mask or registers[0x10] & mask:
+            raise Unsupported('GPIO output observation requires a push-pull output')
+        if self.input_driven[port] & mask & (self.inputs[port] ^ registers[0x20]):
+            raise Unsupported('Conflicting GPIO output and external drive')
+        mux = self.registers[0x40022020 + port * 8 + (pad // 8) * 4]
+        function = (mux >> ((pad % 8) * 4)) & 15
+        if function != 1 and not (function == 0 and (port, pad) in ((2, 14), (3, 1))):
+            raise Unsupported('GPIO output observation requires a GPIO alternate function')
+        return bool(registers[0x20] & mask)
 
     def clock(self, byte):
         if not self.registers[0x4008802C] & 16:
@@ -135,7 +164,9 @@ class Hardware:
         return self.spi.clock(byte)
 
     def scan_interrupt(self):
-        if self.registers[0x40076000] & 5 != 5:
+        if not self.registers[0x40088030] & (1 << 16):
+            raise Unsupported('Scan interrupt requested with the BFTM0 clock disabled')
+        if self.registers[0x40076000] != 5:
             raise Unsupported("Scan interrupt requested while its timer is disabled")
         self.registers[0x40076004] |= 1
         self.pending |= 1 << 17
@@ -162,6 +193,8 @@ class Hardware:
             if writing:
                 if offset == 0x1C:
                     raise Unsupported("GPIO input register is read-only")
+                if offset == 0x18 and value:
+                    raise Unsupported('GPIO locking is outside the model')
                 if offset == 0x24:
                     registers[0x20] &= ~(value >> 16)
                     registers[0x20] |= value & 0xFFFF
@@ -170,26 +203,29 @@ class Hardware:
                 else:
                     registers[offset] = value
             elif offset == 0x1C:
-                return ((self.inputs[port] & ~registers[0])
-                        | (registers[0x20] & registers[0])) & 0xFFFF
+                return self._gpio_input(port)
             else:
                 return registers[offset]
         elif address == 0x4006A110:
             if size != 4:
                 raise Unsupported("LVD register access must be a 32-bit word")
             if writing:
-                self.lvd = value & 0x770003
+                if value & 0x300003:
+                    raise Unsupported('LVD interrupts/events and brown-out detection are outside the model')
+                self.lvd = value & 0x470000
             else:
                 select = ((self.lvd >> 17) & 3) | ((self.lvd >> 20) & 4)
                 threshold = [2250, 2400, 2550, 2700, 2850, 3000, 3150, 3300][select]
                 low = bool(self.lvd & 0x10000) and self.voltage_mv <= threshold
                 return self.lvd | (0x80000 if low else 0)
+        elif 0x400A8000 <= address < 0x400A9000:
+            raise Unsupported('USB signalling, including remote wake, is outside the model')
         elif 0xE000E400 <= address < 0xE000E420:
             index = address - 0xE000E400
-            if size not in (1, 4) or index + size > 32:
+            if size != 4 or index % 4 or index + size > 32:
                 raise Unsupported("NVIC priority register access")
             if writing:
-                self.priorities[index:index + size] = [byte & 0xF0 for byte in value.to_bytes(size, "little")]
+                self.priorities[index:index + size] = [byte & 0xC0 for byte in value.to_bytes(size, "little")]
             else:
                 return int.from_bytes(bytes(self.priorities[index:index + size]), "little")
         elif address in (0xE000E100, 0xE000E180, 0xE000E200, 0xE000E280):
@@ -210,6 +246,12 @@ class Hardware:
             if size != 4:
                 raise Unsupported("Peripheral register access must be a 32-bit word")
             if writing:
+                if address == 0x40076000 and value not in (0, 5):
+                    raise Unsupported('Only stopped or repetitive BFTM0 scan mode is modelled')
+                if address == 0x40076008 and value:
+                    raise Unsupported('Only a cleared BFTM0 counter is modelled')
+                if address in (0x4002C000, 0x4006E000, 0x4006F000) and value not in (0, 1):
+                    raise Unsupported('Unsupported PWM timer control mode')
                 if address == 0x40088108:
                     if value & ~(1 << 4):
                         raise Unsupported("Only the SPI0 peripheral reset is modelled")
@@ -328,7 +370,7 @@ class Machine:
         exc_return = 0xFFFFFFF1 if handler else 0xFFFFFFFD if process else 0xFFFFFFF9
         self.active.append((irq, exc_return))
         self.hardware.pending &= ~(1 << irq)
-        cpu.reg_write(UC_ARM_REG_XPSR, 0x1000000 | (16 + irq))
+        cpu.reg_write(UC_ARM_REG_XPSR, (frame[7] & 0xF0000000) | 0x1000000 | (16 + irq))
         cpu.reg_write(UC_ARM_REG_CONTROL, cpu.reg_read(UC_ARM_REG_CONTROL) & ~2)
         cpu.reg_write(UC_ARM_REG_LR, exc_return)
         vector = self.read(0x3200 + (16 + irq) * 4)
@@ -346,6 +388,9 @@ class Machine:
         stack = UC_ARM_REG_PSP if exc_return & 4 else UC_ARM_REG_MSP
         address = cpu.reg_read(stack)
         frame = struct.unpack('<8I', cpu.mem_read(address, 32))
+        expected_exception = 16 + self.active[-1][0] if self.active else 0
+        if not frame[7] & 0x1000000 or frame[7] & 0x1FF != expected_exception:
+            raise Unsupported('Invalid stacked Thumb or exception mode state')
         for register, value in zip(FRAME_REGS, frame):
             if register not in (UC_ARM_REG_PC, UC_ARM_REG_XPSR):
                 cpu.reg_write(register, value)

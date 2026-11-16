@@ -1,0 +1,796 @@
+{
+  "scope": "Macro host key events for the listed factors; physical timing and radio delivery require measurement",
+  "factors": {
+    "transport": [
+      "usb",
+      "bluetooth"
+    ],
+    "trigger_half": [
+      "left",
+      "right"
+    ],
+    "macro_kind": [
+      "text",
+      "chord",
+      "delay"
+    ],
+    "modifier": [
+      "none",
+      "shift",
+      "control"
+    ],
+    "connection": [
+      "steady",
+      "reconnected"
+    ]
+  },
+  "software_combinations": 72,
+  "required_pairs": 57,
+  "covered_pairs": 57,
+  "macro_recordings": {
+    "text": "Record a, b, c; the recorder supplies the normal 40 ms intervals.",
+    "chord": "Record Left Ctrl down, a down/up, Left Ctrl up.",
+    "delay": "Record a, tap Fn+G once, then b; this inserts 100 ms before b."
+  },
+  "cases": [
+    {
+      "id": "HC01",
+      "transport": "usb",
+      "trigger_half": "left",
+      "macro_kind": "text",
+      "modifier": "none",
+      "connection": "steady",
+      "trigger_key": "Q",
+      "expected_key_events": [
+        [
+          4,
+          true
+        ],
+        [
+          4,
+          false
+        ],
+        [
+          5,
+          true
+        ],
+        [
+          5,
+          false
+        ],
+        [
+          6,
+          true
+        ],
+        [
+          6,
+          false
+        ]
+      ],
+      "emulator_prediction": {
+        "key_events": [
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ],
+          [
+            5,
+            true
+          ],
+          [
+            5,
+            false
+          ],
+          [
+            6,
+            true
+          ],
+          [
+            6,
+            false
+          ]
+        ],
+        "keyboard_reports": [
+          "00 00 04 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00",
+          "00 00 05 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00",
+          "00 00 06 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00"
+        ]
+      }
+    },
+    {
+      "id": "HC02",
+      "transport": "usb",
+      "trigger_half": "right",
+      "macro_kind": "delay",
+      "modifier": "control",
+      "connection": "steady",
+      "trigger_key": "O",
+      "expected_key_events": [
+        [
+          224,
+          true
+        ],
+        [
+          4,
+          true
+        ],
+        [
+          4,
+          false
+        ],
+        [
+          5,
+          true
+        ],
+        [
+          5,
+          false
+        ],
+        [
+          224,
+          false
+        ]
+      ],
+      "emulator_prediction": {
+        "key_events": [
+          [
+            224,
+            true
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ],
+          [
+            5,
+            true
+          ],
+          [
+            5,
+            false
+          ],
+          [
+            224,
+            false
+          ]
+        ],
+        "keyboard_reports": [
+          "01 00 00 00 00 00 00 00",
+          "01 00 04 00 00 00 00 00",
+          "01 00 00 00 00 00 00 00",
+          "01 00 05 00 00 00 00 00",
+          "01 00 00 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00"
+        ]
+      }
+    },
+    {
+      "id": "HC03",
+      "transport": "usb",
+      "trigger_half": "right",
+      "macro_kind": "text",
+      "modifier": "control",
+      "connection": "reconnected",
+      "trigger_key": "U",
+      "expected_key_events": [
+        [
+          224,
+          true
+        ],
+        [
+          4,
+          true
+        ],
+        [
+          4,
+          false
+        ],
+        [
+          5,
+          true
+        ],
+        [
+          5,
+          false
+        ],
+        [
+          6,
+          true
+        ],
+        [
+          6,
+          false
+        ],
+        [
+          224,
+          false
+        ]
+      ],
+      "emulator_prediction": {
+        "key_events": [
+          [
+            224,
+            true
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ],
+          [
+            5,
+            true
+          ],
+          [
+            5,
+            false
+          ],
+          [
+            6,
+            true
+          ],
+          [
+            6,
+            false
+          ],
+          [
+            224,
+            false
+          ]
+        ],
+        "keyboard_reports": [
+          "01 00 00 00 00 00 00 00",
+          "01 00 04 00 00 00 00 00",
+          "01 00 00 00 00 00 00 00",
+          "01 00 05 00 00 00 00 00",
+          "01 00 00 00 00 00 00 00",
+          "01 00 06 00 00 00 00 00",
+          "01 00 00 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00"
+        ]
+      }
+    },
+    {
+      "id": "HC04",
+      "transport": "usb",
+      "trigger_half": "right",
+      "macro_kind": "chord",
+      "modifier": "none",
+      "connection": "reconnected",
+      "trigger_key": "I",
+      "expected_key_events": [
+        [
+          224,
+          true
+        ],
+        [
+          4,
+          true
+        ],
+        [
+          4,
+          false
+        ],
+        [
+          224,
+          false
+        ]
+      ],
+      "emulator_prediction": {
+        "key_events": [
+          [
+            224,
+            true
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ],
+          [
+            224,
+            false
+          ]
+        ],
+        "keyboard_reports": [
+          "01 00 00 00 00 00 00 00",
+          "01 00 04 00 00 00 00 00",
+          "01 00 00 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00"
+        ]
+      }
+    },
+    {
+      "id": "HC05",
+      "transport": "usb",
+      "trigger_half": "right",
+      "macro_kind": "chord",
+      "modifier": "control",
+      "connection": "reconnected",
+      "trigger_key": "I",
+      "expected_key_events": [
+        [
+          224,
+          true
+        ],
+        [
+          4,
+          true
+        ],
+        [
+          4,
+          false
+        ],
+        [
+          224,
+          false
+        ]
+      ],
+      "emulator_prediction": {
+        "key_events": [
+          [
+            224,
+            true
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ],
+          [
+            224,
+            false
+          ]
+        ],
+        "keyboard_reports": [
+          "01 00 00 00 00 00 00 00",
+          "01 00 04 00 00 00 00 00",
+          "01 00 00 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00"
+        ]
+      }
+    },
+    {
+      "id": "HC06",
+      "transport": "usb",
+      "trigger_half": "right",
+      "macro_kind": "delay",
+      "modifier": "none",
+      "connection": "reconnected",
+      "trigger_key": "O",
+      "expected_key_events": [
+        [
+          4,
+          true
+        ],
+        [
+          4,
+          false
+        ],
+        [
+          5,
+          true
+        ],
+        [
+          5,
+          false
+        ]
+      ],
+      "emulator_prediction": {
+        "key_events": [
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ],
+          [
+            5,
+            true
+          ],
+          [
+            5,
+            false
+          ]
+        ],
+        "keyboard_reports": [
+          "00 00 04 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00",
+          "00 00 05 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00"
+        ]
+      }
+    },
+    {
+      "id": "HC07",
+      "transport": "usb",
+      "trigger_half": "right",
+      "macro_kind": "delay",
+      "modifier": "shift",
+      "connection": "reconnected",
+      "trigger_key": "O",
+      "expected_key_events": [
+        [
+          225,
+          true
+        ],
+        [
+          4,
+          true
+        ],
+        [
+          4,
+          false
+        ],
+        [
+          5,
+          true
+        ],
+        [
+          5,
+          false
+        ],
+        [
+          225,
+          false
+        ]
+      ],
+      "emulator_prediction": {
+        "key_events": [
+          [
+            225,
+            true
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ],
+          [
+            5,
+            true
+          ],
+          [
+            5,
+            false
+          ],
+          [
+            225,
+            false
+          ]
+        ],
+        "keyboard_reports": [
+          "02 00 00 00 00 00 00 00",
+          "02 00 04 00 00 00 00 00",
+          "02 00 00 00 00 00 00 00",
+          "02 00 05 00 00 00 00 00",
+          "02 00 00 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00"
+        ]
+      }
+    },
+    {
+      "id": "HC08",
+      "transport": "bluetooth",
+      "trigger_half": "right",
+      "macro_kind": "chord",
+      "modifier": "shift",
+      "connection": "steady",
+      "trigger_key": "I",
+      "expected_key_events": [
+        [
+          225,
+          true
+        ],
+        [
+          224,
+          true
+        ],
+        [
+          4,
+          true
+        ],
+        [
+          4,
+          false
+        ],
+        [
+          224,
+          false
+        ],
+        [
+          225,
+          false
+        ]
+      ],
+      "emulator_prediction": {
+        "key_events": [
+          [
+            225,
+            true
+          ],
+          [
+            224,
+            true
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ],
+          [
+            224,
+            false
+          ],
+          [
+            225,
+            false
+          ]
+        ],
+        "keyboard_reports": [
+          "02 00 00 00 00 00 00 00",
+          "03 00 00 00 00 00 00 00",
+          "03 00 04 00 00 00 00 00",
+          "03 00 00 00 00 00 00 00",
+          "02 00 00 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00"
+        ]
+      }
+    },
+    {
+      "id": "HC09",
+      "transport": "bluetooth",
+      "trigger_half": "left",
+      "macro_kind": "text",
+      "modifier": "shift",
+      "connection": "reconnected",
+      "trigger_key": "Q",
+      "expected_key_events": [
+        [
+          225,
+          true
+        ],
+        [
+          4,
+          true
+        ],
+        [
+          4,
+          false
+        ],
+        [
+          5,
+          true
+        ],
+        [
+          5,
+          false
+        ],
+        [
+          6,
+          true
+        ],
+        [
+          6,
+          false
+        ],
+        [
+          225,
+          false
+        ]
+      ],
+      "emulator_prediction": {
+        "key_events": [
+          [
+            225,
+            true
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ],
+          [
+            5,
+            true
+          ],
+          [
+            5,
+            false
+          ],
+          [
+            6,
+            true
+          ],
+          [
+            6,
+            false
+          ],
+          [
+            225,
+            false
+          ]
+        ],
+        "keyboard_reports": [
+          "02 00 00 00 00 00 00 00",
+          "02 00 04 00 00 00 00 00",
+          "02 00 00 00 00 00 00 00",
+          "02 00 05 00 00 00 00 00",
+          "02 00 00 00 00 00 00 00",
+          "02 00 06 00 00 00 00 00",
+          "02 00 00 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00"
+        ]
+      }
+    },
+    {
+      "id": "HC10",
+      "transport": "bluetooth",
+      "trigger_half": "left",
+      "macro_kind": "chord",
+      "modifier": "none",
+      "connection": "reconnected",
+      "trigger_key": "W",
+      "expected_key_events": [
+        [
+          224,
+          true
+        ],
+        [
+          4,
+          true
+        ],
+        [
+          4,
+          false
+        ],
+        [
+          224,
+          false
+        ]
+      ],
+      "emulator_prediction": {
+        "key_events": [
+          [
+            224,
+            true
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ],
+          [
+            224,
+            false
+          ]
+        ],
+        "keyboard_reports": [
+          "01 00 00 00 00 00 00 00",
+          "01 00 04 00 00 00 00 00",
+          "01 00 00 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00"
+        ]
+      }
+    },
+    {
+      "id": "HC11",
+      "transport": "bluetooth",
+      "trigger_half": "left",
+      "macro_kind": "delay",
+      "modifier": "control",
+      "connection": "reconnected",
+      "trigger_key": "E",
+      "expected_key_events": [
+        [
+          224,
+          true
+        ],
+        [
+          4,
+          true
+        ],
+        [
+          4,
+          false
+        ],
+        [
+          5,
+          true
+        ],
+        [
+          5,
+          false
+        ],
+        [
+          224,
+          false
+        ]
+      ],
+      "emulator_prediction": {
+        "key_events": [
+          [
+            224,
+            true
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ],
+          [
+            5,
+            true
+          ],
+          [
+            5,
+            false
+          ],
+          [
+            224,
+            false
+          ]
+        ],
+        "keyboard_reports": [
+          "01 00 00 00 00 00 00 00",
+          "01 00 04 00 00 00 00 00",
+          "01 00 00 00 00 00 00 00",
+          "01 00 05 00 00 00 00 00",
+          "01 00 00 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00"
+        ]
+      }
+    }
+  ],
+  "prediction_build": {
+    "validation_elf": "mistel_md770rgb_bt_right_markwellis_validation.elf",
+    "validation_elf_sha256": "181c40b170487b210dc817f0956505be21770b570cd067b6179f0a4d359dc484",
+    "validation_binary_sha256": "ec0fff325e91c221efc15228a997e52811777eb6afc521b916db55890d9ebbcd",
+    "abi_provenance": {
+      "assumption": "Current headers and compiler must match the supplied ELF build; rebuild after changes",
+      "elf_sha256": "181c40b170487b210dc817f0956505be21770b570cd067b6179f0a4d359dc484",
+      "compiler": "arm-none-eabi-gcc (Arm GNU Toolchain 15.2.Rel1 (Build arm-15.86)) 15.2.1 20251203",
+      "flags_sha256": "e0e15d2db3c8666dc91c11cd6b0d86fe083e7984b381262935218267964f148a",
+      "preprocessed_probe_sha256": "3d5f66834bf00221f90059e79954373dec488c3c38338000f66913888f6f01d0"
+    },
+    "software_tests_passed": 83,
+    "software_subtests": 376
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "image": "mistel_md770rgb_bt_right_markwellis_radio_diagnostics_v2.bin",
+  "application_bytes": 47776,
+  "sha256": "8f957608a5312e030c1415452754d50e61c06388e89d74b33bbe8d696d0314f9",
+  "elf_sha256": "df5a8629b6f8165f8b68b0de0ce76614de359ed5d09ce5d8f59d8d28aca92dda",
+  "build_flags": [
+    "EXTRAFLAGS=-DMD770_DIAGNOSTICS",
+    "EXTRALDFLAGS=-Wl,--undefined=md770_radio_snapshot"
+  ],
+  "scope": "Passive snapshots plus latched SPI error state before handler clears it; diagnostic build"
+}

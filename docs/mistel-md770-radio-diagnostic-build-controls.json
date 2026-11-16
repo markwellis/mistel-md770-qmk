@@ -1,0 +1,24 @@
+{
+  "date": "2026-11-16T12:19:34.945209+00:00",
+  "image": "mistel_md770rgb_bt_right_markwellis_radio_diagnostics_controls.bin",
+  "application_bytes": 48092,
+  "sha256": "3fabb0339bf899b9ca364dda39ec5d8c3c80569af9a31a93406575e449388d08",
+  "elf_sha256": "77353fa3a00154e575d6bfb0f0f1abb4cd2fd903ca3fbadf8e94a0af4c59d641",
+  "build_flags": [
+    "EXTRAFLAGS=-DMD770_DIAGNOSTICS",
+    "EXTRALDFLAGS=-Wl,--undefined=md770_radio_snapshot"
+  ],
+  "change": "Retain the SPI reset wait; expose stored profile bindings, control-key matrix state and profile dispatch counters; keep diagnostic replies on USB regardless of selected keyboard output",
+  "pair_command": "An explicit MD2 page16 request with slot1,2 or3 calls existing md770_radio_select(slot, true); all other implemented pages read snapshots",
+  "calibration_status": "Diagnostic image; not the macro validation image used to export calibration predictions",
+  "source_sha256": {
+    "qmk_firmware/keyboards/mistel/md770rgb_bt/bluetooth.c": "ae6210c96f91cba9e842557081f63bbf625f4e99ecfd6301b03ed13c99ec462b",
+    "qmk_firmware/keyboards/mistel/md770rgb_bt/md770rgb_bt.h": "70640e916579ac4854f15151d51e2cd8d21c40130a980b779e3ea12b343755f4",
+    "mistel-md770-qmk/keyboards/mistel/md770rgb_bt/keymaps/markwellis/notification.c": "d2c0bcecb6600d3306ef3be4134f5d189c88983edd9677fc1dc441fa875117cd"
+  },
+  "source_patches": {
+    "qmk_firmware": "tests/md770_bluetooth/diagnostics-qmk.patch",
+    "mistel-md770-qmk": "tests/md770_bluetooth/diagnostics-keymap.patch"
+  },
+  "patch_prerequisite": "QMK Bluetooth implementation with the SPI0 reset-completion poll; apply each diagnostic patch from its named repository root"
+}

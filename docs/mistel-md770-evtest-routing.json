@@ -1,0 +1,24 @@
+{
+  "date": "2026-11-16T13:14:13.631686+00:00",
+  "capture_started": "2026-11-16T13:09:13.594174+00:00",
+  "timeout_seconds": 300,
+  "tool": "evtest1.36, default non-grabbing mode",
+  "scope": "Identify the actual USB or Bluetooth input route for a single requested key; functional diagnosis only",
+  "capture_mode": "live",
+  "flash_record": "docs/mistel-md770-validation-flash-right.json",
+  "devices": [
+    {
+      "name": "Mistel MD770 RGB BT (QMK)",
+      "bus": 3
+    },
+    {
+      "name": "Mistel MD770 RGB BT (QMK) Keyboard",
+      "bus": 3
+    },
+    {
+      "name": "Mistel 1 Keyboard",
+      "bus": 5
+    }
+  ],
+  "events": []
+}

@@ -1,0 +1,37 @@
+{
+  "date": "2026-11-16T12:56:10.291612+00:00",
+  "image": "mistel_md770rgb_bt_right_markwellis_validation.bin",
+  "application_bytes": 47072,
+  "sha256": "ec0fff325e91c221efc15228a997e52811777eb6afc521b916db55890d9ebbcd",
+  "elf_sha256": "181c40b170487b210dc817f0956505be21770b570cd067b6179f0a4d359dc484",
+  "qmk_source_commit": "3f9fb0f449061752370c3359d6a981d387fe5e7d",
+  "qmk_source_patch": "patches/md770-spi-reset-wait.patch",
+  "diagnostics_enabled": false,
+  "validation_retained_symbols": [
+    "md770_programming_task",
+    "md770_programming_process",
+    "md770_playback_cancel",
+    "nvm_dynamic_keymap_macro_read_buffer",
+    "nvm_dynamic_keymap_macro_size",
+    "host_task",
+    "md770_power_init"
+  ],
+  "calibration_plan_sha256": "588483a86c84f71d4c2e87881c2089b508cebabb3d68fd2f4add530a59d51d8f",
+  "software_results": {
+    "keymaps": [
+      "default",
+      "markwellis"
+    ],
+    "groups_each": 83,
+    "parameterised_subtests_each": 376,
+    "native_bluetooth": 29,
+    "native_programming": 40,
+    "stock_packets": 8,
+    "stock_trace_groups": 39,
+    "host_tools": 44
+  },
+  "source_sha256": {
+    "qmk_firmware/keyboards/mistel/md770rgb_bt/bluetooth.c": "f80c3b4931b801be6f025e8b1e96e2f4872e534a9a35b3b09b879b6b1bae9572",
+    "mistel-md770-qmk/keyboards/mistel/md770rgb_bt/keymaps/markwellis/notification.c": "d12790c7c2206f5444d26e8ccc954a0a9a759a108714135691573b92b0fcb555"
+  }
+}

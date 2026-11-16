@@ -1,0 +1,63 @@
+{
+  "date": "2026-11-16T13:05:02.999710+00:00",
+  "capture_started": "2026-11-16T13:00:02.987625+00:00",
+  "timeout_seconds": 300,
+  "scope": "Left A then right J over Bluetooth on the normal validation firmware; functional smoke test, not macro calibration",
+  "capture_mode": "live",
+  "reference_firmware_sha256": "ec0fff325e91c221efc15228a997e52811777eb6afc521b916db55890d9ebbcd",
+  "flash_record": "docs/mistel-md770-validation-flash-right.json",
+  "case": {
+    "id": "BT_VALIDATION_AJ",
+    "transport": "bluetooth",
+    "expected_key_events": [
+      [
+        4,
+        true
+      ],
+      [
+        4,
+        false
+      ],
+      [
+        13,
+        true
+      ],
+      [
+        13,
+        false
+      ]
+    ]
+  },
+  "devices": [
+    {
+      "name": "Mistel 1 Keyboard",
+      "bus": 5,
+      "vendor": 2652,
+      "product": 34050
+    }
+  ],
+  "events": [],
+  "passed": false,
+  "lost_events": false,
+  "oracle_events_match": false,
+  "expected_evdev_key_events": [
+    [
+      30,
+      1
+    ],
+    [
+      30,
+      0
+    ],
+    [
+      36,
+      1
+    ],
+    [
+      36,
+      0
+    ]
+  ],
+  "actual_evdev_key_events": [],
+  "first_mismatch": 0
+}

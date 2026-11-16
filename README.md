@@ -43,22 +43,34 @@ reset when upgrading from the earlier firmware.
 
 The QMK support branch now also contains
 [Bluetooth, charging indicators and battery idle support](docs/mistel-md770-bluetooth-implementation.md).
-Default/personal builds and offline checks pass; these additions have not
-been flashed or validated on hardware.
+Bluetooth is unfinished and stock parity is not established. The expanded
+stock audit fails on the installed image. Two Astra reviews confirmed radio,
+input, USB and power gaps; the unsafe unflashed candidate was withdrawn.
+The earlier left/right images were
+flashed on 2026-11-16; checksums, metadata and USB return passed. Hardware
+diagnostics found and verified a fix for an SPI reset race. Controlled
+Bluetooth pulses, a physical right key and Pn+1 output selection passed on
+diagnostic builds. Three pulse traces matched the emulator's predicted key
+events. The normal validation
+image is restored; one power-bank typing capture from both halves passed,
+but later Bluetooth typing failed while the connection stayed up. USB typing
+was restored. Macro, reconnection and suspend calibration remain pending.
 
 ## Pending upstream changes
 
-Status checked 2026-11-14. The current build setup includes these pending changes:
+Status checked 2026-11-14; counter-width PR added 2026-11-16.
+The current build setup includes these pending changes:
 
 | Contribution | Status | Purpose |
 | --- | --- | --- |
 | [ChibiOS-Contrib #469](https://github.com/ChibiOS/ChibiOS-Contrib/pull/469) | Open | Correct the HT32 reset-controller address |
+| [ChibiOS-Contrib #470](https://github.com/ChibiOS/ChibiOS-Contrib/pull/470) | Open | Use a 32-bit HT32 BFTM counter type |
 | [pok3rtool #19](https://github.com/pok3r-custom/pok3rtool/pull/19) | Open | Recognise both MD770 halves and declare missing CLI dependencies |
 | [QMK keyboard port](https://github.com/qmk/qmk_firmware/compare/develop...markwellis:qmk_firmware:mistel-md770-support) | Branch prepared; PR not opened | Add the keyboard, default keymap and flashing command |
 | [QMK udev rules](https://github.com/qmk/qmk_udev/compare/main...markwellis:mistel-md770-iap) | Branch prepared; PR not opened | Allow user-level USB access for flashing; not needed for compilation |
 | QMK ChibiOS USB receive wake | On support branch; PR not opened | Re-arm reception after suspend resets the input queue |
 
-The ChibiOS fix must also reach QMK's ChibiOS-Contrib fork and dependency pin.
+The ChibiOS fixes must also reach QMK's ChibiOS-Contrib fork and dependency pin.
 `shell.nix` builds pinned upstream `pok3rtool` with the #19 patch. The
 [keymap dependency instructions](keyboards/mistel/md770rgb_bt/keymaps/markwellis/readme.md#pending-upstream-changes)
 cover the current setup and switching to upstream once these changes merge.
@@ -218,4 +230,9 @@ The utility must match the executable hash in the recorded ROM preflight.
 A different rebuild needs a fresh recorded read-only preflight first.
 
 The [emulator checkpoint](docs/mistel-md770-emulator-checkpoint.md) records the
-unfinished ARM emulator, the counter-width fix it exposed, and the next steps.
+bounded ARM component emulator, its repeatable checks, the counter-width fix
+it exposed, the review findings, and the remaining hardware work.
+The [calibration guide](docs/mistel-md770-hardware-calibration.md) recommends
+five hardware scenarios using the earlier wired baseline. Its optional
+11-case matrix covers all 57 defined factor-value pairs after 72 automated
+macro combinations pass, with automatic host-event comparison.

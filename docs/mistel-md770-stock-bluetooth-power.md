@@ -92,6 +92,32 @@ actual polarity and consumers rather than assigning it a speculative radio
 ready or charging name. The underside switch's physical wiring is also not
 established by the firmware. Its effect must not be inferred from PA10 alone.
 
+### Underside switch follow-up, 2026-11-16
+
+Rechecking the GPIO accesses, radio callback `0x40a4`, supply controller
+`0x84fc` and power-event handler `0x8420` identified no dedicated underside
+switch handler or switch-triggered radio-off command in the Holtek
+application. PA10's identified consumer remains the USB transition gate
+`0x84c8`. PD1 is pulsed during radio startup and recovery; that does not
+establish that it switches the module's supply.
+
+The manual USB selector in `0x5ef8` changes and saves the output selection.
+It does not call the USB enable helper `0x9874` or controller `0xcf68`.
+The A7 notice still reflects USB configuration, independently of that
+selection. Selecting USB therefore supplies no evidence of radio power-off.
+
+The component emulator already accepts the GPIO inputs used by these
+routines. No switch-to-GPIO mapping or radio supply control has been added;
+the available PCB photographs do not establish electrical continuity. A
+switch that directly interrupts a supply needs no firmware implementation.
+
+A subsequent [live QMK check](mistel-md770-switch-usb-radio-check.json)
+connected to the paired radio and received a Bluetooth ping reply while USB
+remained connected and the owner reported the switch OFF, after Pn+1.
+OFF therefore does not remove all radio power under USB on this QMK build.
+This measures radio reachability, independently of key delivery. It does
+not establish stock switch behaviour or identify the switched rail.
+
 ## Radio context and states
 
 | Address | Meaning |
@@ -257,7 +283,7 @@ Power event handler `0x8420` maintains the charging-indication eligibility
 byte at `0x20000020`. Events 0, 3 and 4 set it; every entry first clears it,
 so events 1 and 2 leave it clear. Event 0 selects and saves USB output;
 event 2 selects and saves Bluetooth output and starts a 500-tick transition
-timer; events 1/3 update the USB enable path through `0x9874`/`0xcf68`.
+timer; events 2/3 update the USB enable path through `0x9874`/`0xcf68`.
 Thus the LED eligibility byte must not be replaced by a simple test of USB
 enumeration or PB12 alone. A powered, never-enumerated initial connection
 can retain eligibility from event 3; dropping from configured USB to

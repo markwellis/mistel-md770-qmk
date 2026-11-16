@@ -1,0 +1,35 @@
+{
+  "date": "2026-11-16T13:31:43.986067+00:00",
+  "image": "mistel_md770rgb_bt_right_markwellis_radio_diagnostics_reports.bin",
+  "application_bytes": 48836,
+  "sha256": "04b6c4d8dc102f02ba2602b1aeb6b9cdd4b821c073bb3d0561d6fc575e887ee6",
+  "elf_sha256": "cbf24b0461d90a687787f91af6bb775264fc4ad41cbead7a879cdc4af80a4362",
+  "change": "Guarded report/drop/frame counters and known diagnostic pulses through the Bluetooth sender, real QMK routing and an unguarded queue comparison",
+  "source_sha256": {
+    "qmk_firmware/keyboards/mistel/md770rgb_bt/bluetooth.c": "fe8d404e4a77d6748d3b8739b0e2db285c9fcc0da543a769c310aca38d12e15e",
+    "qmk_firmware/keyboards/mistel/md770rgb_bt/md770rgb_bt.h": "d861883c19bc9c4fa27f12800c5ce7d6b5a8a1f725e274c5ae1428d09ae815ac",
+    "mistel-md770-qmk/keyboards/mistel/md770rgb_bt/keymaps/markwellis/notification.c": "f8285ed48001cb4221d74010a4969e344e8151dca9c43de3a6f1d227a6fccbf7"
+  },
+  "source_patches": {
+    "qmk_firmware": "tests/md770_bluetooth/diagnostics-report-qmk.patch",
+    "mistel-md770-qmk": "tests/md770_bluetooth/diagnostics-report-keymap.patch"
+  },
+  "patch_prerequisite": "Apply the production SPI reset wait before the diagnostic patch",
+  "software_preflight": "docs/mistel-md770-diagnostic-pulse-checks.json",
+  "commands": {
+    "page16": "Select slot1..3 and request pairing",
+    "page17": "Known A/J pulse modes1..3 only",
+    "page18": "Enter retained updater when argument1 is supplied",
+    "page19": "Restore USB output without persisting the selection"
+  },
+  "calibration_status": "Diagnostic image; not the macro calibration reference",
+  "build_flags": [
+    "EXTRAFLAGS=-DMD770_DIAGNOSTICS",
+    "EXTRALDFLAGS=-Wl,--undefined=md770_radio_snapshot,--undefined=md770_radio_test,--undefined=bluetooth_task,--undefined=host_task,--undefined=md770_programming_task,--undefined=md770_programming_process,--undefined=md770_playback_cancel,--undefined=nvm_dynamic_keymap_macro_read_buffer,--undefined=nvm_dynamic_keymap_macro_size"
+  ],
+  "qmk_source_commit": "3f9fb0f449061752370c3359d6a981d387fe5e7d",
+  "patch_sha256": {
+    "tests/md770_bluetooth/diagnostics-report-qmk.patch": "896e9caa9866f485b23acb18df358fbdbab9b1e1c839aebc34c11b9d9763d4c7",
+    "tests/md770_bluetooth/diagnostics-report-keymap.patch": "8aba49d6af09718c1c0918d75fee7ac2f494a64b76976c607806e0cd19d648f5"
+  }
+}

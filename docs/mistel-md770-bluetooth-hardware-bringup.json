@@ -1,0 +1,74 @@
+{
+  "date": "2026-11-16T14:20:01.640875+00:00",
+  "status": "Normal validation firmware restored; power-bank Bluetooth typing from both halves passed; three diagnostic report paths match emulator predictions",
+  "power_source": "USB power bank; no internal cell",
+  "owner_observations": [
+    "Steady right-hand blue indicator was not present before",
+    "No pairing flashes after Pn+1 and holding Pn+F1",
+    "Two full settings resets reported",
+    "Identical stock keyboard also shows the steady blue indicator",
+    "Blue pairing flashes confirmed after direct host request and corrected Pn+F1 shortcut"
+  ],
+  "host_observation": "Direct slot1 pairing discovered Mistel1; BlueZ reported successful pairing, bonding and connection to classic HID service0x1124",
+  "live_diagnostic": "docs/mistel-md770-radio-live-usb.json",
+  "measured_fault": "Radio resets about every 2.5 seconds, receives one SPI interrupt per failed startup, and never reaches ready",
+  "led_inputs": {
+    "B12_external_power": true,
+    "C13_status": true,
+    "charge_eligible": true
+  },
+  "led_interpretation": "The new observation supports the steady blue indication matching stock; it does not establish physical charging or a Bluetooth connection",
+  "emulator_hardware_agreement": "Not established; supplied post-initialisation fixtures did not exercise this observed reset failure",
+  "next": "Record/play the planned macro cases and check media/Caps, reconnection and suspend; battery-specific measurements remain deferred",
+  "stock_comparison": "Owner reports a second keyboard of the same model running stock also has the blue light on",
+  "live_error_diagnostic": "docs/mistel-md770-radio-live-usb-v2.json",
+  "measured_spi_error": {
+    "last_irq_status": 64,
+    "meaning": "Slave abort",
+    "last_irq_control": 0,
+    "intended_control": 264,
+    "last_error_phase": 4
+  },
+  "startup_fix_hardware_result": {
+    "capture": "docs/mistel-md770-radio-live-usb-fixed.json",
+    "samples": 12,
+    "radio_ready_in_all_samples": true,
+    "spi_control": 264,
+    "reset_count_constant": 1,
+    "irq_error_flags": 0,
+    "spi_interrupts": 10
+  },
+  "shortcut_resolution": "Owner had used Pn+1 (Bluetooth output) when Pn+F1 (slot1) was requested; the corrected physical shortcut reaches the driver and starts pairing",
+  "shortcut_capture": "docs/mistel-md770-radio-shortcut-control-trace.json",
+  "direct_pair_capture": "docs/mistel-md770-radio-host-pair-slot1.json",
+  "binding_capture": "docs/mistel-md770-radio-controls-initial.json",
+  "current_right_flash": "docs/mistel-md770-validation-restored-flash-right.json",
+  "power_bank_observation": "After moving USB from laptop to power bank, initial host connect failed with Host is down. A short Pn+F1 slot1 selection then allowed connection.",
+  "typing_capture": "docs/mistel-md770-bluetooth-aj-input.json",
+  "typing_result": "Three known pulse paths and physical right J produce exact Bluetooth press/release events, with no USB events or new report drops. Physical Pn+1 changes requested output2 to3 and delivers J. Earlier no-input tests were not reproduced with this state visible.",
+  "typing_diagnostic": "docs/mistel-md770-radio-after-aj-usb.json",
+  "routing_capture": "docs/mistel-md770-bluetooth-aj-routing.json",
+  "current_right_build": "docs/mistel-md770-validation-build.json",
+  "diagnostic_sources": {
+    "qmk_firmware": "tests/md770_bluetooth/diagnostics-qmk.patch",
+    "mistel-md770-qmk": "tests/md770_bluetooth/diagnostics-keymap.patch"
+  },
+  "normal_validation_capture": "docs/mistel-md770-bluetooth-aj-validation-input.json",
+  "normal_validation_capture_result": "Capture was active from13:00:02 to13:05:02 UTC; owner confirmed pressing the requested A/J sequence during that window; no Bluetooth key events were captured.",
+  "independent_input_check": "evtest monitored USB keyboard interfaces and the connected Mistel1 Bluetooth keyboard without grabbing. The owner reported no output from a single A press; no event was observed at that time.",
+  "radio_identity_resolution": "Owner confirms the other stock keyboard was already off and unplugged. The controlled physical right J was captured from the connected Mistel1 Bluetooth device.",
+  "automatic_hardware_pulses": "docs/mistel-md770-radio-hardware-pulses.json",
+  "emulator_pulse_agreement": "docs/mistel-md770-diagnostic-pulse-agreement.json",
+  "physical_right_j": "docs/mistel-md770-physical-j-diagnostic.json",
+  "physical_output_selection": "docs/mistel-md770-output-selector-diagnostic.json",
+  "source_state": "Production sources match the tested normal build; guarded diagnostics are saved as exact patches and removed from the working sources.",
+  "power_bank_typing": "docs/mistel-md770-powerbank-typing.json",
+  "power_bank_connection": "Connection was established after reopening pairing with a long Pn+F1 hold. This run does not establish automatic cold reconnection.",
+  "basic_bluetooth_result": {
+    "passed": true,
+    "capture_mode": "live",
+    "usb_absent": true,
+    "left_a_and_right_j_press_release": true,
+    "no_extra_or_held_keys": true
+  }
+}

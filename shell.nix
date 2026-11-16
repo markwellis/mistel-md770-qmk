@@ -31,6 +31,13 @@ pkgs.mkShell {
   packages = [
     pkgs.qmk
     pok3rtool
+    (pkgs.python3.withPackages (ps: [
+      ps.unicorn
+      ps.pyelftools
+      ps.capstone
+      ps.allpairspy
+      ps.evdev
+    ]))
   ];
   QMK_HOME = toString ../qmk_firmware;
   QMK_USERSPACE = toString ./.;

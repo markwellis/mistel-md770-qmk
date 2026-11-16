@@ -1,0 +1,167 @@
+--- a/keyboards/mistel/md770rgb_bt/bluetooth.c
++++ b/keyboards/mistel/md770rgb_bt/bluetooth.c
+@@ -24,6 +24,11 @@
+ static uint8_t          pending_slot, held_slot, current_command, current_length;
+ static bool             pair_requested, usb_notice, usb_configured, resynchronise, retry;
+ static bool             stopped;
++#ifdef MD770_DIAGNOSTICS
++static uint32_t diagnostic_resets, diagnostic_irqs, diagnostic_tasks, diagnostic_profile_events, diagnostic_profile_code;
++static uint32_t diagnostic_irq_status, diagnostic_irq_control, diagnostic_task_status, diagnostic_error_phase;
++static uint32_t diagnostic_profile_seen, diagnostic_profile_consumed;
++#endif
+ 
+ static void radio_task(void);
+ 
+@@ -46,6 +51,11 @@
+ 
+ OSAL_IRQ_HANDLER(HT32_SPI0_IRQ_VECTOR) {
+     OSAL_IRQ_PROLOGUE();
++#ifdef MD770_DIAGNOSTICS
++    ++diagnostic_irqs;
++    diagnostic_irq_status = SPI0->SR;
++    diagnostic_irq_control = SPI0->CR1;
++#endif
+     if (SPI0->SR & 0xf8) {
+         failed    = true;
+         SPI0->IER = 0;
+@@ -71,6 +81,9 @@
+ }
+ 
+ static void reset_radio(void) {
++#ifdef MD770_DIAGNOSTICS
++    ++diagnostic_resets;
++#endif
+     chSysLock();
+     SPI0->IER = 0;
+     SPI0->CR0 = 0;
+@@ -218,10 +231,21 @@
+ }
+ 
+ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
++#ifdef MD770_DIAGNOSTICS
++    bool diagnostic_profile = keycode >= QK_BLUETOOTH_PROFILE1 && keycode <= QK_BLUETOOTH_PROFILE3;
++    if (diagnostic_profile) ++diagnostic_profile_seen;
++#endif
+     if (!process_record_user(keycode, record)) {
++#ifdef MD770_DIAGNOSTICS
++        if (diagnostic_profile) ++diagnostic_profile_consumed;
++#endif
+         return false;
+     }
+     if (keycode >= QK_BLUETOOTH_PROFILE1 && keycode <= QK_BLUETOOTH_PROFILE3) {
++#ifdef MD770_DIAGNOSTICS
++        ++diagnostic_profile_events;
++        diagnostic_profile_code = keycode;
++#endif
+         uint8_t slot = keycode - QK_BLUETOOTH_PROFILE1 + 1;
+         if (record->event.pressed) {
+             held_slot    = slot;
+@@ -287,6 +311,10 @@
+     }
+     chSysUnlock();
+     if (error || ((phase == TRANSMITTING || phase == RECEIVING) && timer_elapsed32(phase_started) >= 2000)) {
++#ifdef MD770_DIAGNOSTICS
++        diagnostic_task_status = SPI0->SR;
++        diagnostic_error_phase = phase;
++#endif
+         reset_radio();
+         return;
+     }
+@@ -367,6 +395,9 @@
+ }
+ 
+ void bluetooth_task(void) {
++#ifdef MD770_DIAGNOSTICS
++    ++diagnostic_tasks;
++#endif
+     if (stopped) {
+         return;
+     }
+@@ -402,3 +433,77 @@
+     chSysUnlock();
+     stopped = true;
+ }
++
++#ifdef MD770_DIAGNOSTICS
++void md770_radio_snapshot(uint8_t page, uint32_t values[7]) {
++    switch (page) {
++        case 0:
++            values[0] = timer_read32();
++            values[1] = phase;
++            values[2] = radio_state;
++            values[3] = pending_slot;
++            values[4] = pair_requested;
++            values[5] = held_slot;
++            values[6] = count;
++            break;
++        case 1:
++            values[0] = SPI0->CR0;
++            values[1] = SPI0->CR1;
++            values[2] = SPI0->FCR;
++            values[3] = SPI0->SR;
++            values[4] = SPI0->FSR;
++            values[5] = SPI0->IER;
++            values[6] = rx_length | (uint32_t)selected << 8 | (uint32_t)failed << 9;
++            break;
++        case 2:
++            values[0] = GPIOA->DINR;
++            values[1] = GPIOB->DINR;
++            values[2] = GPIOC->DINR;
++            values[3] = GPIOC->DOUTR;
++            values[4] = GPIOD->DOUTR;
++            values[5] = GPIOC->INER;
++            values[6] = CKCU->APBCCR0;
++            break;
++        case 3:
++            values[0] = diagnostic_resets;
++            values[1] = diagnostic_irqs;
++            values[2] = diagnostic_tasks;
++            values[3] = diagnostic_profile_events;
++            values[4] = diagnostic_profile_code;
++            values[5] = phase_started;
++            values[6] = last_frame;
++            break;
++        case 4:
++            values[0] = connection_get_host();
++            values[1] = connection_get_host_raw();
++            values[2] = md770_charge_indicated();
++            values[3] = md770_power_idle();
++            values[4] = md770_power_usb_suspended();
++            values[5] = USBD1.configuration;
++            values[6] = GPIOB->INER;
++            break;
++        case 5:
++            values[0] = AFIO->GPxCFGR[0][0];
++            values[1] = AFIO->GPxCFGR[0][1];
++            values[2] = AFIO->GPxCFGR[1][0];
++            values[3] = AFIO->GPxCFGR[1][1];
++            values[4] = AFIO->GPxCFGR[2][1];
++            values[5] = AFIO->GPxCFGR[3][0];
++            values[6] = GPIOB->DIRCR;
++            break;
++        case 6:
++            values[0] = diagnostic_irq_status;
++            values[1] = diagnostic_irq_control;
++            values[2] = diagnostic_task_status;
++            values[3] = diagnostic_error_phase;
++            values[4] = SPI0->CPR;
++            values[5] = RSTCU->APBPRSTR0;
++            values[6] = SPI0->FTOCR;
++            break;
++        case 7:
++            values[5] = diagnostic_profile_seen;
++            values[6] = diagnostic_profile_consumed;
++            break;
++    }
++}
++#endif
+--- a/keyboards/mistel/md770rgb_bt/md770rgb_bt.h
++++ b/keyboards/mistel/md770rgb_bt/md770rgb_bt.h
+@@ -51,3 +51,7 @@
+ bool md770_radio_can_enqueue(void);
+ bool md770_radio_usb_allowed(void);
+ #endif
++
++#ifdef MD770_DIAGNOSTICS
++void md770_radio_snapshot(uint8_t page, uint32_t values[7]);
++#endif

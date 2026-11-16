@@ -31,8 +31,9 @@ from the unchanged QMK left half.
 
 The target is stock-compatible Bluetooth, charging, battery indications and
 power management, including the dedicated LEDs. The research stages below
-are now recorded in the linked trace. The linked implementation follows
-that specification. The previous probe builds remain historical experiments.
+are recorded in the linked trace. The linked implementation is being audited
+against that specification; stock parity has not been established. The
+previous probe builds remain historical experiments.
 They are not the starting point for further development.
 
 ### 1. Establish the behaviour and its sources

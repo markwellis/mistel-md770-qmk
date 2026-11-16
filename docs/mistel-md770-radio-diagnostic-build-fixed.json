@@ -1,0 +1,21 @@
+{
+  "image": "mistel_md770rgb_bt_right_markwellis_radio_diagnostics_fixed.bin",
+  "application_bytes": 47788,
+  "sha256": "5c95db1c901c5a27c85dc2b6f3eadfcdf3ad4a84ab0b87a3693943b9b90063d5",
+  "elf_sha256": "afbfa79641e641567609b74cfff3ccff8605bc517f899920d1c091d992214831",
+  "build_flags": [
+    "EXTRAFLAGS=-DMD770_DIAGNOSTICS",
+    "EXTRALDFLAGS=-Wl,--undefined=md770_radio_snapshot"
+  ],
+  "change": "Poll SPI0 reset completion before programming CR1",
+  "measured_before": {
+    "irq_status": 64,
+    "irq_control": 0,
+    "intended_control": 264
+  },
+  "software_regression": "Pre-fix ARM image fails the delayed-reset case with CR1=0; fixed image checked separately",
+  "source_sha256": {
+    "qmk_firmware/keyboards/mistel/md770rgb_bt/bluetooth.c": "20feb1244cee83e2e748a5a103bea191f3724da43e5865cb4522f513fec5104b",
+    "mistel-md770-qmk/keyboards/mistel/md770rgb_bt/keymaps/markwellis/notification.c": "3fa86ed026acd53b6084ef854ad262c91102b0153955cb7739af4e250fdc04a2"
+  }
+}

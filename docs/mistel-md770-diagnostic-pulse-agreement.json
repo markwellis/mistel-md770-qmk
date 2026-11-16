@@ -1,0 +1,109 @@
+{
+  "date": "2026-11-16T13:58:41.233766+00:00",
+  "passed": true,
+  "scope": "Host key-event ordering for three controlled pulses on the matching diagnostic image; not the macro calibration or a complete board validation",
+  "reference_image_sha256": "04b6c4d8dc102f02ba2602b1aeb6b9cdd4b821c073bb3d0561d6fc575e887ee6",
+  "cases": [
+    {
+      "mode": "driver",
+      "matched": true,
+      "predicted_bluetooth_key_events": [
+        [
+          30,
+          1
+        ],
+        [
+          30,
+          0
+        ]
+      ],
+      "observed_bluetooth_key_events": [
+        [
+          30,
+          1
+        ],
+        [
+          30,
+          0
+        ]
+      ],
+      "observed_usb_key_events": []
+    },
+    {
+      "mode": "qmk",
+      "matched": true,
+      "predicted_bluetooth_key_events": [
+        [
+          36,
+          1
+        ],
+        [
+          36,
+          0
+        ]
+      ],
+      "observed_bluetooth_key_events": [
+        [
+          36,
+          1
+        ],
+        [
+          36,
+          0
+        ]
+      ],
+      "observed_usb_key_events": []
+    },
+    {
+      "mode": "unguarded",
+      "matched": true,
+      "predicted_bluetooth_key_events": [
+        [
+          30,
+          1
+        ],
+        [
+          30,
+          0
+        ]
+      ],
+      "observed_bluetooth_key_events": [
+        [
+          30,
+          1
+        ],
+        [
+          30,
+          0
+        ]
+      ],
+      "observed_usb_key_events": []
+    }
+  ],
+  "evidence": {
+    "model": {
+      "path": "docs/mistel-md770-diagnostic-pulse-checks.json",
+      "sha256": "f2f368d69950d090b86b73dbbaf3687b74646cf2e7d889f8075e03bd209df55f"
+    },
+    "hardware": {
+      "path": "docs/mistel-md770-radio-hardware-pulses.json",
+      "sha256": "6e8a2a5fe2853b9df81148e4958bab4029025f0813c668cc46cb08b77d2071db"
+    },
+    "flash": {
+      "path": "docs/mistel-md770-radio-reports-flash-right.json",
+      "sha256": "896e85acfe703795367fbe0e0de396c992edccba79392a2a04e3c08c8bc4016f"
+    },
+    "build": {
+      "path": "docs/mistel-md770-radio-diagnostic-build-reports.json",
+      "sha256": "79e8f668d93b012232e9ffef9847a2324a620fde32d8bda4da62f52f2dc81d66"
+    }
+  },
+  "uncalibrated": [
+    "Physical matrix and split wire",
+    "Complete boot and EEPROM loading",
+    "Timing and interrupt latency",
+    "Other radio states and reconnection",
+    "USB signalling and analogue power",
+    "Macro recording and playback"
+  ]
+}

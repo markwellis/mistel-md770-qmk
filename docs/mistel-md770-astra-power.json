@@ -1,0 +1,122 @@
+{
+  "installed": {
+    "charge_burst_first_requested_at_1000ms": {
+      "qmk_blue": 0,
+      "stock_blue": 6000
+    },
+    "pairing_low_battery_priority_at_start": {
+      "qmk_red_blue": [
+        6000,
+        6000
+      ],
+      "stock_red_blue": [
+        0,
+        6000
+      ]
+    },
+    "slot_reselected_during_off_phase_at_350ms": {
+      "qmk_blue": 6000,
+      "stock_blue": 0,
+      "stock_phase_countdown": 300
+    },
+    "pairing_indicator_timeout": {
+      "stock_idle_ticks_remaining": 6000,
+      "stock_pair_awake_flag": 0,
+      "qmk_scan_reload": 39441,
+      "qmk_activity_ms": 0,
+      "qmk_ms": 340000
+    },
+    "available_suspend_symbols": [
+      "real_mods",
+      "rgb_matrix_set_suspend_state",
+      "suspend_state",
+      "usb_event_queue_enqueue.isra.0",
+      "event_queue_head",
+      "event_queue_tail",
+      "event_queue",
+      "suspended",
+      "send_keyboard_report",
+      "suspend_power_down_modules",
+      "last_suspend_state",
+      "suspend_wakeup_init_quantum",
+      "rgb_matrix_task",
+      "matrix_previous",
+      "wakeup_matrix",
+      "__sch_wakeup.lto_priv.0"
+    ],
+    "select_slot_during_active_caps_indication": {
+      "qmk_red": 6000,
+      "stock_red": 6000,
+      "qmk_public_leds": 2,
+      "stock_public_leds": 0,
+      "stock_cached_leds": 2
+    },
+    "transport_restart_during_active_caps_indication": {
+      "qmk_red": 0,
+      "stock_red": 6000,
+      "qmk_public_leds": 0,
+      "stock_public_leds": 2,
+      "stock_cached_leds": 2
+    }
+  },
+  "candidate": {
+    "charge_burst_first_requested_at_1000ms": {
+      "qmk_blue": 0,
+      "stock_blue": 6000
+    },
+    "pairing_low_battery_priority_at_start": {
+      "qmk_red_blue": [
+        6000,
+        6000
+      ],
+      "stock_red_blue": [
+        0,
+        6000
+      ]
+    },
+    "slot_reselected_during_off_phase_at_350ms": {
+      "qmk_blue": 6000,
+      "stock_blue": 0,
+      "stock_phase_countdown": 300
+    },
+    "pairing_indicator_timeout": {
+      "stock_idle_ticks_remaining": 6000,
+      "stock_pair_awake_flag": 0,
+      "qmk_scan_reload": 39441,
+      "qmk_activity_ms": 0,
+      "qmk_ms": 340000
+    },
+    "available_suspend_symbols": [
+      "real_mods",
+      "rgb_matrix_set_suspend_state",
+      "suspend_state",
+      "usb_event_queue_enqueue.isra.0",
+      "event_queue_head",
+      "event_queue_tail",
+      "event_queue",
+      "suspended",
+      "send_keyboard_report",
+      "suspend_power_down_modules",
+      "last_suspend_state",
+      "suspend_wakeup_init_quantum",
+      "rgb_matrix_task",
+      "matrix_previous",
+      "wakeup_matrix",
+      "__sch_wakeup.lto_priv.0"
+    ],
+    "select_slot_during_active_caps_indication": {
+      "qmk_red": 0,
+      "stock_red": 6000,
+      "qmk_public_leds": 0,
+      "stock_public_leds": 0,
+      "stock_cached_leds": 2
+    },
+    "transport_restart_during_active_caps_indication": {
+      "qmk_red": 0,
+      "stock_red": 6000,
+      "qmk_public_leds": 0,
+      "stock_public_leds": 2,
+      "stock_cached_leds": 2
+    }
+  }
+}

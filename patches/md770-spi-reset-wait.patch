@@ -1,0 +1,13 @@
+diff --git a/keyboards/mistel/md770rgb_bt/bluetooth.c b/keyboards/mistel/md770rgb_bt/bluetooth.c
+index fbba07a322..71242c32fe 100644
+--- a/keyboards/mistel/md770rgb_bt/bluetooth.c
++++ b/keyboards/mistel/md770rgb_bt/bluetooth.c
+@@ -59,6 +59,8 @@ OSAL_IRQ_HANDLER(HT32_SPI0_IRQ_VECTOR) {
+ static void arm_receiver(void) {
+     SPI0->IER        = 0;
+     RSTCU->APBPRSTR0 = RSTCU_APBPRSTR0_SPI0RST;
++    while (RSTCU->APBPRSTR0 & RSTCU_APBPRSTR0_SPI0RST) {
++    }
+     SPI0->CR1        = 0x0108;
+     SPI0->CPR        = 3;
+     SPI0->FCR        = 0x410;

@@ -6,7 +6,7 @@ trap 'rm -rf "$md770_test_dir"' EXIT
 g++ -std=gnu++17 -Wall -Wextra -Werror -Wno-missing-field-initializers \
     -fsanitize=address,undefined,bounds -fno-sanitize-recover=all \
     -Itests/md770_bluetooth -I"$md770_qmk" tests/md770_bluetooth/test.cpp -o "$md770_test_dir/test"
-for test in reports macro media short timeout error pending_error tail_byte tail_error long_frame collision reconnect_retry late_irq startup_selection selection pair replace_pair shutdown shutdown_backlog queue_stall charging voltage idle usb leds updater; do
+for test in reports macro media short timeout error pending_error tail_byte tail_error long_frame collision reconnect_retry late_irq startup_selection selection pair pair_boundary replace_pair shutdown shutdown_backlog queue_stall charging voltage idle usb leds updater; do
     ASAN_OPTIONS=detect_leaks=0 "$md770_test_dir/test" "$test"
 done
 mkdir "$md770_test_dir/headers"

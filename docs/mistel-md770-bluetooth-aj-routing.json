@@ -1,0 +1,127 @@
+{
+  "date": "2026-11-16T12:44:27.545284+00:00",
+  "capture_mode": "live",
+  "scope": "Requested A then J captured separately on USB and Bluetooth to identify actual routing; functional diagnosis only",
+  "flash_record": "docs/mistel-md770-radio-controls-flash-right.json",
+  "captures": {
+    "usb": {
+      "case": {
+        "id": "BT_AJ_ROUTING",
+        "transport": "usb",
+        "expected_key_events": [
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ],
+          [
+            13,
+            true
+          ],
+          [
+            13,
+            false
+          ]
+        ]
+      },
+      "devices": [
+        {
+          "name": "Mistel MD770 RGB BT (QMK) Keyboard",
+          "bus": 3,
+          "vendor": 1241,
+          "product": 1049
+        },
+        {
+          "name": "Mistel MD770 RGB BT (QMK)",
+          "bus": 3,
+          "vendor": 1241,
+          "product": 1049
+        }
+      ],
+      "events": [],
+      "passed": false,
+      "lost_events": false,
+      "oracle_events_match": false,
+      "expected_evdev_key_events": [
+        [
+          30,
+          1
+        ],
+        [
+          30,
+          0
+        ],
+        [
+          36,
+          1
+        ],
+        [
+          36,
+          0
+        ]
+      ],
+      "actual_evdev_key_events": [],
+      "first_mismatch": 0
+    },
+    "bluetooth": {
+      "case": {
+        "id": "BT_AJ_ROUTING",
+        "transport": "bluetooth",
+        "expected_key_events": [
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ],
+          [
+            13,
+            true
+          ],
+          [
+            13,
+            false
+          ]
+        ]
+      },
+      "devices": [
+        {
+          "name": "Mistel 1 Keyboard",
+          "bus": 5,
+          "vendor": 2652,
+          "product": 34050
+        }
+      ],
+      "events": [],
+      "passed": false,
+      "lost_events": false,
+      "oracle_events_match": false,
+      "expected_evdev_key_events": [
+        [
+          30,
+          1
+        ],
+        [
+          30,
+          0
+        ],
+        [
+          36,
+          1
+        ],
+        [
+          36,
+          0
+        ]
+      ],
+      "actual_evdev_key_events": [],
+      "first_mismatch": 0
+    }
+  },
+  "hardware_interpretation": "Inconclusive: no events during the capture window, but overlap with the physical keystrokes was not established. The owner later typed aj into chat without changing the connection after the routing capture expired."
+}

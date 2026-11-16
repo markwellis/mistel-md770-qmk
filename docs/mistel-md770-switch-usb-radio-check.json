@@ -1,0 +1,66 @@
+{
+  "date": "2026-11-16T15:22:19Z",
+  "key_delivery_followup_completed": "2026-11-16T15:34:27.208520+00:00",
+  "scope": "Live Bluetooth reachability with USB power and owner-reported switch OFF; normal QMK firmware; no stock firmware or battery-current measurement",
+  "build_manifest": "docs/mistel-md770-validation-build.json",
+  "flash_record": "docs/mistel-md770-validation-restored-flash-right.json",
+  "application_sha256": "ec0fff325e91c221efc15228a997e52811777eb6afc521b916db55890d9ebbcd",
+  "switch_position_reported_by_owner": "off",
+  "owner_action": "Pressed Pn+1, then confirmed the underside switch was still OFF",
+  "usb": {
+    "present": true,
+    "identity": "04d9:0419",
+    "product": "MD770 RGB BT (QMK)",
+    "bus": 3,
+    "device": 33
+  },
+  "bluetooth": {
+    "address": "20:73:10:01:5B:BF",
+    "name": "Mistel 1",
+    "connect_result": "Connection successful",
+    "bluez_connected": true,
+    "input_device": {
+      "name": "Mistel 1 Keyboard",
+      "bus": 5,
+      "vendor": 2652,
+      "product": 34050,
+      "unique": "20:73:10:01:5b:bf"
+    },
+    "ping": {
+      "command": "sudo -A timeout 12s l2ping -c 1 -t 5 20:73:10:01:5B:BF",
+      "exit_code": 0,
+      "bytes": 44,
+      "sent": 1,
+      "received": 1,
+      "time_ms": 370.73,
+      "loss_percent": 0
+    }
+  },
+  "radio_responded_with_switch_off": true,
+  "typing_proven_by_connection_or_ping": false,
+  "key_delivery_followup": {
+    "off_capture": "docs/mistel-md770-switch-off-input.json",
+    "on_capture": "docs/mistel-md770-switch-on-input.json",
+    "reopened_endpoint_capture": "docs/mistel-md770-switch-on-selected-input.json",
+    "owner_actions": [
+      "OFF: tapped J and confirmed done; no key events captured",
+      "ON: tapped J and Enter and confirmed done; no key events captured",
+      "ON: briefly selected Pn+F1, then tapped J; Bluetooth endpoint was recreated",
+      "ON: after attaching to the recreated endpoint, tapped J and confirmed done; no key events captured",
+      "ON: selected USB with Pn+2, then J press and release arrived over USB"
+    ],
+    "on_capture_limit": "The original monitor lost its Bluetooth endpoint during slot selection; the subsequent J cannot be assessed from that capture",
+    "bluetooth_typing_observed": false,
+    "switch_dependent_key_delivery_demonstrated": false,
+    "usb_typing_restored": true,
+    "usb_key_events": [[36, 1], [36, 0]],
+    "status": "USB restored; Bluetooth connection stays up but key delivery is unresolved"
+  },
+  "conclusion": "OFF does not remove all radio power while USB powers this QMK build; the initial failed connection and ping before Pn+1 did not establish a power cut",
+  "limitations": [
+    "Physical switch contacts and controlled rails remain unidentified",
+    "Stock switch-OFF behaviour has not been measured",
+    "No internal battery is fitted",
+    "Radio reachability and key delivery are separate checks"
+  ]
+}
