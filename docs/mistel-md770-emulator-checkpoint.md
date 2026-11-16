@@ -1,5 +1,18 @@
 # Resume checkpoint: Bluetooth and ARM emulator
 
+The owner rejected the current implementation scope on 2026-11-16.
+The change set is not ready for the intended QMK PR. The target is to keep
+all QMK implementation changes within `keyboards/mistel/md770rgb_bt/`.
+The current changes to shared `tmk_core/`, `quantum/`, ChibiOS and
+`flash_spi` code are not acceptable as part of this keyboard implementation.
+Passing tests and earlier reviews do not establish acceptance of that scope.
+
+Tomorrow's first task is to audit the changes outside that directory and
+remove or relocate them, using existing QMK hooks and board-local code where
+possible. Record any behaviour that cannot be preserved within this boundary
+for separate consideration. The owner deferred this work; this checkpoint
+records the decision without changing firmware or dependencies.
+
 The requested checkpoint is saved as `779831a` here and `7f95caf037` in
 `qmk_firmware`. The reviewed corrections are now in QMK `c4500108e9`.
 This repository retains the matching personal macro player, regression tests,
@@ -41,11 +54,13 @@ or board equivalence.
 
 Testing stopped at the owner's request after these two captures on
 2026-11-16. The three test macro recordings have not been confirmed.
-Next session, prepare Q=text, I=chord and E=delay, then capture HC01, HC08
-and HC11 using `docs/mistel-md770-conformance-hardware-calibration.json`.
+The scope correction above takes priority over further hardware testing.
+The remaining macro checks require Q=text, I=chord and E=delay, followed by
+HC01, HC08 and HC11 using
+`docs/mistel-md770-conformance-hardware-calibration.json`.
 Media/indicators, reconnection, power-bank delivery and the two host
-sleep/wake paths also remain. The installed images are ready for these
-checks; another flash is not required.
+sleep/wake paths also remain. Existing captures identify the installed
+images; rerun affected validation after the scope correction.
 
 The local ChibiOS-Contrib edits are committed and pushed on
 `markwellis/ChibiOS-Contrib` branch `md770-conformance-integration`, ending

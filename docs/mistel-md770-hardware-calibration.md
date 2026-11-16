@@ -1,5 +1,10 @@
 # MD770 emulator calibration on hardware
 
+The owner rejected the current spread of QMK changes outside
+`keyboards/mistel/md770rgb_bt/`. Address that scope before continuing this
+hardware plan; see the [checkpoint](mistel-md770-emulator-checkpoint.md).
+The results below remain evidence for the identified installed images.
+
 The recommended pass is five short scenarios, with three macro recordings
 for setup. The earlier 20-case count repeated checks already recorded on
 hardware. The [wired results](mistel-md770-final-hardware-tests.json) and

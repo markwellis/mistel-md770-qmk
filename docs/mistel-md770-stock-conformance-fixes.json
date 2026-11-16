@@ -1,6 +1,22 @@
 {
   "date": "2026-11-16T20:29:13.725271+00:00",
-  "status": "hardware_calibration_paused_at_owner_request",
+  "status": "scope_rework_required_paused_at_owner_request",
+  "owner_scope_decision": {
+    "recorded_at": "2026-11-16T21:16:59.488812+00:00",
+    "accepted": false,
+    "reason": "The current spread of changes into shared QMK core, ChibiOS and flash code is not acceptable for the intended keyboard PR",
+    "target": "Keep all QMK implementation changes within keyboards/mistel/md770rgb_bt/",
+    "rejected_areas": [
+      "tmk_core/",
+      "quantum/",
+      "ChibiOS",
+      "flash_spi"
+    ],
+    "next_work": "Audit the changes outside the keyboard directory and remove or relocate them using existing QMK hooks and board-local code where possible; identify any behaviour that cannot be preserved within that boundary",
+    "deferred_by_owner": true,
+    "implementation_changed_for_this_record": false,
+    "prior_tests_and_reviews_do_not_establish_scope_acceptance": true
+  },
   "checkpoint_commits": {
     "mistel-md770-qmk": "779831a",
     "qmk_firmware": "7f95caf037"
@@ -59,6 +75,7 @@
     }
   },
   "remaining": [
+    "Address the rejected implementation scope before further hardware calibration",
     "Measured hardware calibration against the new firmware",
     "RF delivery, reconnect and first-key/wake checks",
     "Internal-battery behaviour when a cell is available"
@@ -580,6 +597,6 @@
     "stopped_at": "2026-11-16T21:13:29.660238+00:00",
     "macro_recordings_confirmed": false,
     "last_confirmed_setup": "Halves joined; laptop USB connected to right; Bluetooth slot 1 selected and delivering keys",
-    "resume_next": "Prepare Q=text, I=chord and E=delay in a replaceable profile, then capture HC01, HC08 and HC11 against the conformance plan"
+    "resume_next": "Address the rejected QMK implementation scope first; the recorded macro, reconnect and sleep/wake checks remain pending"
   }
 }
