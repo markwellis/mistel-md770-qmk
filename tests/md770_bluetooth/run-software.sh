@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-md770_validation_symbols='-Wl,--undefined=md770_programming_task,--undefined=md770_programming_process,--undefined=md770_playback_cancel,--undefined=nvm_dynamic_keymap_macro_read_buffer,--undefined=nvm_dynamic_keymap_macro_size,--undefined=host_task,--undefined=md770_power_init,--undefined=md770_power_task,--undefined=md770_radio_matrix_changed,--undefined=pre_process_keyevent_kb,--undefined=md770_system_tick_frequency,--undefined=action_exec,--undefined=suspend_wakeup_init,--undefined=usbStop,--undefined=led_init_ports,--undefined=host_keyboard_send,--undefined=usb_keyboard_report_pending,--undefined=usb_endpoint_in_init,--undefined=usb_endpoint_out_init'
+md770_validation_symbols='-Wl,--undefined=md770_programming_task,--undefined=md770_programming_process,--undefined=md770_playback_cancel,--undefined=md770_playback_active,--undefined=nvm_dynamic_keymap_macro_read_buffer,--undefined=nvm_dynamic_keymap_macro_size,--undefined=host_task,--undefined=md770_power_init,--undefined=md770_power_task,--undefined=md770_radio_matrix_changed,--undefined=pre_process_keyevent_kb,--undefined=md770_system_tick_frequency,--undefined=action_exec,--undefined=suspend_wakeup_init,--undefined=usbStop,--undefined=led_init_ports,--undefined=host_keyboard_send,--undefined=usb_keyboard_report_pending,--undefined=usb_endpoint_in_init,--undefined=usb_endpoint_out_init'
 md770_qmk=${QMK_HOME:-../qmk_firmware}
 for md770_keymap in default markwellis; do
     qmk compile -kb mistel/md770rgb_bt/left -km "$md770_keymap" -j 4 \

@@ -21,6 +21,7 @@ _Static_assert(MD770_MACRO_RECORD_EVENTS >= 2 && MD770_MACRO_RECORD_EVENTS <= UI
 _Static_assert(DYNAMIC_KEYMAP_MACRO_COUNT > 0 && DYNAMIC_KEYMAP_MACRO_COUNT <= QK_MACRO_MAX - QK_MACRO + 1, "Invalid macro count");
 
 enum programming_state { IDLE, TARGET, RECORDING, MOVE_FN, MOVE_PN, SAVE_RECORDING, SAVE_MOVE };
+enum playback_state { PLAYBACK_IDLE, PLAYBACK_RUNNING, PLAYBACK_RELEASING };
 typedef struct {
     uint16_t delay;
     uint8_t  code;
@@ -38,7 +39,7 @@ static md770_bank_t           move_bank = MD770_BANK_NONE;
 static keypos_t               destination;
 static uint32_t               blink_started, move_started;
 static bool                   overflow;
-static bool                   playing;
+static enum playback_state    playback_state;
 static uint16_t               playback_offset, playback_end;
 static keypos_t               playback_trigger;
 static uint32_t               playback_started, playback_wait;
@@ -49,7 +50,7 @@ typedef struct {
 } playback_event_t;
 static playback_event_t playback_sequence[10];
 static uint8_t playback_steps, playback_step;
-static bool playback_cancelling, playback_final_report, playback_pending;
+static bool playback_pending;
 static uint8_t playback_pending_slot;
 static keypos_t playback_pending_trigger;
 
@@ -154,15 +155,20 @@ static void playback_event(uint8_t code, bool down) {
     }
 }
 
+bool md770_playback_active(void) {
+    return playback_state != PLAYBACK_IDLE;
+}
+
 void md770_playback_cancel(void) {
-    playing = playback_pending = false;
+    playback_state = PLAYBACK_RELEASING;
+    playback_pending = false;
     playback_steps = playback_step = 0;
-    playback_cancelling = playback_final_report = true;
 }
 
 void md770_playback_cancel_physical(void) {
-    if (!playing && !playback_cancelling && !playback_pending) return;
-    playing = playback_pending = playback_cancelling = playback_final_report = false;
+    if (!md770_playback_active() && !playback_pending) return;
+    playback_state = PLAYBACK_IDLE;
+    playback_pending = false;
     playback_steps = playback_step = 0;
     for (uint16_t code = 0; code <= UINT8_MAX; ++code) {
         if (playback_keys[code / 8] & (1U << (code % 8))) unregister_code(code);
@@ -182,7 +188,7 @@ static void playback_start(void) {
     }
     playback_end = playback_offset;
     while (playback_end < capacity - 1 && macro_byte(playback_end)) ++playback_end;
-    playing = !slot && playback_end < capacity - 1;
+    playback_state = !slot && playback_end < capacity - 1 ? PLAYBACK_RUNNING : PLAYBACK_IDLE;
     playback_trigger = playback_pending_trigger;
     playback_wait = 0;
     playback_pending = false;
@@ -202,7 +208,7 @@ static void playback_tap(uint8_t code) {
 static void playback_task(void) {
     uint16_t capacity = dynamic_keymap_macro_get_buffer_size();
     for (uint8_t budget = 0; budget < 16; ++budget) {
-        if (playback_cancelling) {
+        if (playback_state == PLAYBACK_RELEASING) {
             bool released = false;
             for (uint16_t code = 0; code <= UINT8_MAX; ++code) {
                 if (!(playback_keys[code / 8] & (1U << (code % 8)))) continue;
@@ -218,15 +224,12 @@ static void playback_task(void) {
                 playback_mods = 0;
                 send_keyboard_report();
             }
-            if (playback_final_report) {
-                if (!playback_ready(KC_LCTL)) return;
-                send_keyboard_report();
-                playback_final_report = false;
-            }
-            playback_cancelling = false;
+            if (!playback_ready(KC_LCTL)) return;
+            send_keyboard_report();
+            playback_state = PLAYBACK_IDLE;
         }
-        if (!playback_cancelling && playback_pending) playback_start();
-        if (!playing || timer_elapsed32(playback_started) < playback_wait) return;
+        if (playback_pending) playback_start();
+        if (playback_state != PLAYBACK_RUNNING || timer_elapsed32(playback_started) < playback_wait) return;
         if (playback_step < playback_steps) {
             playback_event_t event = playback_sequence[playback_step];
             if (!playback_ready(event.code)) return;
@@ -548,7 +551,7 @@ bool md770_programming_process(uint16_t keycode, keyrecord_t *record) {
     matrix_row_t bit     = (matrix_row_t)1U << key.col;
     bool         trigger = KEYEQ(key, playback_trigger);
     bool         control = keycode == MO(FN) || keycode == MO(PN) || IS_MODIFIER_KEYCODE(keycode_config(keycode));
-    if (playing && !IS_QK_MACRO(keycode) && (record->event.pressed || (!trigger && !control))) {
+    if (playback_state == PLAYBACK_RUNNING && !IS_QK_MACRO(keycode) && (record->event.pressed || (!trigger && !control))) {
         // QMK clears weak modifiers before processing a physical press.
         if (record->event.pressed) playback_mods = 0;
         md770_playback_cancel();
@@ -599,7 +602,7 @@ bool md770_programming_process(uint16_t keycode, keyrecord_t *record) {
     if (state == IDLE) {
         if (IS_QK_MACRO(keycode)) {
             if (record->event.pressed && keycode - QK_MACRO < DYNAMIC_KEYMAP_MACRO_COUNT &&
-                ((!has_anykey() && !host_last_consumer_usage() && !host_last_system_usage()) || playing || playback_cancelling)) {
+                ((!has_anykey() && !host_last_consumer_usage() && !host_last_system_usage()) || md770_playback_active())) {
                 md770_playback_cancel();
                 playback_pending_slot = keycode - QK_MACRO;
                 playback_pending_trigger = key;

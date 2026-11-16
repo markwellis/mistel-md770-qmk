@@ -781,14 +781,14 @@
   ],
   "prediction_build": {
     "validation_elf": "mistel_md770rgb_bt_right_markwellis_conformance_validation.elf",
-    "validation_elf_sha256": "6f41a01d5d5afc038d4afdf2c83737e25d1032a5479d588345d820293afe7577",
-    "validation_binary_sha256": "fdef03ed68e51d51a5c9edad3cc34ffd0b5f792458159bb878969ee2cf96f3b8",
+    "validation_elf_sha256": "e20a0dfdb7c6ca03db3da1d0dd275a768bbd13052a86a0ba4f149a2d03fc81cf",
+    "validation_binary_sha256": "1a54bc60046d3a18dce05f65a0668dff858e2e60fbc833c2c86e8271cc500400",
     "abi_provenance": {
       "assumption": "Current headers and compiler must match the supplied ELF build; rebuild after changes",
-      "elf_sha256": "6f41a01d5d5afc038d4afdf2c83737e25d1032a5479d588345d820293afe7577",
+      "elf_sha256": "e20a0dfdb7c6ca03db3da1d0dd275a768bbd13052a86a0ba4f149a2d03fc81cf",
       "compiler": "arm-none-eabi-gcc (Arm GNU Toolchain 15.2.Rel1 (Build arm-15.86)) 15.2.1 20251203",
       "flags_sha256": "215a8c3e40b1709039dda7a605679953614702a1db810f93b9dd6d8410c7335e",
-      "preprocessed_probe_sha256": "cd7ec9ec9956a3d71297048ecec50ee9e82c8030274895083140ed969f6a35de"
+      "preprocessed_probe_sha256": "299c5c61bea0ed77e1ef25f63e6a97632f207f70d0b878f15e5c8b1e3a324bbd"
     },
     "software_tests_passed": 125,
     "software_subtests": 449

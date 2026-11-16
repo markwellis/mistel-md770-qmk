@@ -1,7 +1,7 @@
 # Resume checkpoint: Bluetooth and ARM emulator
 
 The requested checkpoint is saved as `779831a` here and `7f95caf037` in
-`qmk_firmware`. The reviewed corrections are now in QMK `5919f04d30`.
+`qmk_firmware`. The reviewed corrections are now in QMK `c4500108e9`.
 This repository retains the matching personal macro player, regression tests,
 stock probes, dependency patches and verification records.
 
@@ -15,6 +15,12 @@ Two Astra reviews at maximum effort found no remaining verified blocker in
 the new source and tests. See
 [the final record](mistel-md770-stock-conformance-fixes.json) for hashes,
 reproduction, covered boundaries and explicit QMK macro policies.
+
+Astra's maximum-effort maintainability review resolved all seven findings.
+Playback and idle use explicit phases. Power requests use named enum values.
+The report-family masks share one definition. Unused radio state was removed.
+The full software pass succeeded again. All 11 exported hardware prediction
+cases retain their previous reports and expected key events.
 
 No new firmware was flashed. Installed-image hashes are unchanged; measured
 hardware calibration remains pending. RF delivery, reconnection, first-key

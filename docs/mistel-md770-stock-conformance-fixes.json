@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-16T19:55:11.610776+00:00",
+  "date": "2026-11-16T20:29:13.725271+00:00",
   "status": "software_verified_unflashed",
   "checkpoint_commits": {
     "mistel-md770-qmk": "779831a",
@@ -8,9 +8,9 @@
   "review": {
     "model": "gpt-6-astra",
     "effort": "max",
-    "reviewers": 2,
-    "scope": "All new source and test changes in both repositories and dependency changes",
-    "status": "complete; no remaining verified blocker in the documented software scope"
+    "reviewers": 1,
+    "scope": "Maintainability changes, hook contracts, current fixtures and documentation in both repositories",
+    "status": "complete; all seven findings resolved and no unresolved review finding"
   },
   "implemented": [
     "Accepted report images, per-family dirty handling and mutable control intent",
@@ -21,13 +21,56 @@
     "48/8 MHz clocks, peripheral quiescence, local WFE/WFI idle and guarded watchdog feeds",
     "Split cadence, PB8 filtering and retained split/RGB state",
     "Flash B9 sleep, lazy AB wake, stock ID/status initialisation and bounded retries",
-    "Final matrix publication notifications and both activity boundaries"
+    "Final matrix publication notifications and both activity boundaries",
+    "Explicit playback and idle phases, typed power requests and shared report-family masks"
   ],
   "qmk_policies": [
     "Physical macro interruption removes only playback-owned keys/modifiers",
     "Cooperative USB macro playback waits for accepted submission; stock can collapse unsent taps"
   ],
-  "verification": {
+  "validation_extra_linker_flags": "-Wl,--undefined=md770_programming_task,--undefined=md770_programming_process,--undefined=md770_playback_cancel,--undefined=md770_playback_active,--undefined=nvm_dynamic_keymap_macro_read_buffer,--undefined=nvm_dynamic_keymap_macro_size,--undefined=host_task,--undefined=md770_power_init,--undefined=md770_power_task,--undefined=md770_radio_matrix_changed,--undefined=pre_process_keyevent_kb,--undefined=md770_system_tick_frequency,--undefined=action_exec,--undefined=suspend_wakeup_init,--undefined=usbStop,--undefined=led_init_ports,--undefined=host_keyboard_send,--undefined=usb_keyboard_report_pending,--undefined=usb_endpoint_in_init,--undefined=usb_endpoint_out_init",
+  "evidence": [
+    "docs/mistel-md770-conformance-checks-default.json",
+    "docs/mistel-md770-conformance-checks-markwellis.json",
+    "docs/mistel-md770-clock-checks-left.json",
+    "docs/mistel-md770-clock-checks-right.json",
+    "docs/mistel-md770-link-stock-conformance.json",
+    "docs/mistel-md770-radio-power-boundary-review.json",
+    "docs/mistel-md770-flash-init-boundaries-review.json",
+    "docs/mistel-md770-conformance-hardware-calibration.json"
+  ],
+  "dependency_patches": {
+    "base": "5a9ad82b6ba4f649cdb800e8c2bbc9be2d3ce767",
+    "qmk_submodule_pin_changed": false,
+    "application_verified": "All four patches apply to the pinned dependency and exactly reproduce the current files",
+    "sha256": {
+      "ht32f523xx-reset-register.patch": "fbea4b0c989061980bd9600b66db7bfbc545bf8c0a93f857da750ae4615d3794",
+      "ht32f523xx-bftm-counter-width.patch": "cc9b53c800b0f955518b9190a1895fea6e60a3cd55a2292e4d672ab0a64f3ce9",
+      "ht32f523xx-runtime-clocks.patch": "dad87be52fd0a1219dc47c54150c717ab0c9ea5f01172a5162c2945e2ca9294e",
+      "ht32f523xx-usb-stop.patch": "f8cc1ce21e8bbaf253f8d446d36d8b06c43488eb343f7988c264c7bdc639c10f"
+    }
+  },
+  "installed_artifacts_unchanged": {
+    "mistel_md770rgb_bt_right_markwellis_validation.bin": "ec0fff325e91c221efc15228a997e52811777eb6afc521b916db55890d9ebbcd",
+    "mistel_md770rgb_bt_left_markwellis.bin": "c3df1ed93011258e488c2a28f65fcc14d439cde31897b952ebe9e4fff2506b96"
+  },
+  "remaining": [
+    "Measured hardware calibration against the new firmware",
+    "RF delivery, reconnect and first-key/wake checks",
+    "Internal-battery behaviour when a cell is available"
+  ],
+  "limits": [
+    "Passing listed comparisons does not establish complete stock or physical-board equivalence",
+    "Component fixtures supply post-initialisation, time, RTOS and bus boundaries; ordinary component tests explicitly skip the clock service",
+    "Clock tests execute the clock/sleep and kernel/IRQ paths with supplied oscillator readiness, timer completion, RTOS sleep and wake events",
+    "Flash and USB tests supply chip responses and physical bus transfers; remote-wake checks observe requests only",
+    "RF, electrical wake, battery current/runtime and underside-switch wiring remain unverified",
+    "No new firmware has been flashed"
+  ],
+  "implementation_commits": {
+    "qmk_firmware": "c4500108e946de80b9745ba3f7d796ed452678ec"
+  },
+  "baseline_verification": {
     "aggregate_command": "nix-shell --run 'bash tests/md770_bluetooth/run-software.sh'",
     "aggregate_exit_code": 0,
     "per_keymap": {
@@ -61,8 +104,7 @@
     "retained_component_builds": 2,
     "retained_clock_builds": 2
   },
-  "validation_extra_linker_flags": "-Wl,--undefined=md770_programming_task,--undefined=md770_programming_process,--undefined=md770_playback_cancel,--undefined=nvm_dynamic_keymap_macro_read_buffer,--undefined=nvm_dynamic_keymap_macro_size,--undefined=host_task,--undefined=md770_power_init,--undefined=md770_power_task,--undefined=md770_radio_matrix_changed,--undefined=pre_process_keyevent_kb,--undefined=md770_system_tick_frequency,--undefined=action_exec,--undefined=suspend_wakeup_init,--undefined=usbStop,--undefined=led_init_ports,--undefined=host_keyboard_send,--undefined=usb_keyboard_report_pending,--undefined=usb_endpoint_in_init,--undefined=usb_endpoint_out_init",
-  "builds": [
+  "baseline_builds": [
     {
       "target": "mistel_md770rgb_bt_left_default_conformance",
       "kind": "ordinary_production",
@@ -120,32 +162,7 @@
       "binary_bytes": 52480
     }
   ],
-  "evidence": [
-    "docs/mistel-md770-conformance-checks-default.json",
-    "docs/mistel-md770-conformance-checks-markwellis.json",
-    "docs/mistel-md770-clock-checks-left.json",
-    "docs/mistel-md770-clock-checks-right.json",
-    "docs/mistel-md770-link-stock-conformance.json",
-    "docs/mistel-md770-radio-power-boundary-review.json",
-    "docs/mistel-md770-flash-init-boundaries-review.json",
-    "docs/mistel-md770-conformance-hardware-calibration.json"
-  ],
-  "dependency_patches": {
-    "base": "5a9ad82b6ba4f649cdb800e8c2bbc9be2d3ce767",
-    "qmk_submodule_pin_changed": false,
-    "application_verified": "All four patches apply to the pinned dependency and exactly reproduce the current files",
-    "sha256": {
-      "ht32f523xx-reset-register.patch": "fbea4b0c989061980bd9600b66db7bfbc545bf8c0a93f857da750ae4615d3794",
-      "ht32f523xx-bftm-counter-width.patch": "cc9b53c800b0f955518b9190a1895fea6e60a3cd55a2292e4d672ab0a64f3ce9",
-      "ht32f523xx-runtime-clocks.patch": "dad87be52fd0a1219dc47c54150c717ab0c9ea5f01172a5162c2945e2ca9294e",
-      "ht32f523xx-usb-stop.patch": "f8cc1ce21e8bbaf253f8d446d36d8b06c43488eb343f7988c264c7bdc639c10f"
-    }
-  },
-  "installed_artifacts_unchanged": {
-    "mistel_md770rgb_bt_right_markwellis_validation.bin": "ec0fff325e91c221efc15228a997e52811777eb6afc521b916db55890d9ebbcd",
-    "mistel_md770rgb_bt_left_markwellis.bin": "c3df1ed93011258e488c2a28f65fcc14d439cde31897b952ebe9e4fff2506b96"
-  },
-  "source_files_sha256": {
+  "baseline_source_files_sha256": {
     "mistel-md770-qmk": {
       "keyboards/mistel/md770rgb_bt/keymaps/markwellis/keymap.c": "4bb946c17aeb9531f894f4e15c3198466a82300c04d8b30b7e8c07e6ca33306b",
       "keyboards/mistel/md770rgb_bt/keymaps/markwellis/programming.c": "6da204d19b8836cfb6ac2882a4e87420f5be8bb3903fbce065d11f01713aec6c",
@@ -246,20 +263,270 @@
       "os/hal/ports/HT32/LLD/USBv1/hal_usb_lld.c": "6685937cd0f33d3cb03ddd061e4994b7171a4ce4d675df7aa2abd57f73601c4a"
     }
   },
-  "remaining": [
-    "Measured hardware calibration against the new firmware",
-    "RF delivery, reconnect and first-key/wake checks",
-    "Internal-battery behaviour when a cell is available"
-  ],
-  "limits": [
-    "Passing listed comparisons does not establish complete stock or physical-board equivalence",
-    "Component fixtures supply post-initialisation, time, RTOS and bus boundaries; ordinary component tests explicitly skip the clock service",
-    "Clock tests execute the clock/sleep and kernel/IRQ paths with supplied oscillator readiness, timer completion, RTOS sleep and wake events",
-    "Flash and USB tests supply chip responses and physical bus transfers; remote-wake checks observe requests only",
-    "RF, electrical wake, battery current/runtime and underside-switch wiring remain unverified",
-    "No new firmware has been flashed"
-  ],
-  "implementation_commits": {
-    "qmk_firmware": "5919f04d304409b94834ae29cd1a7f859309d3ba"
-  }
+  "verification": {
+    "aggregate_command": "nix-shell --run 'bash tests/md770_bluetooth/run-software.sh'",
+    "aggregate_exit_code": 0,
+    "per_keymap": {
+      "default": {
+        "tests": 125,
+        "parameterised_subtests": 449,
+        "passed": true
+      },
+      "markwellis": {
+        "tests": 125,
+        "parameterised_subtests": 449,
+        "passed": true
+      }
+    },
+    "native_radio_power_cases": 16,
+    "native_resume_policy": "passed",
+    "native_rgb_halves": 2,
+    "native_usb_queue_checks": "passed, including blocked submission during suspend",
+    "native_split_cases": 13,
+    "split_stock_observations": 7546,
+    "clock_groups": {
+      "left": 15,
+      "right": 17
+    },
+    "stock_debounce_samples_per_half": 238,
+    "programming_cases": 40,
+    "host_tool_tests": 44,
+    "flash_power_and_retry_checks": "passed",
+    "stock_radio_power_cases": 12,
+    "production_builds": 4,
+    "retained_component_builds": 2,
+    "retained_clock_builds": 2,
+    "unchanged_hardware_prediction_cases": 11,
+    "output_assertions_unchanged": true,
+    "independent_idle_transition_review_cases": 336,
+    "macro_implementations_identical": true
+  },
+  "maintainability_review": {
+    "model": "gpt-6-astra",
+    "effort": "max",
+    "status": "complete; all feedback addressed and final aggregate passed",
+    "baseline_commits": {
+      "mistel-md770-qmk": "6a00a53",
+      "qmk_firmware": "5919f04d30"
+    },
+    "findings": [
+      {
+        "id": "M1",
+        "change": "Replace playback lifecycle booleans with idle, running and releasing states; keep queued replacement independent",
+        "status": "resolved"
+      },
+      {
+        "id": "M2",
+        "change": "Separate idle phase from countdown and name/type power levels without changing values",
+        "status": "resolved"
+      },
+      {
+        "id": "M3",
+        "change": "Define report-family masks centrally and reuse them across core and board",
+        "status": "resolved"
+      },
+      {
+        "id": "M4",
+        "change": "Declare hook contracts and identify USB interrupt callbacks",
+        "status": "resolved"
+      },
+      {
+        "id": "M5",
+        "change": "Remove unused radio state/API and type/name pending command intent",
+        "status": "resolved"
+      },
+      {
+        "id": "M6",
+        "change": "Replace the redundant USB state switch with its sampled boolean; remove unused suspended API",
+        "status": "resolved"
+      },
+      {
+        "id": "M7",
+        "change": "Probe private radio enum ABI, use the playback getter and distinguish historical audit documentation",
+        "status": "resolved"
+      }
+    ],
+    "retained_designs": [
+      "QMK macro send is synchronous; cooperative playback preserves cancellation and transport backpressure",
+      "Selective matrix deferral cannot be replaced by post-history record hooks or whole-matrix gating",
+      "Existing Bluetooth drivers do not implement this SPI-slave radio protocol",
+      "Report queue lookup stays within the ChibiOS USB driver",
+      "Retained component boundaries support bounded verification without a generic emulator or state-machine framework"
+    ],
+    "additional_feedback_addressed": [
+      "Restored the independent SPI FIFO register mask",
+      "Clarified that a refusing host override arranges retry",
+      "Declared the weak physical macro-cancellation hook",
+      "Handled stopped and idle command intent explicitly in enum switches"
+    ]
+  },
+  "prior_functional_review": {
+    "model": "gpt-6-astra",
+    "effort": "max",
+    "reviewers": 2,
+    "scope": "All new source and test changes in both repositories and dependency changes",
+    "status": "complete; no remaining verified blocker in the documented software scope"
+  },
+  "source_files_sha256": {
+    "mistel-md770-qmk": {
+      "keyboards/mistel/md770rgb_bt/keymaps/markwellis/keymap.c": "4bb946c17aeb9531f894f4e15c3198466a82300c04d8b30b7e8c07e6ca33306b",
+      "keyboards/mistel/md770rgb_bt/keymaps/markwellis/programming.c": "22389966672f34f905784db0f9fde330bfad8d42bf897ec6de37b5499c657945",
+      "shell.nix": "875e54daa90f854c9e556d40eb13e7e77c1f23cb1fbbb8022ee569c8313d8a37",
+      "tests/chibios_usb/hal.h": "7db57fce043f2e2908a6906eb2f2c05f23ba32beb632d730fe4f87fb2e7cabb1",
+      "tests/chibios_usb/host.h": "770a0fcfa0b7d732d9f6d7c0fb549e33500f23ef8202791a07174e150d1be4a2",
+      "tests/chibios_usb/test.c": "602b769d57bdd729e99921e5d6e9bc588dba6ec98ed4aa9bc19ecbcf97315db3",
+      "tests/md770_bluetooth/check_clock.py": "679ce8bb2bdf03d625640612c833997faf19607bf13841713bc6e8893ce8e453",
+      "tests/md770_bluetooth/check_emulator.py": "3e37270bc7fe5a0b6e465449663c514d53e5c0023b9649e4fb8b798f95452166",
+      "tests/md770_bluetooth/clock_abi.c": "9bdac4e5095c5a51b174354e3a538d0fcead610d0ab516460d27158e36177788",
+      "tests/md770_bluetooth/emulator.py": "2b38edd3f9d28cfd495ede639039ba9306135f5ed7f0606ecbb396f461fcb3be",
+      "tests/md770_bluetooth/emulator_abi.c": "e2dbf75de0fb07d3bf296f853563d787d191f1142184b85e4af3ac683a679898",
+      "tests/md770_bluetooth/emulator_abi.py": "ee79ce95573bed0760d7cfca3e4933a5a6a4f64476707f2bcc0ec1f70e68e5b1",
+      "tests/md770_bluetooth/emulator_firmware.py": "e73687b03392c9f9543cfce6929e9e4059976c1ff1ac8ced9d3466cba7261aab",
+      "tests/md770_bluetooth/emulator_macros.py": "9bb275ba54fcdde64bad28bb488cc22df37193cc3ea72019b847bde2973d904a",
+      "tests/md770_bluetooth/emulator_usb.py": "b90b47c31887e9d383dc007e96b6be15b91254feb83cecb6337f2e85ea8e7b2d",
+      "tests/md770_bluetooth/quantum.h": "ab8d8b727281aee00066399ca13a17ec31e6b63b7b35659b18f8ba0663d47d40",
+      "tests/md770_bluetooth/review/configured_sequence.py": "cd57b745faa10afa4c68d06857dcac71da82a10264dff4346b260770aefc6677",
+      "tests/md770_bluetooth/review/flash_init_boundaries.py": "799ee172a50dbfea6e84c0468f653eb86a6d437939e32faf5cb8c165bb042852",
+      "tests/md770_bluetooth/review/flash_rgb_power.py": "ed618155879684e850c14350789ee76d93d7ecbdf2070043969e9aa20b5993be",
+      "tests/md770_bluetooth/review/gpio_power_table.py": "e399d2d448bdba120999407ab9537bfc5c11d5721f31a55f74772dac49a0ba15",
+      "tests/md770_bluetooth/review/indicator_batch.py": "fe15e1ce87678c029edf238f0ff6d767b78176a4dfc12fd7ebb6133ba568882e",
+      "tests/md770_bluetooth/review/left_split_wake.py": "b945c4126942c15a53846318f3c68dd2fd6a8a24fab55d9f27a74301596fbcfb",
+      "tests/md770_bluetooth/review/pair_awake_boundaries.py": "4b20cd3fa2f394ad1dcafcd4d3d28eba8e232f003929430a6c93dc54c47e015a",
+      "tests/md770_bluetooth/review/power_batch_registers.py": "3dc843dc5ea54ae2bf4aa1f5573314849036f53504e963b62b8bb1437b9ee263",
+      "tests/md770_bluetooth/review/radio_power_boundary.py": "b2a2a16eb063307a94102bd841d8e7128c2fa77d8b7d84821f00b1c06a6059f3",
+      "tests/md770_bluetooth/review/split_retention.py": "14537a8eabf399b6dbec9919f0775207d1fa7f4135ffbd381654f7fbc8006d54",
+      "tests/md770_bluetooth/review/stock_wake_configuration.py": "4ffb1c742a5ee7002692a71840d64d90876205d0cf6a4cb234c5f7c8599646a8",
+      "tests/md770_bluetooth/review/stock_watchdog_left_wake.py": "38aec1d8066c2cc99d8ae57f4e6593951788b5909eee329ec23103a9af1c741d",
+      "tests/md770_bluetooth/review/suspend_indicators.py": "b6b25371aecee42f13e1ef53fddb32c26798eb565b8a65262dc3bcc48446f652",
+      "tests/md770_bluetooth/review/usb_phy.py": "b2638ba97c670588130c5ae096e0f91d12c61fef7bde6f0efa1a679464b06def",
+      "tests/md770_bluetooth/review/usb_queue.py": "f90476e1995f8b17417a58d23e3b66eb450dd213271b146487e04d675a3f2a7f",
+      "tests/md770_bluetooth/review/usb_release_wake.py": "1448971c730aa3063570a7375f6eb134f94bf2bb7a055ef9f34ec4a689d9a988",
+      "tests/md770_bluetooth/review/usb_submission_fixed.py": "af4cb4c614599dfb94a3e7a9f0f4fc42ac1f79b509a1e87070b6d2e17e74843b",
+      "tests/md770_bluetooth/review/usb_submission_race.py": "aa273ce22bcc14cd00297a973bf05308830ac043f9142f78c7e1ba55ac407697",
+      "tests/md770_bluetooth/review/usb_wake_retry.py": "663cca0c74987518c02bf34cfab9a80eba7509449e04dd0cc5baed7221d98200",
+      "tests/md770_bluetooth/run-clock.sh": "48ae0e228e455df36080f1e169ff4be9afad134fb9d5be09a3d974678cb13792",
+      "tests/md770_bluetooth/run-software.sh": "488d647838a797521658c5c34ec1526e284c6446452ccda529cf40a8478a51cb",
+      "tests/md770_bluetooth/run.sh": "1b4c027e8da4a386d7a639a50d6d85c589653ea7625db4353c3a5e0926379341",
+      "tests/md770_bluetooth/test.cpp": "c8c45e1d06343acbd25f683a5319b67351fe78374bb10f37492ba5da15cc4905",
+      "tests/md770_bluetooth/test_emulator.py": "0b5d4232084818b2e906114c803e77dd8096d362f53ce0009f3fc465ab05b5f3",
+      "tests/md770_bluetooth/test_emulator_conformance.py": "ad71dabc203330ea85022e68ffb9a853b06f1dfb599bef413ab69a85c5aa91da",
+      "tests/md770_bluetooth/test_emulator_firmware.py": "7c19f3e5e19b45502687950010bffad61ea2e3d34e484eaf6b79b85e8a05eca8",
+      "tests/md770_bluetooth/test_emulator_macros.py": "42c149c8ebedd07ffc85175217205601c592fe9f51b573cb8db14d1856e11848",
+      "tests/md770_bluetooth/test_emulator_usb.py": "56b7ab4feb8a36da40e8d1445a413875df7ad73ca307f9e64ad5729086fb9a5f",
+      "tests/md770_bluetooth/test_rgb.cpp": "c3bf3e1e611bb6bb5dc32c07892dc2a72b87e47917e8e3e492e49b68a77fe556",
+      "tests/md770_bluetooth/test_suspend.cpp": "67a1632a0ff1923ef7ec8b4c23bf540975506a12f35854205d5c10307e6d33d7",
+      "tests/md770_bluetooth/usb_main.h": "348a884044cc9e49fa3665909a618beb1d65edabb3743cbea23851ae872243da",
+      "tests/md770_keymap/programming.c": "888534ea79004b0330100be7d3cb0e422539c34a1eac14cf49d36c9f17f20fe7",
+      "tests/md770_keymap/quantum.h": "9381051f5cb58a2730c0c95b477580427f5683763b59b621f977b722d3e23fe9",
+      "tests/md770_keymap/run-programming.sh": "816bebca32428af1cac1d8cccc5dd13c6226192b3bf777428a411a3aaf0a4f6e",
+      "tests/md770_keymap/send_string.h": "dd71a0a6a946064c4bd6f0600047cd0aa968c6fc1fc170e0ca5fe63654829d42",
+      "tests/md770_link/check_stock.py": "50cc67807a01e6dfe651f4ee412b228151d4ea3513ef2c5456ca485586682c8f",
+      "tests/md770_link/quantum.h": "1b9907fe1c695b081c7dc2153798ffca34452da48a83b5b9f0d0946562dd536e",
+      "tests/md770_link/run.sh": "48700675ab289a69855b3ba49e71bb8ed5f478f1cafb03a45e48a92b9d36daaf",
+      "tests/md770_link/test.cpp": "c9a199cddd65618ab1f2362ea63235276350b5d65065ab99104de0324f91f858",
+      "tests/md770_link/usb_main.h": "e37ddf0f90efa48cba805e6845502e3340c16a77911d2c9cc681c781969c9a47",
+      "tests/md770_storage/power.cpp": "d7cab55482d82441b59d61d7b9663422ed8a8e59a0c17ac2398fe0bac4838266",
+      "tests/md770_storage/run-power.sh": "fdaf7178e6244a89a7a3b810e6cc95e025bd533d72a7000879702780bb6806c9",
+      "keyboards/mistel/md770rgb_bt/keymaps/markwellis/programming.h": "12a7419d4b6cd978af85a31103451a9cf08c4521f216b2a8303610b38f49b9eb"
+    },
+    "qmk_firmware": {
+      "drivers/flash/flash_spi.c": "de0369f3aabd24ac7a1f5fa4a553d4eaa2efd03054556bb13737f7674adec9d2",
+      "drivers/flash/flash_spi.h": "0352e7f682a23cc5ed5bd1448e08b6c1ec7893bbdadcb98d3ff732e45617fece",
+      "keyboards/mistel/md770rgb_bt/bluetooth.c": "aab5ee153077c9b982eb29509c975dc47e40602492099ec15c2f32fffbcc8aea",
+      "keyboards/mistel/md770rgb_bt/chconf.h": "338db518cb95866f56f9dac9506ecb6905dfaa21b2666aa40313bd02385a2f38",
+      "keyboards/mistel/md770rgb_bt/indicators.c": "08ec8e9406a1125daca49302d66c7e86be5541b394221902c9f2f71c9e2ec778",
+      "keyboards/mistel/md770rgb_bt/keymaps/default/keymap.c": "92d8beb7b8f4deb80134a4327a9bcac98f4cff5de89989bef00be547e7be7cb9",
+      "keyboards/mistel/md770rgb_bt/keymaps/default/programming.c": "22389966672f34f905784db0f9fde330bfad8d42bf897ec6de37b5499c657945",
+      "keyboards/mistel/md770rgb_bt/link.c": "c82038fedb24193d4f1f08a941102c36c5ac6c92219047133cc2858d0a1825bf",
+      "keyboards/mistel/md770rgb_bt/mcuconf.h": "6a9d750b96bcbee736c8dd79940ab36d238a2b912298618a82e0c86616f18e19",
+      "keyboards/mistel/md770rgb_bt/md770rgb_bt.c": "b87cf08275565affa32658b33e7c571cf7834e1a7c4d130e5583ec9536af1003",
+      "keyboards/mistel/md770rgb_bt/md770rgb_bt.h": "151549daa0099a5357572101cec90fbea9fc7a4a7f38ca13454970b41d2ec0a7",
+      "keyboards/mistel/md770rgb_bt/power.c": "3f06446c0731aeede4732964a9464e5d7751d597219c943ea13255017bba02fd",
+      "keyboards/mistel/md770rgb_bt/power_clock.c": "b4150689213afa2fb5353e73afe17dc0a969e85c74b64be36334f6e162a396c2",
+      "keyboards/mistel/md770rgb_bt/rgb.c": "aa59e2c7892aa5448693716159e157a196bdd24e795715b91388afa6644c44e6",
+      "keyboards/mistel/md770rgb_bt/rules.mk": "99202fc76b9b7391045923bd07a0850f126f0f009e356eef972a2dff272290c4",
+      "keyboards/mistel/md770rgb_bt/scan.c": "ff8e5300440413ac4f53ff41e1d2bf37eb689b5a503ec5683d5dc2fc14221fc5",
+      "keyboards/mistel/md770rgb_bt/storage.c": "27457bc49c083edf757755a60a4847bdc55a754af2f4e0e4c46b512ecd2b836a",
+      "platforms/chibios/suspend.c": "8fedc68b36685e7aadf1e402b2d7f67ec2cd14c5ac7701570d30576b68cf0f87",
+      "quantum/action.c": "ef5cbb4fe635b20cf9e98b0e11cd74597369fb157779780a2bdc1b3d56390589",
+      "quantum/action_util.c": "cdb092a53a66ce9e13dc1b30a64a34b1d8dc5f47d57d47e1b5073ad3a0fda564",
+      "quantum/action_util.h": "a597a4b42cec58315a9f9ca67557a5fd9e9b31f50c7668261aab074aa4d27dc6",
+      "quantum/keyboard.c": "e22a11eec0a271ded53435b361452987bc3257dd73ee549705d69e1e8bcf71bc",
+      "tmk_core/protocol/chibios/usb_driver.c": "0db2d1bc6c9a75b9a1a4ed9a0f6bc1a210a16405de552374d2495c4f43ca2bf7",
+      "tmk_core/protocol/chibios/usb_driver.h": "5ab524cadcd5ca7bc8a1568aaed8c5425ae46214cc36d58fe82da9c10f067a7f",
+      "tmk_core/protocol/chibios/usb_main.c": "c83ea8f482c97e71da790210f915acf8a18346d6ff62e3f5758638fd2a2d89da",
+      "tmk_core/protocol/chibios/usb_main.h": "e0aebbf0c05803dbc8386f0e070e7a429d049a7b43064cbe6e914b9e083ecd58",
+      "tmk_core/protocol/host.c": "e64f6fd2acdf1910daae4333c183e819aa67cefb15ac4576b075eea6490b5584",
+      "tmk_core/protocol/host.h": "adfb03ebe8078028b1f021352c47bf8911855eb3f5ee68fd044e9387c9676f9f",
+      "tmk_core/protocol/report.c": "8db8cac6fff0d86d63e0417949478fe7fc2d254a0371f357c81f418aab18fd02",
+      "keyboards/mistel/md770rgb_bt/keymaps/default/programming.h": "12a7419d4b6cd978af85a31103451a9cf08c4521f216b2a8303610b38f49b9eb",
+      "quantum/keyboard.h": "28153405f23a11382856121244d8efe966e1291359587794956fd19bd8b98b40"
+    },
+    "ChibiOS-Contrib": {
+      "os/common/ext/CMSIS/HT32/HT32F523xx/ht32f523x2.h": "83b50465e3e8b92b5c87dc3bffa0ad652dc4cddbfe55d95fa8643d474bd0c94b",
+      "os/hal/ports/HT32/LLD/TIMv1/hal_gpt_lld.c": "cdcacd8cac01f570d32667b3b69a5ac451a6d27cdb18b7ae6d1639ca5b464afd",
+      "os/hal/ports/HT32/LLD/TIMv1/hal_gpt_lld.h": "a4df44100526c5fa0df2598a901583fe8e5f298fe5c7af5be48d9e9f51c52da4",
+      "os/hal/ports/HT32/LLD/TIMv1/hal_st_lld.c": "e8663c9b68b43cb56c1ffd0bc075d616f6221736cfbde9a28f84dcf43a6b54f7",
+      "os/hal/ports/HT32/LLD/USART_F5xxxx/hal_serial_lld.c": "33344197c253bf4cdf7b6e789b9647bebf11e73ff16e6ebe40267859ac36fe72",
+      "os/hal/ports/HT32/LLD/USBv1/hal_usb_lld.c": "6685937cd0f33d3cb03ddd061e4994b7171a4ce4d675df7aa2abd57f73601c4a"
+    }
+  },
+  "builds": [
+    {
+      "target": "mistel_md770rgb_bt_left_default_conformance",
+      "kind": "ordinary_production",
+      "elf_sha256": "275e947bdf8512312b20a295c5f19a5b516e2f896d1dde39c7ee0cd69fe7a157",
+      "binary_sha256": "c1989c29f8ceee5df0182f2cc2ec6a455cf88deec728add1051347f95b3fb5d5",
+      "binary_bytes": 36824
+    },
+    {
+      "target": "mistel_md770rgb_bt_left_markwellis_conformance",
+      "kind": "ordinary_production",
+      "elf_sha256": "275e947bdf8512312b20a295c5f19a5b516e2f896d1dde39c7ee0cd69fe7a157",
+      "binary_sha256": "c1989c29f8ceee5df0182f2cc2ec6a455cf88deec728add1051347f95b3fb5d5",
+      "binary_bytes": 36824
+    },
+    {
+      "target": "mistel_md770rgb_bt_right_default_conformance",
+      "kind": "ordinary_production",
+      "elf_sha256": "7eb2755d2a3b44b48f703c28430c1a30553d6275873a68d524dd297039020dcd",
+      "binary_sha256": "cf41784ff959c7716a7522fb9e867a3755f5b2228aeea0030a6bfdf3b93f722f",
+      "binary_bytes": 52156
+    },
+    {
+      "target": "mistel_md770rgb_bt_right_markwellis_conformance",
+      "kind": "ordinary_production",
+      "elf_sha256": "e157e062a264d7e6bf3a48ea89152b43a56401c461dae401f86fe131c1d8fb75",
+      "binary_sha256": "ae2465d95939a32af747e8301623a67e63dd7780ed246f0573a3e988f1329513",
+      "binary_bytes": 53480
+    },
+    {
+      "target": "mistel_md770rgb_bt_right_default_conformance_validation",
+      "kind": "retained_component_validation",
+      "elf_sha256": "5b0d841aa182660180f5e4d6b4b70c2c74b9dfebf976384dbd41dbf19d7a87d0",
+      "binary_sha256": "3daba7042742020b23d23133333279584a0a8d77634e7b4c844b97073b5c32c0",
+      "binary_bytes": 52244
+    },
+    {
+      "target": "mistel_md770rgb_bt_right_markwellis_conformance_validation",
+      "kind": "retained_component_validation",
+      "elf_sha256": "e20a0dfdb7c6ca03db3da1d0dd275a768bbd13052a86a0ba4f149a2d03fc81cf",
+      "binary_sha256": "1a54bc60046d3a18dce05f65a0668dff858e2e60fbc833c2c86e8271cc500400",
+      "binary_bytes": 53396
+    },
+    {
+      "target": "mistel_md770rgb_bt_left_default_clock_conformance",
+      "kind": "retained_clock_validation",
+      "elf_sha256": "a771dc73de3231eac6b2b524cb0655a133ab37e7116d8cbbf389a095d53f6f71",
+      "binary_sha256": "f1788551d7ea54d569de1f4111aa31d64aa8964956aeb0204d94e3a8f9cbe979",
+      "binary_bytes": 36960
+    },
+    {
+      "target": "mistel_md770rgb_bt_right_default_clock_conformance",
+      "kind": "retained_clock_validation",
+      "elf_sha256": "882f91efd1c994f7c09064972386afd6c62c3a04136ecbed9bcca16d835c89d9",
+      "binary_sha256": "6017a0eb05bc41f38e07d286434384ad6ccbc03024a3656e072733910c81ae6f",
+      "binary_bytes": 52348
+    }
+  ]
 }

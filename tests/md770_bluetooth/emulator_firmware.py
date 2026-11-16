@@ -162,8 +162,9 @@ class Qmk(Machine):
 
     def queued(self):
         if 'dirty' in self.symbols:
-            pending = self.read(self.symbol('pending_command'), 1)
-            return self.read(self.symbol('dirty'), 1).bit_count() + int(0xF0 <= pending <= 0xF2)
+            pending = self.read(self.symbol('pending_command'), self.abi.get('radio_command_bytes', 1))
+            return self.read(self.symbol('dirty'), 1).bit_count() + int(
+                self.abi.get('radio_keyboard_command', 0xF0) <= pending <= self.abi.get('radio_system_command', 0xF2))
         return self.read(self.symbol('count'), 1)
 
     def start(self):
@@ -180,18 +181,22 @@ class Qmk(Machine):
 
     def drain(self):
         outgoing = []
+        phase_bytes = self.abi.get('radio_phase_bytes', 1)
+        ready = self.abi.get('radio_ready', 2)
+        quiescent = (self.abi.get('radio_failed', 6), self.abi.get('radio_off', 7))
         for _ in range(100):
             self.task(10)
             if self.hardware.output(2, 14):
                 size = self.read(self.symbol('tx_length'), 1)
                 outgoing.append(self.transfer(bytes(size)))
             elif 'pending_command' in self.symbols:
-                if (self.read(self.symbol('phase'), 1) in (6, 7)
-                        and not self.read(self.symbol('pending_command'), 1)):
+                phase = self.read(self.symbol('phase'), phase_bytes)
+                command = self.read(self.symbol('pending_command'), self.abi.get('radio_command_bytes', 1))
+                if phase in quiescent and command == self.abi.get('radio_stop_command', 0):
                     return outgoing
-                if (not self.queued() and self.read(self.symbol('pending_command'), 1) == 0x20
+                if (not self.queued() and command == self.abi.get('radio_no_command', 0x20)
                         and not self.read(self.symbol('deferred_slot'), 1)
-                        and self.read(self.symbol('phase'), 1) == 2):
+                        and phase == ready):
                     return outgoing
             elif (not self.queued() and not self.read(self.symbol('resynchronise'), 1)
                   and self.read(self.symbol('phase'), 1) == 2

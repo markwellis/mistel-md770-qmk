@@ -8,6 +8,7 @@
 bool          md770_programming_process(uint16_t keycode, keyrecord_t *record);
 void          md770_programming_task(void);
 void          md770_playback_cancel(void);
+bool          md770_playback_active(void);
 uint8_t       md770_programming_indicator(uint8_t colour);
 bool          md770_programming_blocks_fn_swap(layer_state_t state);
 layer_state_t md770_programming_layers(layer_state_t state, md770_profile_t profile);
@@ -19,6 +20,7 @@ static inline bool md770_programming_process(uint16_t keycode, keyrecord_t *reco
 }
 static inline void    md770_programming_task(void) {}
 static inline void    md770_playback_cancel(void) {}
+static inline bool    md770_playback_active(void) { return false; }
 static inline uint8_t md770_programming_indicator(uint8_t colour) {
     return colour;
 }

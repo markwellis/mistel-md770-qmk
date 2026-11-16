@@ -33,7 +33,10 @@ NAMES = ['usb_configuration', 'usb_status', 'usb_configure_state',
          'keyboard_endpoint', 'shared_endpoint', 'report_nkro', 'in_endpoint_count',
          'usb_event_suspend', 'usb_event_reset', 'out_endpoint_count', 'out_endpoint_bytes',
          'out_endpoint_queue', 'out_endpoint_config', 'out_endpoint_number',
-         'out_queue_suspended', 'usb_out_params', 'usb_receiving']
+         'out_queue_suspended', 'usb_out_params', 'usb_receiving',
+         'radio_phase_bytes', 'radio_ready', 'radio_failed', 'radio_off',
+         'radio_command_bytes', 'radio_stop_command', 'radio_no_command',
+         'radio_keyboard_command', 'radio_system_command']
 
 
 def firmware_binary(elf_path, image):

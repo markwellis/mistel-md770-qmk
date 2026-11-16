@@ -32,9 +32,6 @@ static unsigned     radio_reports;
 connection_host_t connection_get_host(void) {
     return bluetooth_mode ? CONNECTION_HOST_BLUETOOTH : CONNECTION_HOST_USB;
 }
-bool md770_radio_can_enqueue(void) {
-    return radio_reports <= 8;
-}
 bool md770_radio_key_ready(uint16_t code) {
     (void)code;
     return radio_reports <= 8;

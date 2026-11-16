@@ -70,7 +70,7 @@ send_key(8);send_key(9);result['wrapped_occupied']=occupied(ki);result['wrapped_
 q.usb(True,suspended=True);q.call(event,u,a['suspend']);result['suspended_preserved']=occupied(ki);result['suspended_present']=present(ki)
 q.write(u+a['usb_transmitting'],0,2)
 q.usb(True);q.call(event,u,a['wakeup']);result['ready_before_sof']=q.call('md770_power_usb_ready')
-q.call('usb_sof_kb',u);result['ready_after_sof']=q.call('md770_power_usb_ready')
+q.call('usb_sof_isr_kb',u);result['ready_after_sof']=q.call('md770_power_usb_ready')
 complete(ki);complete(ki);result['drained_empty']=present(ki)
 q.cpu.mem_write(q.scratch,bytes([abi['report_consumer'],1,0]));q.call(q.read(q.symbol('chibios_driver')+abi['driver_extra']),q.scratch)
 result['consumer_not_nkro']=present(si,a['nkro_id']);result['consumer_present']=present(si,0)

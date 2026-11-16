@@ -8,6 +8,7 @@
 #include <stddef.h>
 #include "tmk_core/protocol/chibios/usb_main.h"
 #include "keyboards/mistel/md770rgb_bt/keymaps/default/keymap.h"
+#include "keyboards/mistel/md770rgb_bt/bluetooth.c"
 
 const uint32_t emulator_abi[] = {
     offsetof(USBDriver, configuration), offsetof(USBDriver, status),
@@ -55,6 +56,8 @@ const uint32_t emulator_abi[] = {
     offsetof(usb_endpoint_out_t, config) + offsetof(usb_endpoint_config_t, ep),
     offsetof(input_buffers_queue_t, suspended), offsetof(USBDriver, out_params),
     offsetof(USBDriver, receiving),
+    sizeof(enum radio_phase), READY, FAILED, OFF,
+    sizeof(enum radio_command), COMMAND_STOP, NO_COMMAND, COMMAND_KEYBOARD, COMMAND_SYSTEM,
 };
 
 const keymap_config_t emulator_nkro_flag = {.nkro = true};

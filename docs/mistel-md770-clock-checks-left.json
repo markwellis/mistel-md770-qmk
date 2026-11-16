@@ -1,6 +1,6 @@
 {
   "side": "left",
-  "elf_sha256": "13f9de10cb09f508a402d121e8b78c9ec5eb46b00610f3eb69c0eb697138be6e",
+  "elf_sha256": "a771dc73de3231eac6b2b524cb0655a133ab37e7116d8cbbf389a095d53f6f71",
   "stock_reference_sha256": "8fafdca096756f23626802d5b586b270b0bd512fe5d1c0327db4eafcd4f689b2",
   "checks": [
     "UART drain before retiming",

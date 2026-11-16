@@ -16,6 +16,6 @@ result={'elf_sha256':hashlib.sha256(image).hexdigest(),'pending_after_rejected_s
 q.call('md770_power_task')
 q.usb(True);q.call(event,u,a['wakeup']);q.call('md770_power_task')
 result['pending_before_sof']=q.read(q.symbol('usb_pending'),1);result['queue_before_sof']=occupied(a['ep_keyboard'])
-q.call('usb_sof_kb',u);q.call('md770_power_task')
+q.call('usb_sof_isr_kb',u);q.call('md770_power_task')
 result['pending_after_sof']=q.read(q.symbol('usb_pending'),1);result['queue_after_sof']=occupied(a['ep_keyboard']);result['transmissions']=transmissions
 print(json.dumps(result,indent=2))

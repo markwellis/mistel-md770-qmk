@@ -68,10 +68,12 @@ requires the recorded US 7.02 SHA-256. `--elf` selects another right-half
 build, such as `.build/mistel_md770rgb_bt_right_markwellis.elf` in QMK.
 `--qmk-home` selects the QMK checkout used to compile the ABI probe.
 `--json` writes results with firmware, model and test-source hashes.
-The ABI probe uses current headers and GCC with the saved build flags. The
+The ABI probe uses current headers, the radio source and GCC with the saved build flags. The
 ELF must be rebuilt after changes to those inputs. The record includes the
 compiler, flags hash and preprocessed-probe hash; ELF-derived layouts are not
 claimed.
+The unlinked probe also supplies private radio enum values and widths.
+Recorded older ABIs without those fields use their historical fixture values.
 
 The independent CPU and register tests need no firmware images:
 
@@ -79,10 +81,10 @@ The independent CPU and register tests need no firmware images:
 nix-shell --run 'python3 -B tests/md770_bluetooth/check_emulator.py --model-only'
 ```
 
-The earlier checkpoint had 35 model groups, 31 production-firmware groups and
-17 macro/host groups per keymap, with 376 parameterised subtests. The expanded
-stock conformance audit currently has 87 groups and 419 parameterised checks
-and still fails; see `docs/mistel-md770-installed-stock-conformance-reviewed.json`.
+The historical installed-image audit failed with 87 groups and 419 parameterised
+checks; see `docs/mistel-md770-installed-stock-conformance-reviewed.json`.
+The corrected candidate's passing results are in
+[the current verification record](../../docs/mistel-md770-stock-conformance-fixes.json).
 The current pairing regressions execute the compiled Pn layer and hold boundary.
 Passing the earlier suite did not establish
 full stock Bluetooth parity. The cases cover exception

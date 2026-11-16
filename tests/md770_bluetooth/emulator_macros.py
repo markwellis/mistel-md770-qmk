@@ -98,9 +98,7 @@ class MacroQmk(Qmk):
         self.call('md770_programming_task')
 
     def playing(self):
-        return (bool(self.read(self.symbol('playing'), 1)) or
-                ('playback_cancelling' in self.symbols and
-                 bool(self.read(self.symbol('playback_cancelling'), 1))))
+        return bool(self.call('md770_playback_active'))
 
     def output_mode(self, bluetooth):
         host = 'host_bluetooth' if bluetooth else 'host_usb'

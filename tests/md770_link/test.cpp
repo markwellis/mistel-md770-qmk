@@ -56,7 +56,7 @@ size_t oqGetEmptyI(output_queue_t *queue) { assert(locked); return 256 - queue->
 bool oqIsEmptyI(output_queue_t *queue) { assert(locked); return !queue->used; }
 matrix_row_t matrix_get_row(uint8_t row) { assert(row < MATRIX_ROWS); return matrix[row]; }
 uint32_t md770_clock_frequency(void) { return frequency; }
-void md770_power_request(uint8_t level) { power_requests.push_back(level); }
+void md770_power_request(enum md770_power_level level) { power_requests.push_back(level); }
 void md770_power_activity(bool local) { assert(!local); ++activity_calls; }
 void md770_rgb_sleep(bool value) { assert(value); ++rgb_sleeps; }
 const uint8_t *md770_rgb_left(void) { return rgb; }

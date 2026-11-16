@@ -41,7 +41,7 @@ uint32_t timer_read32(void) { return now; }
 uint32_t timer_elapsed32(uint32_t start) { return now - start; }
 uint32_t chVTGetSystemTimeX(void) { return now * 2; }
 bool md770_power_sleeping(void) { return false; }
-void md770_power_request(uint8_t) {}
+void md770_power_request(enum md770_power_level) {}
 void md770_clock_service(void) {}
 matrix_row_t matrix_get_row(uint8_t row) { return rows[row]; }
 uint8_t layer_switch_get_layer(keypos_t) { return 0; }
@@ -135,11 +135,11 @@ int main(int argc, char **argv) {
     boot();
     if (test == "sleep") {
         for (auto old_phase : {READY, OFF, FAILED}) {
-            for (uint8_t command : {uint8_t(NO_COMMAND), uint8_t(0x50)}) {
+            for (auto command : {NO_COMMAND, COMMAND_PAIR_START}) {
                 for (unsigned guard : {0, 150, 2000}) {
                     arm_receiver();
                     phase = old_phase;
-                    pending_command = old_phase == READY ? command : 0;
+                    pending_command = old_phase == READY ? command : COMMAND_STOP;
                     ready_at = now + guard;
                     gpio_write_pin_low(C14);
                     md770_radio_power_prepare();
@@ -262,7 +262,7 @@ int main(int argc, char **argv) {
         md770_power_task();
         assert(wake_requests == 1);
     } else if (test == "escape") {
-        dirty = DIRTY_KEYBOARD;
+        dirty = HOST_REPORT_KEYBOARD;
         keycodes[0][0] = 4;
         keycodes[0][1] = QK_BLUETOOTH_PROFILE1;
         assert(!pre_process_keyevent_kb({{0, 0}, false}));

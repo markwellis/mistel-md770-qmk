@@ -59,4 +59,3 @@ size_t oqGetEmptyI(output_queue_t *queue);
 bool oqIsEmptyI(output_queue_t *queue);
 matrix_row_t matrix_get_row(uint8_t row);
 uint32_t md770_clock_frequency(void);
-void md770_power_request(uint8_t level);
