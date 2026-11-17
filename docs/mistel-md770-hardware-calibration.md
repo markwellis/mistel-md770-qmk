@@ -93,7 +93,10 @@ The existing keyboard EEPROM word stores slots 1–3, defaulting invalid values
 to slot 1. Power changes no longer override the selected output. Radio
 firmware retry policy is unchanged. The
 [build record](mistel-md770-saved-output-build.json) links the native and
-instruction-level checks. Physical verification of this fix is pending.
+instruction-level checks. The right-half image is [installed and checksum-verified](mistel-md770-saved-output-flash-right.json).
+[Post-flash Bluetooth registration](hardware-calibration/saved-output-after-flash.json)
+returned without pairing or a host Connect request. Full cold-start typing
+verification is pending.
 See the [investigation](hardware-calibration/bluetooth-reconnect-investigation.json)
 for the earlier hypotheses and temporary experiments; all diagnostic images
 were removed and the laptop's controller setting was restored.

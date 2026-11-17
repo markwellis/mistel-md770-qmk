@@ -1,0 +1,25 @@
+{
+  "initially_verified_disconnected": true,
+  "host_Connect_or_pairing_requested": false,
+  "physical_setup": "Right half alone; laptop USB remains connected after verified flashing",
+  "states": [
+    {
+      "time": "2026-11-17T15:16:47.844685+00:00",
+      "connected": false,
+      "services_resolved": false,
+      "hid_input_present": false
+    }
+  ],
+  "later_input_observation": {
+    "time": "2026-11-17T15:18:47.510971+00:00",
+    "hid_input_present": true,
+    "connected": true,
+    "services_resolved": false
+  },
+  "automatic_reconnection_observed": true,
+  "firmware_application_sha256": "770457a9708bb9b245f7a8af8ee388b265d25a1287d9616f023b7703aadb73b6",
+  "limitations": [
+    "The link appeared after the initial twenty-second observation window; exact connection time was not measured",
+    "Input registration is recorded separately from owner-confirmed key delivery"
+  ]
+}
