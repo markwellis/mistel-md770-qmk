@@ -1,0 +1,68 @@
+{
+  "scope": "Native stock radio power-event and shortcut routines; no full boot or RF/HID validation",
+  "assumptions": [
+    "Existing Stock fixture supplies initial RAM, GPIO, IRQ and FIFO state; flash persistence is stubbed.",
+    "PB12 is high; USB state is supplied as 0 or 5; elapsed radio callbacks are supplied at nominal 0.5 ms.",
+    "SPI clocks and zero receive bytes complete outgoing transactions; b6 00 03 is supplied explicitly.",
+    "Both matrix histories are supplied stable and released; internal shortcut events enter at 0x5ef8.",
+    "Each shortcut is observed for 200 radio callbacks; no connected status or real radio is supplied.",
+    "Absence of A4 is established for these executed paths only; this probe does not scan every caller."
+  ],
+  "stock_sha256": "8fafdca096756f23626802d5b586b270b0bd512fe5d1c0327db4eafcd4f689b2",
+  "source_sha256": {
+    "tests/md770_bluetooth/review/stock_reconnect_shortcut.py": "63d2648dab6d9f69bb21eaa1f7fe76282a68ce493c5a23d6a55d59aa1d016d06",
+    "tests/md770_bluetooth/emulator.py": "2b38edd3f9d28cfd495ede639039ba9306135f5ed7f0606ecbb396f461fcb3be",
+    "tests/md770_bluetooth/emulator_firmware.py": "6fecdba674b75b0c350933eee9b5c55da1492b7c55766ab5ed835689361d8ee4",
+    "tests/md770_bluetooth/stock_probe.py": "0eebb135b0426a18e84dfddf3cba0ea0b9512b22575fae10a539d7effd0de967"
+  },
+  "unicorn": "2.1.4",
+  "passed": true,
+  "cases": [
+    {
+      "usb_configured": false,
+      "startup": "a7 02 00 02",
+      "pn_2": [],
+      "pn_1": [],
+      "short_pn_f1": [
+        "aa 03 01",
+        "a1 00 00 00 00 00 00 00 00",
+        "a3 00",
+        "a2 00 00 00 00"
+      ],
+      "dispatcher_calls": [
+        {
+          "caller": "0x419e",
+          "command": "0x80"
+        },
+        {
+          "caller": "0x6482",
+          "command": "0x41"
+        }
+      ],
+      "final_public_state": 2
+    },
+    {
+      "usb_configured": true,
+      "startup": "a7 02 00 01",
+      "pn_2": [],
+      "pn_1": [],
+      "short_pn_f1": [
+        "aa 03 01",
+        "a1 00 00 00 00 00 00 00 00",
+        "a3 00",
+        "a2 00 00 00 00"
+      ],
+      "dispatcher_calls": [
+        {
+          "caller": "0x419e",
+          "command": "0x80"
+        },
+        {
+          "caller": "0x6482",
+          "command": "0x41"
+        }
+      ],
+      "final_public_state": 2
+    }
+  ]
+}

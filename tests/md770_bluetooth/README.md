@@ -8,6 +8,14 @@ each matched all 24 press/release events; see the
 The [calibration guide](../../docs/mistel-md770-hardware-calibration.md)
 describes its scope and the optional broader macro checks.
 
+The [reconnection investigation](../../docs/hardware-calibration/bluetooth-reconnect-investigation.json)
+keeps physical connection evidence separate from emulated radio transactions.
+`review/stock_reconnect_shortcut.py` reproduces stock's output-selection packets.
+`read_reconnect_diagnostics.py` and `check_reconnect_probe.py` apply only to the
+temporary builds recorded in the [diagnostic manifest](../../docs/mistel-md770-reconnect-diagnostic-build.json).
+Both diagnostic images were removed; ordinary production QMK was restored
+and checksum-verified. Their patches are retained for reproduction only.
+
 `run.sh` compiles the actual QMK keyboard drivers and ChibiOS resume function
 against supplied registers, a FIFO model, GPIO, time and host services. It
 uses address, undefined-behaviour and bounds sanitisers. C++ register proxies

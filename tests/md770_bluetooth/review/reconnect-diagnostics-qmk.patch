@@ -1,0 +1,124 @@
+--- a/keyboards/mistel/md770rgb_bt/bluetooth.c
++++ b/keyboards/mistel/md770rgb_bt/bluetooth.c
+@@ -42,6 +42,31 @@
+ static bool                      held_armed;
+ static volatile bool             stopped;
+ 
++#ifdef MD770_RECONNECT_DIAGNOSTICS
++static struct reconnect_trace {
++    uint32_t time;
++    uint8_t event, phase, state, command, tx_length, rx_length, attempts, queued;
++    uint16_t status;
++    uint8_t sent[7], received[7];
++} reconnect_trace[4];
++static uint32_t reconnect_trace_count;
++static volatile uint16_t reconnect_error_status;
++_Static_assert(sizeof(struct reconnect_trace) == 28, "Diagnostic frame must fit one Raw HID reply");
++
++static void reconnect_trace_event(uint8_t event) {
++    struct reconnect_trace *entry = &reconnect_trace[reconnect_trace_count++ % 4];
++    *entry = (struct reconnect_trace){.time = timer_read32(), .event = event, .phase = phase,
++        .state = radio_state, .command = pending_command, .tx_length = tx_length,
++        .rx_length = rx_length, .attempts = startup_attempts, .queued = report_count, .status = event == 3 && failed ? reconnect_error_status : SPI0->SR};
++    for (uint8_t i = 0; i < 7; ++i) {
++        entry->sent[i] = i < tx_length ? tx[i] : 0;
++        entry->received[i] = i < rx_length ? rx[i] : 0;
++    }
++}
++#else
++#    define reconnect_trace_event(event) ((void)0)
++#endif
++
+ static bool receive_status(const uint8_t *data, uint8_t length);
+ static void radio_task(void);
+ 
+@@ -75,6 +100,9 @@
+     OSAL_IRQ_PROLOGUE();
+     if (!radio_suspended && (CKCU->APBCCR0 & CKCU_APBCCR0_SPI0EN) && (SPI0->CR0 & 1)) {
+         if (SPI0->SR & 0xf8) {
++#ifdef MD770_RECONNECT_DIAGNOSTICS
++            reconnect_error_status = SPI0->SR;
++#endif
+             failed    = true;
+             SPI0->IER = 0;
+             SPI0->SR  = 0xff;
+@@ -153,6 +181,7 @@
+     ready_at      = timer_read32();
+     phase         = RESET_HIGH;
+     phase_started = timer_read32();
++    reconnect_trace_event(0);
+ }
+ 
+ static void reset_radio(void) {
+@@ -292,6 +321,7 @@
+     phase         = TRANSMITTING;
+     phase_started = timer_read32();
+     service_fifo();
++    reconnect_trace_event(1);
+     gpio_write_pin_high(C14);
+     chSysUnlock();
+     return true;
+@@ -480,10 +510,12 @@
+     }
+     chSysUnlock();
+     if (error) {
++        reconnect_trace_event(3);
+         rearm();
+         return;
+     }
+     if (complete) {
++        reconnect_trace_event(2);
+         bool transmitting = phase == TRANSMITTING;
+         bool collision    = parsed;
+         gpio_write_pin_low(C14);
+@@ -526,3 +558,50 @@
+     chSysUnlock();
+     stopped = true;
+ }
++
++#ifdef MD770_RECONNECT_DIAGNOSTICS
++void __attribute__((noinline, noclone)) md770_reconnect_diag(uint8_t page, uint8_t item, uint32_t values[7]) {
++    if (page == 32 || page == 33) md770_radio_select(item, page == 33);
++    if (page == 34) {
++        reconnect_trace_count = 0;
++        report_head = report_count = 0;
++        pending_command = COMMAND_USB_STATUS;
++        connection_set_host_noeeprom(CONNECTION_HOST_BLUETOOTH);
++        reset_radio();
++    }
++    if (page == 36) {
++        md770_radio_discard_reports();
++        report_keyboard_t empty = {0};
++        bluetooth_send_keyboard(&empty);
++        bluetooth_send_system(0);
++        bluetooth_send_consumer(0);
++    }
++    if (page >= 3 && page <= 6) {
++        memcpy(values, &reconnect_trace[page - 3], 28);
++    } else if (page == 1) {
++        values[0] = SPI0->SR;
++        values[1] = SPI0->FSR;
++        values[2] = SPI0->IER;
++        values[3] = SPI0->CR0;
++        values[4] = SPI0->CR1;
++        values[5] = SPI0->CPR;
++        values[6] = CKCU->APBCCR0;
++    } else if (page == 2) {
++        values[0] = connection_get_host_raw();
++        values[1] = connection_get_host();
++        values[2] = md770_power_usb_ready();
++        values[3] = USBD1.state;
++        values[4] = USBD1.configuration;
++        values[5] = gpio_read_pin(A10);
++        values[6] = gpio_read_pin(B12);
++    } else {
++        values[0] = timer_read32();
++        values[1] = phase;
++        values[2] = radio_state;
++        values[3] = pending_command;
++        values[4] = startup_attempts;
++        values[5] = report_count;
++        values[6] = reconnect_trace_count;
++    }
++}
++#endif

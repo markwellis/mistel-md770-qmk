@@ -1,0 +1,40 @@
+--- a/keyboards/mistel/md770rgb_bt/keymaps/markwellis/notification.c
++++ b/keyboards/mistel/md770rgb_bt/keymaps/markwellis/notification.c
+@@ -1,6 +1,12 @@
+ // Copyright 2026 Mark Ellis (@markwellis)
+ // SPDX-License-Identifier: GPL-2.0-or-later
+ #include "notification.h"
++#ifdef MD770_RECONNECT_DIAGNOSTICS
++#    include "bootloader.h"
++#    include "host.h"
++#    include <string.h>
++void md770_reconnect_diag(uint8_t page, uint8_t item, uint32_t values[7]);
++#endif
+ 
+ #if defined(RAW_ENABLE) && defined(RGB_MATRIX_ENABLE)
+ #    include "lib/lib8tion/lib8tion.h"
+@@ -24,6 +30,24 @@
+ 
+ void raw_hid_receive(uint8_t *data, uint8_t length) {
+     if (length != 32) return;
++#ifdef MD770_RECONNECT_DIAGNOSTICS
++    if (data[0] == 'M' && data[1] == 'D' && data[2] == 2 &&
++        (data[3] <= 6 || (data[3] >= 32 && data[3] <= 36))) {
++        uint8_t page = data[3], item = data[4];
++        if (((page == 32 || page == 33) && (item < 1 || item > 3)) ||
++            ((page == 34 || page == 36) && item != 0) || (page == 35 && item != 1)) return;
++        if (page == 35) {
++            bootloader_jump();
++            return;
++        }
++        uint32_t values[7] = {0};
++        md770_reconnect_diag(page, item, values);
++        memcpy(data + 4, values, sizeof(values));
++        host_driver_t *usb = host_get_driver();
++        if (usb && usb->send_raw_hid) usb->send_raw_hid(data, length);
++        return;
++    }
++#endif
+     if (data[0] != 'M' || data[1] != 'D' || data[2] != NOTIFICATION_VERSION) {
+         data[0] = 0xff;
+         raw_hid_send(data, length);

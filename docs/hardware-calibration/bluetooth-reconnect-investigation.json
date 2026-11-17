@@ -1,0 +1,188 @@
+{
+  "date": "2026-11-17T12:04:05.006780+00:00",
+  "status": "Ordinary QMK is restored. Owner now confirms Bluetooth typing without another pairing shortcut or laptop Connect request; final repeat after verified full disconnection is pending.",
+  "reference_firmware_sha256": "c29dae348fc922c0d155f91f9ee41c367ec432396e648cefcf97db7ad392b1f8",
+  "hid_reconnect_mode": {
+    "value": "device",
+    "source": "BlueZ org.bluez.Input1.ReconnectMode on the paired Mistel 1 device",
+    "definition": "The HID device restores the lost connection",
+    "documentation": "https://github.com/bluez/bluez/blob/master/doc/org.bluez.Input.rst"
+  },
+  "owner_observations": {
+    "ordinary_letters_after_connection_loss_do_not_reconnect": true,
+    "long_Pn_F1_alone_does_not_connect": true,
+    "long_Pn_F1_then_laptop_Connect_succeeds": true,
+    "underside_bluetooth_switch_confirmed_on": true
+  },
+  "earlier_output_toggle": {
+    "excluded": true,
+    "reason": "The owner reported that the Bluetooth link remained connected; typing after output switching did not test reconnection"
+  },
+  "verified_disconnected_test": {
+    "power_off_until_host_reported_disconnected": true,
+    "powered_up_without_pairing_or_laptop_connect_request": true,
+    "automatic_reconnect_observed": false,
+    "then_Pn_2_Pn_1_and_A": true,
+    "verified_disconnected_before_and_after_sequence": true,
+    "automatic_reconnect_after_sequence": false,
+    "subsequent_laptop_connection": "org.bluez.Error.Failed br-connection-create-socket"
+  },
+  "native_review": {
+    "reviewer": "gpt-6-astra at maximum reasoning effort",
+    "finding": "Stock short slot selection marks empty keyboard/system/consumer reports dirty; QMK unchanged-report suppression can omit them",
+    "wire_comparison_without_injected_connected_status": {
+      "stock": [
+        "aa 03 01",
+        "a1 00 00 00 00 00 00 00 00",
+        "a3 00",
+        "a2 00 00 00 00"
+      ],
+      "QMK": [
+        "aa 03 01"
+      ]
+    },
+    "assessment": "Concrete packet difference. An earlier uninstrumented forced-release test did not appear to reconnect. Later USB diagnostics verified normal transport and incoming encrypted links; the exact empty-report batch changed no observed connection state, and subsequent production cold-start typing worked. No causal reason to add the batch to production was established.",
+    "other_candidates": "No demonstrated PD1 pin-release omission; short slot-selection output guard agrees with stock; missing USB notices and B7 response remain unproven causes",
+    "native_probe": "tests/md770_bluetooth/review/stock_reconnect_shortcut.py",
+    "native_probe_results": "tests/md770_bluetooth/review/stock_reconnect_shortcut.json"
+  },
+  "next": "Verify a full cold restart without Pn+1, Pn+F1 or a laptop Connect request, then check actual typing",
+  "stock_application_sha256": "8fafdca096756f23626802d5b586b270b0bd512fe5d1c0327db4eafcd4f689b2",
+  "stock_comparison_started": true,
+  "settings_constraint": "Owner authorised resetting settings for the temporary stock comparison",
+  "early_passive_observation": [
+    {
+      "time": "2026-11-17T11:45:19.463132+00:00",
+      "connected": true,
+      "input_devices": [
+        "N: Name=\"Mistel 1 Keyboard\"",
+        "H: Handlers=sysrq kbd leds event2 "
+      ]
+    },
+    {
+      "time": "2026-11-17T11:46:52.571620+00:00",
+      "connected": false,
+      "input_devices": []
+    },
+    {
+      "time": "2026-11-17T11:46:53.080236+00:00",
+      "connected": true,
+      "input_devices": [
+        "N: Name=\"Mistel 1 Keyboard\"",
+        "H: Handlers=sysrq kbd leds event2 "
+      ]
+    }
+  ],
+  "power_off_observation": [
+    {
+      "time": "2026-11-17T11:49:45.374935+00:00",
+      "connected": true,
+      "input_devices": [
+        "N: Name=\"Mistel 1 Keyboard\"",
+        "H: Handlers=sysrq kbd leds event2 "
+      ]
+    },
+    {
+      "time": "2026-11-17T11:50:43.352572+00:00",
+      "connected": false,
+      "input_devices": []
+    }
+  ],
+  "release_sequence_observation": [
+    {
+      "time": "2026-11-17T11:54:59.270582+00:00",
+      "connected": false
+    }
+  ],
+  "owner_authorised_settings_reset_for_stock_comparison": true,
+  "stock_flash_record": "docs/mistel-md770-reconnect-stock-flash-right.json",
+  "stock_saved_slot_test": {
+    "date": "2026-11-17T12:16:07.572857+00:00",
+    "operator_sequence": "Join halves; power right from power bank; tap Pn+1, short Pn+F1, then A",
+    "long_pairing_shortcut_used": false,
+    "host_Connect_request_sent": false,
+    "existing_host_bond_preserved": true,
+    "passive_observation": [
+      {
+        "time": "2026-11-17T12:12:58.289188+00:00",
+        "connected": false
+      },
+      {
+        "time": "2026-11-17T12:12:59.816767+00:00",
+        "connected": true
+      }
+    ],
+    "qualification": "A brief Connected=true was observed, but the owner could not type and the link subsequently dropped. This is not a working stock reconnection pass.",
+    "functional_reconnection_passed": false,
+    "temporary_link_connection_observed": true
+  },
+  "stock_factory_reset": {
+    "owner_confirmed_five_white_flashes": true,
+    "owner_confirmed_lights_remain_on": true,
+    "typing_worked_after_reset_and_Pn_1": false,
+    "link_remained_disconnected": true
+  },
+  "prepared_QMK_diagnostic": "docs/mistel-md770-reconnect-diagnostic-build.json",
+  "stock_after_factory_reset_short_slot": {
+    "owner_pressed_short_Pn_F1_then_J": true,
+    "owner_reported_no_typing": true,
+    "connected": false,
+    "services_resolved": false,
+    "subsequent_laptop_connection": "org.bluez.Error.Failed br-connection-create-socket"
+  },
+  "stock_fresh_pairing": {
+    "requested_by_owner": true,
+    "old_laptop_bond_removed": true,
+    "keyboard_address": "20:73:10:01:5B:BF",
+    "status": "New pairing and HID connection succeeded; owner confirmed Bluetooth typing",
+    "paired": true,
+    "bonded": true,
+    "trusted": true,
+    "connected": true,
+    "services_resolved": true,
+    "hid_input_device": "Mistel 1 Keyboard",
+    "input_bus": 5,
+    "owner_confirmed_bluetooth_typing": true,
+    "owner_confirmation_time": "2026-11-17T13:37:32.199972+00:00",
+    "cold_test": {
+      "full_disconnection_verified_before_powerup": true,
+      "powerup_then_right_J_only": true,
+      "long_pairing_shortcut_used": false,
+      "host_connect_request_sent": false,
+      "connected": false,
+      "services_resolved": false,
+      "owner_reported_no_typing": true
+    }
+  },
+  "laptop_connectable_trial": {
+    "original_setting": false,
+    "runtime_enabled_successfully": true,
+    "physical_page_scan_observed_enabled": true,
+    "stock_cold_restart_and_J_reconnected": false,
+    "persistent_configuration_changed": false,
+    "restoration_requested": true,
+    "assessment": "Enabling the global setting did not resolve stock reconnection; no causal link to the headset issue established",
+    "documentation": "https://github.com/bluez/bluez/blob/master/doc/mgmt-protocol.rst",
+    "restored_original_off_setting": true
+  },
+  "temporary_QMK_diagnostics": {
+    "installed": false,
+    "flash_record": "docs/mistel-md770-reconnect-diagnostic-flash-right.json",
+    "startup_spi_error_seen": false,
+    "startup_packet": "a7 02 00 01",
+    "startup_radio_status": "b6 00 03",
+    "saved_slot_packet": "aa 03 01",
+    "saved_slot_transport_completion_verified": true,
+    "production_sources_unchanged": true,
+    "saved_bond_encrypted_incoming_connection_observed": true,
+    "radio_reset_saved_slot_results": "Inconsistent: some attempts stayed disconnected, others created an encrypted ACL link and a Bluetooth input node; actual typing not measured"
+  },
+  "diagnostic_observations": "docs/hardware-calibration/bluetooth-reconnect-diagnostics.json",
+  "production_restoration_record": "docs/mistel-md770-reconnect-restored-flash-right.json",
+  "actual_cold_input_observation": "docs/hardware-calibration/bluetooth-reconnect-cold-input.json",
+  "interpretation_corrections": [
+    "ServicesResolved=false does not imply the HID input service is unavailable; actual owner typing works with that property still false",
+    "The keyboard demonstrably initiates encrypted saved-bond ACL and both HID channels",
+    "Initial five-second key test did not capture J; subsequent owner typing confirms delivery, but exact recovery delay was not measured"
+  ]
+}

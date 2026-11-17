@@ -1,0 +1,2959 @@
+{
+  "production_application_sha256": "c29dae348fc922c0d155f91f9ee41c367ec432396e648cefcf97db7ad392b1f8",
+  "diagnostic_build_manifest": "docs/mistel-md770-reconnect-diagnostic-build.json",
+  "interpretation": {
+    "radio_transport_completed_commands": true,
+    "keyboard_initiated_acl_connection_observed": true,
+    "saved_bond_encryption_succeeded": true,
+    "ServicesResolved_false_does_not_establish_HID_failure": true,
+    "Mistel_Bluetooth_input_node_appeared_before_empty_batch": true,
+    "empty_batch_changed_observed_state": false,
+    "empty_batch_functional_typing_test_performed": false,
+    "cold_functional_reconnect_unresolved": false,
+    "later_owner_confirmed_cold_typing": true,
+    "zero_shortcut_cold_restart": "Pending separate final check",
+    "typing_assessment": "Unmeasured during the diagnostic-only trials; owner subsequently confirmed cold-start typing on restored ordinary QMK"
+  },
+  "limitations": [
+    "SPI snapshots are non-atomic; only stable trace reads are retained here",
+    "Early HCI filtering omitted ACL data, so those records cannot establish L2CAP behaviour",
+    "The first HCI reader stopped on a decoding error after the initial connection observation; its trace is incomplete",
+    "PD1 radio reset and explicit host Disconnect are distinguished from physical cold power loss",
+    "An enumerated input node is not proof of delivered key events"
+  ],
+  "observations": {
+    "startup": {
+      "date": "2026-11-17T14:05:03.877125+00:00",
+      "action": "snapshot",
+      "scope": "Non-atomic USB observations from temporary keyboard-only instrumentation",
+      "stages": [
+        {
+          "action": "snapshot",
+          "state_changes_and_final_sample": [
+            {
+              "time_ms": 2017,
+              "phase": 0,
+              "radio_state": 0,
+              "pending_command": 128,
+              "startup_attempts": 4,
+              "queue_count": 0
+            },
+            {
+              "time_ms": 3037,
+              "phase": 1,
+              "radio_state": 0,
+              "pending_command": 128,
+              "startup_attempts": 4,
+              "queue_count": 0
+            },
+            {
+              "time_ms": 4567,
+              "phase": 2,
+              "radio_state": 5,
+              "pending_command": 32,
+              "startup_attempts": 3,
+              "queue_count": 0
+            },
+            {
+              "time_ms": 7664,
+              "phase": 2,
+              "radio_state": 5,
+              "pending_command": 32,
+              "startup_attempts": 3,
+              "queue_count": 0
+            }
+          ],
+          "stable_observed_spi_events": [
+            {
+              "sequence": 0,
+              "time_ms": 2016,
+              "event": 0,
+              "phase": 0,
+              "radio_state": 0,
+              "command": 128,
+              "tx_length": 0,
+              "rx_length": 0,
+              "attempts": 4,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "",
+              "received": ""
+            },
+            {
+              "sequence": 1,
+              "time_ms": 4526,
+              "event": 1,
+              "phase": 3,
+              "radio_state": 0,
+              "command": 128,
+              "tx_length": 4,
+              "rx_length": 0,
+              "attempts": 3,
+              "queued": 0,
+              "spi_sr": 0,
+              "sent": "a7 02 00 01",
+              "received": ""
+            },
+            {
+              "sequence": 2,
+              "time_ms": 4527,
+              "event": 2,
+              "phase": 3,
+              "radio_state": 0,
+              "command": 128,
+              "tx_length": 4,
+              "rx_length": 4,
+              "attempts": 3,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "a7 02 00 01",
+              "received": "00 00 00 00"
+            },
+            {
+              "sequence": 3,
+              "time_ms": 4532,
+              "event": 2,
+              "phase": 2,
+              "radio_state": 5,
+              "command": 32,
+              "tx_length": 0,
+              "rx_length": 3,
+              "attempts": 3,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "",
+              "received": "b6 00 03"
+            },
+            {
+              "sequence": 4,
+              "time_ms": 4998,
+              "event": 2,
+              "phase": 2,
+              "radio_state": 5,
+              "command": 32,
+              "tx_length": 0,
+              "rx_length": 3,
+              "attempts": 3,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "",
+              "received": "b6 00 03"
+            }
+          ]
+        }
+      ],
+      "diagnostic_application_sha256": "f0775701be023b9cfe8ccc62eb2128b0a9dd3e92b43b20ae17adfe22bfb74d5d"
+    },
+    "slot_selection": {
+      "date": "2026-11-17T14:05:31.192197+00:00",
+      "action": "select",
+      "scope": "Non-atomic USB observations from temporary keyboard-only instrumentation",
+      "stages": [
+        {
+          "action": "select",
+          "state_changes_and_final_sample": [
+            {
+              "time_ms": 28228,
+              "phase": 3,
+              "radio_state": 2,
+              "pending_command": 65,
+              "startup_attempts": 0,
+              "queue_count": 0
+            },
+            {
+              "time_ms": 28744,
+              "phase": 2,
+              "radio_state": 2,
+              "pending_command": 32,
+              "startup_attempts": 0,
+              "queue_count": 0
+            },
+            {
+              "time_ms": 30292,
+              "phase": 2,
+              "radio_state": 4,
+              "pending_command": 32,
+              "startup_attempts": 0,
+              "queue_count": 0
+            },
+            {
+              "time_ms": 35455,
+              "phase": 3,
+              "radio_state": 4,
+              "pending_command": 240,
+              "startup_attempts": 0,
+              "queue_count": 1
+            },
+            {
+              "time_ms": 35971,
+              "phase": 2,
+              "radio_state": 4,
+              "pending_command": 32,
+              "startup_attempts": 0,
+              "queue_count": 0
+            },
+            {
+              "time_ms": 38037,
+              "phase": 2,
+              "radio_state": 4,
+              "pending_command": 32,
+              "startup_attempts": 0,
+              "queue_count": 0
+            }
+          ],
+          "stable_observed_spi_events": [
+            {
+              "sequence": 3,
+              "time_ms": 4532,
+              "event": 2,
+              "phase": 2,
+              "radio_state": 5,
+              "command": 32,
+              "tx_length": 0,
+              "rx_length": 3,
+              "attempts": 3,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "",
+              "received": "b6 00 03"
+            },
+            {
+              "sequence": 4,
+              "time_ms": 4998,
+              "event": 2,
+              "phase": 2,
+              "radio_state": 5,
+              "command": 32,
+              "tx_length": 0,
+              "rx_length": 3,
+              "attempts": 3,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "",
+              "received": "b6 00 03"
+            },
+            {
+              "sequence": 5,
+              "time_ms": 28226,
+              "event": 1,
+              "phase": 3,
+              "radio_state": 2,
+              "command": 65,
+              "tx_length": 3,
+              "rx_length": 0,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 0,
+              "sent": "aa 03 01",
+              "received": ""
+            },
+            {
+              "sequence": 6,
+              "time_ms": 28230,
+              "event": 2,
+              "phase": 3,
+              "radio_state": 2,
+              "command": 65,
+              "tx_length": 3,
+              "rx_length": 3,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "aa 03 01",
+              "received": "00 00 00"
+            },
+            {
+              "sequence": 7,
+              "time_ms": 29887,
+              "event": 2,
+              "phase": 2,
+              "radio_state": 5,
+              "command": 32,
+              "tx_length": 0,
+              "rx_length": 3,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "",
+              "received": "b6 00 03"
+            },
+            {
+              "sequence": 8,
+              "time_ms": 29891,
+              "event": 2,
+              "phase": 2,
+              "radio_state": 4,
+              "command": 32,
+              "tx_length": 0,
+              "rx_length": 3,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "",
+              "received": "b6 00 02"
+            },
+            {
+              "sequence": 9,
+              "time_ms": 29899,
+              "event": 2,
+              "phase": 2,
+              "radio_state": 4,
+              "command": 32,
+              "tx_length": 0,
+              "rx_length": 3,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "",
+              "received": "b6 01 00"
+            },
+            {
+              "sequence": 68,
+              "time_ms": 33715,
+              "event": 1,
+              "phase": 3,
+              "radio_state": 4,
+              "command": 240,
+              "tx_length": 9,
+              "rx_length": 0,
+              "attempts": 0,
+              "queued": 1,
+              "spi_sr": 0,
+              "sent": "a1 (input payload omitted)",
+              "received": ""
+            },
+            {
+              "sequence": 69,
+              "time_ms": 33723,
+              "event": 2,
+              "phase": 3,
+              "radio_state": 4,
+              "command": 240,
+              "tx_length": 9,
+              "rx_length": 9,
+              "attempts": 0,
+              "queued": 1,
+              "spi_sr": 3,
+              "sent": "a1 (input payload omitted)",
+              "received": "00 00 00 00 00 00 00"
+            },
+            {
+              "sequence": 70,
+              "time_ms": 33877,
+              "event": 1,
+              "phase": 3,
+              "radio_state": 4,
+              "command": 240,
+              "tx_length": 9,
+              "rx_length": 0,
+              "attempts": 0,
+              "queued": 1,
+              "spi_sr": 0,
+              "sent": "a1 (input payload omitted)",
+              "received": ""
+            },
+            {
+              "sequence": 71,
+              "time_ms": 33883,
+              "event": 2,
+              "phase": 3,
+              "radio_state": 4,
+              "command": 240,
+              "tx_length": 9,
+              "rx_length": 9,
+              "attempts": 0,
+              "queued": 1,
+              "spi_sr": 3,
+              "sent": "a1 (input payload omitted)",
+              "received": "00 00 00 00 00 00 00"
+            },
+            {
+              "sequence": 82,
+              "time_ms": 34328,
+              "event": 1,
+              "phase": 3,
+              "radio_state": 4,
+              "command": 240,
+              "tx_length": 9,
+              "rx_length": 0,
+              "attempts": 0,
+              "queued": 1,
+              "spi_sr": 0,
+              "sent": "a1 (input payload omitted)",
+              "received": ""
+            },
+            {
+              "sequence": 83,
+              "time_ms": 34334,
+              "event": 2,
+              "phase": 3,
+              "radio_state": 4,
+              "command": 240,
+              "tx_length": 9,
+              "rx_length": 9,
+              "attempts": 0,
+              "queued": 1,
+              "spi_sr": 3,
+              "sent": "a1 (input payload omitted)",
+              "received": "00 00 00 00 00 00 00"
+            },
+            {
+              "sequence": 84,
+              "time_ms": 34407,
+              "event": 1,
+              "phase": 3,
+              "radio_state": 4,
+              "command": 240,
+              "tx_length": 9,
+              "rx_length": 0,
+              "attempts": 0,
+              "queued": 1,
+              "spi_sr": 0,
+              "sent": "a1 (input payload omitted)",
+              "received": ""
+            },
+            {
+              "sequence": 85,
+              "time_ms": 34413,
+              "event": 2,
+              "phase": 3,
+              "radio_state": 4,
+              "command": 240,
+              "tx_length": 9,
+              "rx_length": 9,
+              "attempts": 0,
+              "queued": 1,
+              "spi_sr": 3,
+              "sent": "a1 (input payload omitted)",
+              "received": "00 00 00 00 00 00 00"
+            },
+            {
+              "sequence": 100,
+              "time_ms": 34876,
+              "event": 1,
+              "phase": 3,
+              "radio_state": 4,
+              "command": 240,
+              "tx_length": 9,
+              "rx_length": 0,
+              "attempts": 0,
+              "queued": 1,
+              "spi_sr": 0,
+              "sent": "a1 (input payload omitted)",
+              "received": ""
+            },
+            {
+              "sequence": 101,
+              "time_ms": 34884,
+              "event": 2,
+              "phase": 3,
+              "radio_state": 4,
+              "command": 240,
+              "tx_length": 9,
+              "rx_length": 9,
+              "attempts": 0,
+              "queued": 1,
+              "spi_sr": 3,
+              "sent": "a1 (input payload omitted)",
+              "received": "00 00 00 00 00 00 00"
+            },
+            {
+              "sequence": 102,
+              "time_ms": 34908,
+              "event": 1,
+              "phase": 3,
+              "radio_state": 4,
+              "command": 240,
+              "tx_length": 9,
+              "rx_length": 0,
+              "attempts": 0,
+              "queued": 1,
+              "spi_sr": 0,
+              "sent": "a1 (input payload omitted)",
+              "received": ""
+            },
+            {
+              "sequence": 103,
+              "time_ms": 34914,
+              "event": 2,
+              "phase": 3,
+              "radio_state": 4,
+              "command": 240,
+              "tx_length": 9,
+              "rx_length": 9,
+              "attempts": 0,
+              "queued": 1,
+              "spi_sr": 3,
+              "sent": "a1 (input payload omitted)",
+              "received": "00 00 00 00 00 00 00"
+            },
+            {
+              "sequence": 126,
+              "time_ms": 35487,
+              "event": 1,
+              "phase": 3,
+              "radio_state": 4,
+              "command": 240,
+              "tx_length": 9,
+              "rx_length": 0,
+              "attempts": 0,
+              "queued": 1,
+              "spi_sr": 0,
+              "sent": "a1 (input payload omitted)",
+              "received": ""
+            },
+            {
+              "sequence": 127,
+              "time_ms": 35494,
+              "event": 2,
+              "phase": 3,
+              "radio_state": 4,
+              "command": 240,
+              "tx_length": 9,
+              "rx_length": 9,
+              "attempts": 0,
+              "queued": 1,
+              "spi_sr": 3,
+              "sent": "a1 (input payload omitted)",
+              "received": "00 00 00 00 00 00 00"
+            },
+            {
+              "sequence": 128,
+              "time_ms": 35552,
+              "event": 1,
+              "phase": 3,
+              "radio_state": 4,
+              "command": 240,
+              "tx_length": 9,
+              "rx_length": 0,
+              "attempts": 0,
+              "queued": 1,
+              "spi_sr": 0,
+              "sent": "a1 (input payload omitted)",
+              "received": ""
+            },
+            {
+              "sequence": 129,
+              "time_ms": 35564,
+              "event": 2,
+              "phase": 3,
+              "radio_state": 4,
+              "command": 240,
+              "tx_length": 9,
+              "rx_length": 9,
+              "attempts": 0,
+              "queued": 1,
+              "spi_sr": 3,
+              "sent": "a1 (input payload omitted)",
+              "received": "00 00 00 00 00 00 00"
+            },
+            {
+              "sequence": 130,
+              "time_ms": 36902,
+              "event": 1,
+              "phase": 3,
+              "radio_state": 4,
+              "command": 240,
+              "tx_length": 9,
+              "rx_length": 0,
+              "attempts": 0,
+              "queued": 1,
+              "spi_sr": 0,
+              "sent": "a1 (input payload omitted)",
+              "received": ""
+            },
+            {
+              "sequence": 131,
+              "time_ms": 36909,
+              "event": 2,
+              "phase": 3,
+              "radio_state": 4,
+              "command": 240,
+              "tx_length": 9,
+              "rx_length": 9,
+              "attempts": 0,
+              "queued": 1,
+              "spi_sr": 3,
+              "sent": "a1 (input payload omitted)",
+              "received": "00 00 00 00 00 00 00"
+            },
+            {
+              "sequence": 132,
+              "time_ms": 36965,
+              "event": 1,
+              "phase": 3,
+              "radio_state": 4,
+              "command": 240,
+              "tx_length": 9,
+              "rx_length": 0,
+              "attempts": 0,
+              "queued": 1,
+              "spi_sr": 0,
+              "sent": "a1 (input payload omitted)",
+              "received": ""
+            },
+            {
+              "sequence": 133,
+              "time_ms": 36974,
+              "event": 2,
+              "phase": 3,
+              "radio_state": 4,
+              "command": 240,
+              "tx_length": 9,
+              "rx_length": 9,
+              "attempts": 0,
+              "queued": 1,
+              "spi_sr": 3,
+              "sent": "a1 (input payload omitted)",
+              "received": "00 00 00 00 00 00 00"
+            },
+            {
+              "sequence": 142,
+              "time_ms": 37194,
+              "event": 1,
+              "phase": 3,
+              "radio_state": 4,
+              "command": 240,
+              "tx_length": 9,
+              "rx_length": 0,
+              "attempts": 0,
+              "queued": 1,
+              "spi_sr": 0,
+              "sent": "a1 (input payload omitted)",
+              "received": ""
+            },
+            {
+              "sequence": 143,
+              "time_ms": 37204,
+              "event": 2,
+              "phase": 3,
+              "radio_state": 4,
+              "command": 240,
+              "tx_length": 9,
+              "rx_length": 9,
+              "attempts": 0,
+              "queued": 1,
+              "spi_sr": 3,
+              "sent": "a1 (input payload omitted)",
+              "received": "00 00 00 00 00 00 00"
+            },
+            {
+              "sequence": 144,
+              "time_ms": 37254,
+              "event": 1,
+              "phase": 3,
+              "radio_state": 4,
+              "command": 240,
+              "tx_length": 9,
+              "rx_length": 0,
+              "attempts": 0,
+              "queued": 1,
+              "spi_sr": 0,
+              "sent": "a1 (input payload omitted)",
+              "received": ""
+            },
+            {
+              "sequence": 145,
+              "time_ms": 37264,
+              "event": 2,
+              "phase": 3,
+              "radio_state": 4,
+              "command": 240,
+              "tx_length": 9,
+              "rx_length": 9,
+              "attempts": 0,
+              "queued": 1,
+              "spi_sr": 3,
+              "sent": "a1 (input payload omitted)",
+              "received": "00 00 00 00 00 00 00"
+            }
+          ]
+        }
+      ],
+      "diagnostic_application_sha256": "f0775701be023b9cfe8ccc62eb2128b0a9dd3e92b43b20ae17adfe22bfb74d5d"
+    },
+    "reset_kept_old_host_link": {
+      "host_connect_request_sent": false,
+      "pairing_request_sent": false,
+      "stages": [
+        {
+          "action": "reset",
+          "state_changes_and_final_sample": [
+            {
+              "elapsed_seconds": 0.014,
+              "time_ms": 89495,
+              "phase": 0,
+              "radio_state": 0,
+              "pending_command": 128,
+              "startup_attempts": 4,
+              "queue_count": 0,
+              "host_connected": true,
+              "host_services_resolved": true,
+              "host_hid_input": true
+            },
+            {
+              "elapsed_seconds": 0.278,
+              "time_ms": 89759,
+              "phase": 0,
+              "radio_state": 0,
+              "pending_command": 128,
+              "startup_attempts": 4,
+              "queue_count": 4,
+              "host_connected": true,
+              "host_services_resolved": true,
+              "host_hid_input": true
+            },
+            {
+              "elapsed_seconds": 0.542,
+              "time_ms": 90023,
+              "phase": 0,
+              "radio_state": 0,
+              "pending_command": 128,
+              "startup_attempts": 4,
+              "queue_count": 9,
+              "host_connected": true,
+              "host_services_resolved": true,
+              "host_hid_input": true
+            },
+            {
+              "elapsed_seconds": 0.806,
+              "time_ms": 90286,
+              "phase": 0,
+              "radio_state": 0,
+              "pending_command": 128,
+              "startup_attempts": 4,
+              "queue_count": 13,
+              "host_connected": true,
+              "host_services_resolved": true,
+              "host_hid_input": true
+            },
+            {
+              "elapsed_seconds": 1.07,
+              "time_ms": 90551,
+              "phase": 1,
+              "radio_state": 0,
+              "pending_command": 128,
+              "startup_attempts": 4,
+              "queue_count": 13,
+              "host_connected": true,
+              "host_services_resolved": true,
+              "host_hid_input": true
+            },
+            {
+              "elapsed_seconds": 2.66,
+              "time_ms": 92135,
+              "phase": 2,
+              "radio_state": 5,
+              "pending_command": 32,
+              "startup_attempts": 3,
+              "queue_count": 5,
+              "host_connected": true,
+              "host_services_resolved": true,
+              "host_hid_input": true
+            },
+            {
+              "elapsed_seconds": 2.93,
+              "time_ms": 92405,
+              "phase": 2,
+              "radio_state": 5,
+              "pending_command": 32,
+              "startup_attempts": 3,
+              "queue_count": 0,
+              "host_connected": true,
+              "host_services_resolved": true,
+              "host_hid_input": true
+            },
+            {
+              "elapsed_seconds": 11.847,
+              "time_ms": 101323,
+              "phase": 2,
+              "radio_state": 5,
+              "pending_command": 32,
+              "startup_attempts": 3,
+              "queue_count": 0,
+              "host_connected": true,
+              "host_services_resolved": true,
+              "host_hid_input": true
+            }
+          ],
+          "stable_observed_spi_events": [
+            {
+              "sequence": 0,
+              "time_ms": 89489,
+              "event": 0,
+              "phase": 0,
+              "radio_state": 0,
+              "command": 128,
+              "tx_length": 0,
+              "rx_length": 0,
+              "attempts": 4,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "",
+              "received": ""
+            },
+            {
+              "sequence": 32,
+              "time_ms": 92183,
+              "event": 1,
+              "phase": 3,
+              "radio_state": 5,
+              "command": 240,
+              "tx_length": 9,
+              "rx_length": 0,
+              "attempts": 3,
+              "queued": 2,
+              "spi_sr": 0,
+              "sent": "a1 (input payload omitted)",
+              "received": ""
+            },
+            {
+              "sequence": 33,
+              "time_ms": 92186,
+              "event": 2,
+              "phase": 3,
+              "radio_state": 5,
+              "command": 240,
+              "tx_length": 9,
+              "rx_length": 9,
+              "attempts": 3,
+              "queued": 2,
+              "spi_sr": 3,
+              "sent": "a1 (input payload omitted)",
+              "received": "00 00 00 00 00 00 00"
+            },
+            {
+              "sequence": 34,
+              "time_ms": 92196,
+              "event": 1,
+              "phase": 3,
+              "radio_state": 5,
+              "command": 240,
+              "tx_length": 9,
+              "rx_length": 0,
+              "attempts": 3,
+              "queued": 1,
+              "spi_sr": 0,
+              "sent": "a1 (input payload omitted)",
+              "received": ""
+            },
+            {
+              "sequence": 35,
+              "time_ms": 92199,
+              "event": 2,
+              "phase": 3,
+              "radio_state": 5,
+              "command": 240,
+              "tx_length": 9,
+              "rx_length": 9,
+              "attempts": 3,
+              "queued": 1,
+              "spi_sr": 3,
+              "sent": "a1 (input payload omitted)",
+              "received": "00 00 00 00 00 00 00"
+            }
+          ]
+        },
+        {
+          "action": "select",
+          "state_changes_and_final_sample": [
+            {
+              "elapsed_seconds": 0.02,
+              "time_ms": 101595,
+              "phase": 3,
+              "radio_state": 2,
+              "pending_command": 65,
+              "startup_attempts": 0,
+              "queue_count": 0,
+              "host_connected": true,
+              "host_services_resolved": true,
+              "host_hid_input": true
+            },
+            {
+              "elapsed_seconds": 0.291,
+              "time_ms": 101864,
+              "phase": 2,
+              "radio_state": 5,
+              "pending_command": 32,
+              "startup_attempts": 0,
+              "queue_count": 0,
+              "host_connected": true,
+              "host_services_resolved": true,
+              "host_hid_input": true
+            },
+            {
+              "elapsed_seconds": 8.128,
+              "time_ms": 109704,
+              "phase": 2,
+              "radio_state": 5,
+              "pending_command": 32,
+              "startup_attempts": 0,
+              "queue_count": 0,
+              "host_connected": false,
+              "host_services_resolved": false,
+              "host_hid_input": false
+            },
+            {
+              "elapsed_seconds": 11.911,
+              "time_ms": 113488,
+              "phase": 2,
+              "radio_state": 5,
+              "pending_command": 32,
+              "startup_attempts": 0,
+              "queue_count": 0,
+              "host_connected": false,
+              "host_services_resolved": false,
+              "host_hid_input": false
+            }
+          ],
+          "stable_observed_spi_events": [
+            {
+              "sequence": 35,
+              "time_ms": 92199,
+              "event": 2,
+              "phase": 3,
+              "radio_state": 5,
+              "command": 240,
+              "tx_length": 9,
+              "rx_length": 9,
+              "attempts": 3,
+              "queued": 1,
+              "spi_sr": 3,
+              "sent": "a1 (input payload omitted)",
+              "received": "00 00 00 00 00 00 00"
+            },
+            {
+              "sequence": 36,
+              "time_ms": 101590,
+              "event": 1,
+              "phase": 3,
+              "radio_state": 2,
+              "command": 65,
+              "tx_length": 3,
+              "rx_length": 0,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 0,
+              "sent": "aa 03 01",
+              "received": ""
+            },
+            {
+              "sequence": 37,
+              "time_ms": 101595,
+              "event": 2,
+              "phase": 3,
+              "radio_state": 2,
+              "command": 65,
+              "tx_length": 3,
+              "rx_length": 3,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "aa 03 01",
+              "received": "00 00 00"
+            },
+            {
+              "sequence": 38,
+              "time_ms": 101599,
+              "event": 2,
+              "phase": 2,
+              "radio_state": 5,
+              "command": 32,
+              "tx_length": 0,
+              "rx_length": 3,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "",
+              "received": "b6 00 03"
+            }
+          ]
+        }
+      ],
+      "diagnostic_application_sha256": "f0775701be023b9cfe8ccc62eb2128b0a9dd3e92b43b20ae17adfe22bfb74d5d"
+    },
+    "slot_after_disconnection": {
+      "date": "2026-11-17T14:07:50.422146+00:00",
+      "action": "select",
+      "scope": "Non-atomic USB observations from temporary keyboard-only instrumentation",
+      "stages": [
+        {
+          "action": "select",
+          "state_changes_and_final_sample": [
+            {
+              "time_ms": 167480,
+              "phase": 3,
+              "radio_state": 2,
+              "pending_command": 65,
+              "startup_attempts": 0,
+              "queue_count": 0
+            },
+            {
+              "time_ms": 167996,
+              "phase": 2,
+              "radio_state": 5,
+              "pending_command": 32,
+              "startup_attempts": 0,
+              "queue_count": 0
+            },
+            {
+              "time_ms": 185544,
+              "phase": 2,
+              "radio_state": 5,
+              "pending_command": 32,
+              "startup_attempts": 0,
+              "queue_count": 0
+            }
+          ],
+          "stable_observed_spi_events": [
+            {
+              "sequence": 48,
+              "time_ms": 160291,
+              "event": 2,
+              "phase": 2,
+              "radio_state": 5,
+              "command": 32,
+              "tx_length": 0,
+              "rx_length": 3,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "",
+              "received": "b6 00 03"
+            },
+            {
+              "sequence": 49,
+              "time_ms": 167479,
+              "event": 1,
+              "phase": 3,
+              "radio_state": 2,
+              "command": 65,
+              "tx_length": 3,
+              "rx_length": 0,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 0,
+              "sent": "aa 03 01",
+              "received": ""
+            },
+            {
+              "sequence": 50,
+              "time_ms": 167484,
+              "event": 2,
+              "phase": 3,
+              "radio_state": 2,
+              "command": 65,
+              "tx_length": 3,
+              "rx_length": 3,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "aa 03 01",
+              "received": "00 00 00"
+            },
+            {
+              "sequence": 51,
+              "time_ms": 167488,
+              "event": 2,
+              "phase": 2,
+              "radio_state": 5,
+              "command": 32,
+              "tx_length": 0,
+              "rx_length": 3,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "",
+              "received": "b6 00 03"
+            }
+          ]
+        }
+      ],
+      "diagnostic_application_sha256": "f0775701be023b9cfe8ccc62eb2128b0a9dd3e92b43b20ae17adfe22bfb74d5d"
+    },
+    "incoming_acl_and_later_host_Connect": {
+      "date": "2026-11-17T14:09:37.923725+00:00",
+      "first_host_connect": "Attempting to connect to 20:73:10:01:5B:BF\n[CHG] Device 20:73:10:01:5B:BF ServicesResolved: yes\nConnection successful\n",
+      "second_host_connect": "Attempting to connect to 20:73:10:01:5B:BF\nConnection successful\n",
+      "stages": [
+        {
+          "action": "select saved slot; no host connection request",
+          "state_changes_and_final_sample": [
+            {
+              "elapsed_seconds": 0.02,
+              "time_ms": 275362,
+              "phase": 3,
+              "radio_state": 2,
+              "pending_command": 65,
+              "startup_attempts": 0,
+              "queue_count": 0,
+              "host_connected": false,
+              "host_services_resolved": false
+            },
+            {
+              "elapsed_seconds": 0.24,
+              "time_ms": 275582,
+              "phase": 2,
+              "radio_state": 5,
+              "pending_command": 32,
+              "startup_attempts": 0,
+              "queue_count": 0,
+              "host_connected": false,
+              "host_services_resolved": false
+            },
+            {
+              "elapsed_seconds": 1.781,
+              "time_ms": 277124,
+              "phase": 2,
+              "radio_state": 5,
+              "pending_command": 32,
+              "startup_attempts": 0,
+              "queue_count": 0,
+              "host_connected": true,
+              "host_services_resolved": false
+            },
+            {
+              "elapsed_seconds": 7.944,
+              "time_ms": 283289,
+              "phase": 2,
+              "radio_state": 5,
+              "pending_command": 32,
+              "startup_attempts": 0,
+              "queue_count": 0,
+              "host_connected": true,
+              "host_services_resolved": false
+            }
+          ],
+          "stable_observed_spi_events": [
+            {
+              "sequence": 51,
+              "time_ms": 167488,
+              "event": 2,
+              "phase": 2,
+              "radio_state": 5,
+              "command": 32,
+              "tx_length": 0,
+              "rx_length": 3,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "",
+              "received": "b6 00 03"
+            },
+            {
+              "sequence": 52,
+              "time_ms": 275361,
+              "event": 1,
+              "phase": 3,
+              "radio_state": 2,
+              "command": 65,
+              "tx_length": 3,
+              "rx_length": 0,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 0,
+              "sent": "aa 03 01",
+              "received": ""
+            },
+            {
+              "sequence": 53,
+              "time_ms": 275366,
+              "event": 2,
+              "phase": 3,
+              "radio_state": 2,
+              "command": 65,
+              "tx_length": 3,
+              "rx_length": 3,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "aa 03 01",
+              "received": "00 00 00"
+            },
+            {
+              "sequence": 54,
+              "time_ms": 275369,
+              "event": 2,
+              "phase": 2,
+              "radio_state": 5,
+              "command": 32,
+              "tx_length": 0,
+              "rx_length": 3,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "",
+              "received": "b6 00 03"
+            },
+            {
+              "sequence": 55,
+              "time_ms": 277133,
+              "event": 2,
+              "phase": 2,
+              "radio_state": 5,
+              "command": 32,
+              "tx_length": 0,
+              "rx_length": 3,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "",
+              "received": "b6 00 03"
+            },
+            {
+              "sequence": 56,
+              "time_ms": 277139,
+              "event": 2,
+              "phase": 2,
+              "radio_state": 5,
+              "command": 32,
+              "tx_length": 0,
+              "rx_length": 3,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "",
+              "received": "b6 01 00"
+            }
+          ]
+        },
+        {
+          "action": "after host connection request without pairing",
+          "state_changes_and_final_sample": [
+            {
+              "elapsed_seconds": 0.02,
+              "time_ms": 284119,
+              "phase": 2,
+              "radio_state": 5,
+              "pending_command": 32,
+              "startup_attempts": 0,
+              "queue_count": 0,
+              "host_connected": true,
+              "host_services_resolved": true
+            },
+            {
+              "elapsed_seconds": 2.001,
+              "time_ms": 286102,
+              "phase": 2,
+              "radio_state": 5,
+              "pending_command": 32,
+              "startup_attempts": 0,
+              "queue_count": 0,
+              "host_connected": true,
+              "host_services_resolved": true
+            }
+          ],
+          "stable_observed_spi_events": [
+            {
+              "sequence": 53,
+              "time_ms": 275366,
+              "event": 2,
+              "phase": 3,
+              "radio_state": 2,
+              "command": 65,
+              "tx_length": 3,
+              "rx_length": 3,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "aa 03 01",
+              "received": "00 00 00"
+            },
+            {
+              "sequence": 54,
+              "time_ms": 275369,
+              "event": 2,
+              "phase": 2,
+              "radio_state": 5,
+              "command": 32,
+              "tx_length": 0,
+              "rx_length": 3,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "",
+              "received": "b6 00 03"
+            },
+            {
+              "sequence": 55,
+              "time_ms": 277133,
+              "event": 2,
+              "phase": 2,
+              "radio_state": 5,
+              "command": 32,
+              "tx_length": 0,
+              "rx_length": 3,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "",
+              "received": "b6 00 03"
+            },
+            {
+              "sequence": 56,
+              "time_ms": 277139,
+              "event": 2,
+              "phase": 2,
+              "radio_state": 5,
+              "command": 32,
+              "tx_length": 0,
+              "rx_length": 3,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "",
+              "received": "b6 01 00"
+            }
+          ]
+        },
+        {
+          "action": "open pairing without changing host bond",
+          "state_changes_and_final_sample": [
+            {
+              "elapsed_seconds": 0.019,
+              "time_ms": 286324,
+              "phase": 3,
+              "radio_state": 3,
+              "pending_command": 81,
+              "startup_attempts": 0,
+              "queue_count": 0,
+              "host_connected": true,
+              "host_services_resolved": true
+            },
+            {
+              "elapsed_seconds": 0.24,
+              "time_ms": 286544,
+              "phase": 3,
+              "radio_state": 3,
+              "pending_command": 80,
+              "startup_attempts": 0,
+              "queue_count": 0,
+              "host_connected": true,
+              "host_services_resolved": true
+            },
+            {
+              "elapsed_seconds": 1.12,
+              "time_ms": 287426,
+              "phase": 2,
+              "radio_state": 3,
+              "pending_command": 32,
+              "startup_attempts": 0,
+              "queue_count": 0,
+              "host_connected": true,
+              "host_services_resolved": true
+            },
+            {
+              "elapsed_seconds": 2.002,
+              "time_ms": 288307,
+              "phase": 2,
+              "radio_state": 3,
+              "pending_command": 32,
+              "startup_attempts": 0,
+              "queue_count": 0,
+              "host_connected": true,
+              "host_services_resolved": true
+            }
+          ],
+          "stable_observed_spi_events": [
+            {
+              "sequence": 56,
+              "time_ms": 277139,
+              "event": 2,
+              "phase": 2,
+              "radio_state": 5,
+              "command": 32,
+              "tx_length": 0,
+              "rx_length": 3,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "",
+              "received": "b6 01 00"
+            },
+            {
+              "sequence": 57,
+              "time_ms": 286322,
+              "event": 1,
+              "phase": 3,
+              "radio_state": 3,
+              "command": 81,
+              "tx_length": 3,
+              "rx_length": 0,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 0,
+              "sent": "aa 03 01",
+              "received": ""
+            },
+            {
+              "sequence": 58,
+              "time_ms": 286328,
+              "event": 2,
+              "phase": 3,
+              "radio_state": 3,
+              "command": 81,
+              "tx_length": 3,
+              "rx_length": 3,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "aa 03 01",
+              "received": "00 00 00"
+            },
+            {
+              "sequence": 59,
+              "time_ms": 286478,
+              "event": 1,
+              "phase": 3,
+              "radio_state": 3,
+              "command": 80,
+              "tx_length": 3,
+              "rx_length": 0,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 0,
+              "sent": "aa 00 01",
+              "received": ""
+            },
+            {
+              "sequence": 60,
+              "time_ms": 287385,
+              "event": 2,
+              "phase": 3,
+              "radio_state": 3,
+              "command": 80,
+              "tx_length": 3,
+              "rx_length": 3,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "aa 00 01",
+              "received": "00 00 00"
+            }
+          ]
+        },
+        {
+          "action": "after host connection request with pairing open",
+          "state_changes_and_final_sample": [
+            {
+              "elapsed_seconds": 0.02,
+              "time_ms": 288537,
+              "phase": 2,
+              "radio_state": 3,
+              "pending_command": 32,
+              "startup_attempts": 0,
+              "queue_count": 0,
+              "host_connected": true,
+              "host_services_resolved": true
+            },
+            {
+              "elapsed_seconds": 3.983,
+              "time_ms": 292501,
+              "phase": 2,
+              "radio_state": 3,
+              "pending_command": 32,
+              "startup_attempts": 0,
+              "queue_count": 0,
+              "host_connected": true,
+              "host_services_resolved": true
+            }
+          ],
+          "stable_observed_spi_events": [
+            {
+              "sequence": 57,
+              "time_ms": 286322,
+              "event": 1,
+              "phase": 3,
+              "radio_state": 3,
+              "command": 81,
+              "tx_length": 3,
+              "rx_length": 0,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 0,
+              "sent": "aa 03 01",
+              "received": ""
+            },
+            {
+              "sequence": 58,
+              "time_ms": 286328,
+              "event": 2,
+              "phase": 3,
+              "radio_state": 3,
+              "command": 81,
+              "tx_length": 3,
+              "rx_length": 3,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "aa 03 01",
+              "received": "00 00 00"
+            },
+            {
+              "sequence": 59,
+              "time_ms": 286478,
+              "event": 1,
+              "phase": 3,
+              "radio_state": 3,
+              "command": 80,
+              "tx_length": 3,
+              "rx_length": 0,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 0,
+              "sent": "aa 00 01",
+              "received": ""
+            },
+            {
+              "sequence": 60,
+              "time_ms": 287385,
+              "event": 2,
+              "phase": 3,
+              "radio_state": 3,
+              "command": 80,
+              "tx_length": 3,
+              "rx_length": 3,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "aa 00 01",
+              "received": "00 00 00"
+            }
+          ]
+        }
+      ],
+      "target_hci_events": [
+        [
+          "> HCI Event: Connect Request (0x04) plen 10                       #168 2.615524",
+          "Address: 20:73:10:01:5B:BF (OUI 20-73-10)",
+          "Link type: ACL (0x01)"
+        ],
+        [
+          "< HCI Command: Accept Connection Request (0x01|0x0009) plen 7     #169 2.615545",
+          "Address: 20:73:10:01:5B:BF (OUI 20-73-10)",
+          "Role: Central (0x00)"
+        ],
+        [
+          "> HCI Event: Role Change (0x12) plen 8                            #182 2.734531",
+          "Status: Success (0x00)",
+          "Address: 20:73:10:01:5B:BF (OUI 20-73-10)",
+          "Role: Central (0x00)"
+        ],
+        [
+          "> HCI Event: Connect Complete (0x03) plen 11                      #202 2.925531",
+          "Status: Success (0x00)",
+          "Handle: 512",
+          "Address: 20:73:10:01:5B:BF (OUI 20-73-10)",
+          "Link type: ACL (0x01)",
+          "Encryption: Disabled (0x00)"
+        ],
+        [
+          "< HCI Command: Read Remote Supported Feat.. (0x01|0x001b) plen 2  #203 2.925627",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Max Slots Change (0x1b) plen 3                       #205 2.930519",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Read Remote Supported Features (0x0b) plen 11        #206 2.932525",
+          "Status: Success (0x00)",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "< HCI Command: Read Remote Extended Featu.. (0x01|0x001c) plen 3  #207 2.932538",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Read Remote Extended Features (0x23) plen 13         #210 2.941530",
+          "Status: Success (0x00)",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "< HCI Command: Remote Name Request (0x01|0x0019) plen 10          #211 2.941558",
+          "Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Link Key Request (0x17) plen 6                       #215 2.948520",
+          "Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "< HCI Command: Link Key Request Reply (0x01|0x000b) plen 22       #216 2.948533",
+          "Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5            #217 2.950517",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Remote Name Req Complete (0x07) plen 255             #221 2.955523",
+          "Status: Success (0x00)",
+          "Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "@ MGMT Event: Device Connected (0x000b) plen 28               {0x0001} 2.955538"
+        ],
+        [
+          "> HCI Event: Command Complete (0x0e) plen 10                      #223 2.957529",
+          "Status: Success (0x00)",
+          "Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5            #224 2.959523",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Encryption Change (0x08) plen 4                      #230 3.008530",
+          "Status: Success (0x00)",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)",
+          "Encryption: Enabled with E0 (0x01)"
+        ],
+        [
+          "< HCI Command: Read Encryption Key Size (0x05|0x0008) plen 2      #231 3.008552",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Command Complete (0x0e) plen 7                       #232 3.011531",
+          "Status: Success (0x00)",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5            #238 3.023515",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5            #242 3.025519",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5            #243 3.028527",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5            #249 3.036522",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5            #250 3.038517",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5            #254 3.043518",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5            #256 3.046522",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5            #260 3.051527",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5            #261 3.054528",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5            #266 3.067530",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5            #269 3.073531",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5            #274 3.083525",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5            #279 3.106526",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5            #282 3.114529",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5            #287 3.126521",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5            #290 3.134529",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5            #295 3.146526",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5            #298 3.153529",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5            #303 3.164520",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Mode Change (0x14) plen 6                            #393 4.069528",
+          "Status: Success (0x00)",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "< HCI Command: Exit Sniff Mode (0x02|0x0004) plen 2               #923 9.426638",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5            #939 9.569534",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5            #943 9.576535",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Mode Change (0x14) plen 6                            #944 9.578524",
+          "Status: Success (0x00)",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5            #950 9.587529",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5            #951 9.589526",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5            #956 9.605535",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5            #960 9.617527",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5            #964 9.632536",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5            #969 9.646535",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5            #973 9.658531",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5            #977 9.675537",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5            #982 9.691535",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5            #987 9.706533",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5            #990 9.718543",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5            #995 9.735538",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5           #1000 9.748530",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5           #1005 9.772533",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5           #1010 9.792537",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5           #1016 9.823529",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5           #1020 9.836532",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5           #1025 9.850531",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5           #1029 9.862532",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5           #1033 9.876534",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5           #1038 9.892530",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5           #1042 9.904536",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5           #1046 9.918537",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Number of Completed Packets (0x13) plen 5           #1051 9.935541",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ]
+      ],
+      "diagnostic_application_sha256": "f0775701be023b9cfe8ccc62eb2128b0a9dd3e92b43b20ae17adfe22bfb74d5d"
+    },
+    "explicit_host_disconnect_then_reset": {
+      "date": "2026-11-17T14:11:59.691063+00:00",
+      "host_connect_after_observation": "Attempting to connect to 20:73:10:01:5B:BF\nFailed to connect: org.bluez.Error.Failed br-connection-create-socket\n",
+      "stages": [
+        {
+          "action": "radio reset, no host connection request",
+          "state_changes_and_final_sample": [
+            {
+              "elapsed_seconds": 0.014,
+              "time_ms": 417194,
+              "phase": 0,
+              "radio_state": 0,
+              "pending_command": 128,
+              "startup_attempts": 4,
+              "queue_count": 0,
+              "host_connected": false,
+              "host_services_resolved": false
+            },
+            {
+              "elapsed_seconds": 1.085,
+              "time_ms": 418265,
+              "phase": 1,
+              "radio_state": 0,
+              "pending_command": 128,
+              "startup_attempts": 4,
+              "queue_count": 0,
+              "host_connected": false,
+              "host_services_resolved": false
+            },
+            {
+              "elapsed_seconds": 2.59,
+              "time_ms": 419765,
+              "phase": 2,
+              "radio_state": 5,
+              "pending_command": 32,
+              "startup_attempts": 3,
+              "queue_count": 0,
+              "host_connected": false,
+              "host_services_resolved": false
+            },
+            {
+              "elapsed_seconds": 11.837,
+              "time_ms": 429015,
+              "phase": 2,
+              "radio_state": 5,
+              "pending_command": 32,
+              "startup_attempts": 3,
+              "queue_count": 0,
+              "host_connected": false,
+              "host_services_resolved": false
+            }
+          ],
+          "stable_observed_spi_events": [
+            {
+              "sequence": 0,
+              "time_ms": 417192,
+              "event": 0,
+              "phase": 0,
+              "radio_state": 0,
+              "command": 128,
+              "tx_length": 0,
+              "rx_length": 0,
+              "attempts": 4,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "",
+              "received": ""
+            },
+            {
+              "sequence": 1,
+              "time_ms": 419702,
+              "event": 1,
+              "phase": 3,
+              "radio_state": 0,
+              "command": 128,
+              "tx_length": 4,
+              "rx_length": 0,
+              "attempts": 3,
+              "queued": 0,
+              "spi_sr": 0,
+              "sent": "a7 02 00 01",
+              "received": ""
+            },
+            {
+              "sequence": 2,
+              "time_ms": 419704,
+              "event": 2,
+              "phase": 3,
+              "radio_state": 0,
+              "command": 128,
+              "tx_length": 4,
+              "rx_length": 4,
+              "attempts": 3,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "a7 02 00 01",
+              "received": "00 00 00 00"
+            },
+            {
+              "sequence": 3,
+              "time_ms": 419712,
+              "event": 2,
+              "phase": 2,
+              "radio_state": 5,
+              "command": 32,
+              "tx_length": 0,
+              "rx_length": 3,
+              "attempts": 3,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "",
+              "received": "b6 00 03"
+            },
+            {
+              "sequence": 4,
+              "time_ms": 420220,
+              "event": 2,
+              "phase": 2,
+              "radio_state": 5,
+              "command": 32,
+              "tx_length": 0,
+              "rx_length": 3,
+              "attempts": 3,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "",
+              "received": "b6 00 03"
+            }
+          ]
+        },
+        {
+          "action": "select saved slot, no pairing or host connection request",
+          "state_changes_and_final_sample": [
+            {
+              "elapsed_seconds": 0.021,
+              "time_ms": 429237,
+              "phase": 3,
+              "radio_state": 2,
+              "pending_command": 65,
+              "startup_attempts": 0,
+              "queue_count": 0,
+              "host_connected": false,
+              "host_services_resolved": false
+            },
+            {
+              "elapsed_seconds": 0.241,
+              "time_ms": 429458,
+              "phase": 2,
+              "radio_state": 2,
+              "pending_command": 32,
+              "startup_attempts": 0,
+              "queue_count": 0,
+              "host_connected": false,
+              "host_services_resolved": false
+            },
+            {
+              "elapsed_seconds": 19.823,
+              "time_ms": 449048,
+              "phase": 2,
+              "radio_state": 2,
+              "pending_command": 32,
+              "startup_attempts": 0,
+              "queue_count": 0,
+              "host_connected": false,
+              "host_services_resolved": false
+            }
+          ],
+          "stable_observed_spi_events": [
+            {
+              "sequence": 3,
+              "time_ms": 419712,
+              "event": 2,
+              "phase": 2,
+              "radio_state": 5,
+              "command": 32,
+              "tx_length": 0,
+              "rx_length": 3,
+              "attempts": 3,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "",
+              "received": "b6 00 03"
+            },
+            {
+              "sequence": 4,
+              "time_ms": 420220,
+              "event": 2,
+              "phase": 2,
+              "radio_state": 5,
+              "command": 32,
+              "tx_length": 0,
+              "rx_length": 3,
+              "attempts": 3,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "",
+              "received": "b6 00 03"
+            },
+            {
+              "sequence": 5,
+              "time_ms": 429235,
+              "event": 1,
+              "phase": 3,
+              "radio_state": 2,
+              "command": 65,
+              "tx_length": 3,
+              "rx_length": 0,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 0,
+              "sent": "aa 03 01",
+              "received": ""
+            },
+            {
+              "sequence": 6,
+              "time_ms": 429240,
+              "event": 2,
+              "phase": 3,
+              "radio_state": 2,
+              "command": 65,
+              "tx_length": 3,
+              "rx_length": 3,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "aa 03 01",
+              "received": "00 00 00"
+            }
+          ]
+        },
+        {
+          "action": "after host connection request without pairing",
+          "state_changes_and_final_sample": [
+            {
+              "elapsed_seconds": 0.012,
+              "time_ms": 453827,
+              "phase": 2,
+              "radio_state": 2,
+              "pending_command": 32,
+              "startup_attempts": 0,
+              "queue_count": 0,
+              "host_connected": false,
+              "host_services_resolved": false
+            },
+            {
+              "elapsed_seconds": 2.981,
+              "time_ms": 457160,
+              "phase": 2,
+              "radio_state": 2,
+              "pending_command": 32,
+              "startup_attempts": 0,
+              "queue_count": 0,
+              "host_connected": false,
+              "host_services_resolved": false
+            }
+          ],
+          "stable_observed_spi_events": [
+            {
+              "sequence": 3,
+              "time_ms": 419712,
+              "event": 2,
+              "phase": 2,
+              "radio_state": 5,
+              "command": 32,
+              "tx_length": 0,
+              "rx_length": 3,
+              "attempts": 3,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "",
+              "received": "b6 00 03"
+            },
+            {
+              "sequence": 4,
+              "time_ms": 420220,
+              "event": 2,
+              "phase": 2,
+              "radio_state": 5,
+              "command": 32,
+              "tx_length": 0,
+              "rx_length": 3,
+              "attempts": 3,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "",
+              "received": "b6 00 03"
+            },
+            {
+              "sequence": 5,
+              "time_ms": 429235,
+              "event": 1,
+              "phase": 3,
+              "radio_state": 2,
+              "command": 65,
+              "tx_length": 3,
+              "rx_length": 0,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 0,
+              "sent": "aa 03 01",
+              "received": ""
+            },
+            {
+              "sequence": 6,
+              "time_ms": 429240,
+              "event": 2,
+              "phase": 3,
+              "radio_state": 2,
+              "command": 65,
+              "tx_length": 3,
+              "rx_length": 3,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "aa 03 01",
+              "received": "00 00 00"
+            }
+          ]
+        }
+      ],
+      "target_hci_events": [
+        [
+          "< HCI Command: Create Connection (0x01|0x0005) plen 13          #3197 33.127413",
+          "Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Connect Complete (0x03) plen 11                    #3704 38.251784",
+          "Status: Page Timeout (0x04)",
+          "Handle: 65535",
+          "Address: 20:73:10:01:5B:BF (OUI 20-73-10)",
+          "Link type: ACL (0x01)",
+          "Encryption: Disabled (0x00)"
+        ],
+        [
+          "@ MGMT Event: Connect Failed (0x000d) plen 8                 {0x0001} 38.251826",
+          "Status: Connect Failed (0x04)"
+        ]
+      ],
+      "diagnostic_application_sha256": "f0775701be023b9cfe8ccc62eb2128b0a9dd3e92b43b20ae17adfe22bfb74d5d"
+    },
+    "temporary_host_connectable_trial": {
+      "date": "2026-11-17T14:15:28.211901+00:00",
+      "original_controller_settings": "hci0:\tPrimary controller\n\taddr B0:A4:60:70:99:4F version 11 manufacturer 2 class 0x7c010c\n\tsupported settings: powered connectable fast-connectable discoverable bondable link-security ssp br/edr le advertising secure-conn debug-keys privacy configuration static-addr phy-configuration wide-band-speech ll-privacy \n\tcurrent settings: powered bondable ssp br/edr le secure-conn wide-band-speech ll-privacy \n\tname tux\n\tshort name \nhci0:\tConfiguration options\n\tsupported options: public-address \n\tmissing options: \n",
+      "controller_settings_during_test": "hci0:\tPrimary controller\n\taddr B0:A4:60:70:99:4F version 11 manufacturer 2 class 0x7c010c\n\tsupported settings: powered connectable fast-connectable discoverable bondable link-security ssp br/edr le advertising secure-conn debug-keys privacy configuration static-addr phy-configuration wide-band-speech ll-privacy \n\tcurrent settings: powered connectable bondable ssp br/edr le secure-conn wide-band-speech ll-privacy \n\tname tux\n\tshort name \nhci0:\tConfiguration options\n\tsupported options: public-address \n\tmissing options: \n",
+      "restored_original_connectable_off": true,
+      "stages": [
+        {
+          "action": "radio reset with host connectable enabled, no host Connect",
+          "state_changes_and_final_sample": [
+            {
+              "elapsed_seconds": 0.013,
+              "time_ms": 628919,
+              "phase": 0,
+              "radio_state": 0,
+              "pending_command": 128,
+              "startup_attempts": 4,
+              "queue_count": 0,
+              "host_connected": false,
+              "host_services_resolved": false
+            },
+            {
+              "elapsed_seconds": 1.084,
+              "time_ms": 629989,
+              "phase": 1,
+              "radio_state": 0,
+              "pending_command": 128,
+              "startup_attempts": 4,
+              "queue_count": 0,
+              "host_connected": false,
+              "host_services_resolved": false
+            },
+            {
+              "elapsed_seconds": 2.588,
+              "time_ms": 631487,
+              "phase": 2,
+              "radio_state": 5,
+              "pending_command": 32,
+              "startup_attempts": 3,
+              "queue_count": 0,
+              "host_connected": false,
+              "host_services_resolved": false
+            },
+            {
+              "elapsed_seconds": 5.891,
+              "time_ms": 634791,
+              "phase": 2,
+              "radio_state": 5,
+              "pending_command": 32,
+              "startup_attempts": 3,
+              "queue_count": 0,
+              "host_connected": false,
+              "host_services_resolved": false
+            }
+          ],
+          "stable_observed_spi_events": [
+            {
+              "sequence": 0,
+              "time_ms": 628917,
+              "event": 0,
+              "phase": 0,
+              "radio_state": 0,
+              "command": 128,
+              "tx_length": 0,
+              "rx_length": 0,
+              "attempts": 4,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "",
+              "received": ""
+            },
+            {
+              "sequence": 1,
+              "time_ms": 631427,
+              "event": 1,
+              "phase": 3,
+              "radio_state": 0,
+              "command": 128,
+              "tx_length": 4,
+              "rx_length": 0,
+              "attempts": 3,
+              "queued": 0,
+              "spi_sr": 0,
+              "sent": "a7 02 00 01",
+              "received": ""
+            },
+            {
+              "sequence": 2,
+              "time_ms": 631428,
+              "event": 2,
+              "phase": 3,
+              "radio_state": 0,
+              "command": 128,
+              "tx_length": 4,
+              "rx_length": 4,
+              "attempts": 3,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "a7 02 00 01",
+              "received": "00 00 00 00"
+            },
+            {
+              "sequence": 3,
+              "time_ms": 631429,
+              "event": 2,
+              "phase": 2,
+              "radio_state": 5,
+              "command": 32,
+              "tx_length": 0,
+              "rx_length": 3,
+              "attempts": 3,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "",
+              "received": "b6 00 03"
+            },
+            {
+              "sequence": 4,
+              "time_ms": 631899,
+              "event": 2,
+              "phase": 2,
+              "radio_state": 5,
+              "command": 32,
+              "tx_length": 0,
+              "rx_length": 3,
+              "attempts": 3,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "",
+              "received": "b6 00 03"
+            }
+          ]
+        },
+        {
+          "action": "select saved slot with host connectable enabled, no pairing or host Connect",
+          "state_changes_and_final_sample": [
+            {
+              "elapsed_seconds": 0.02,
+              "time_ms": 635013,
+              "phase": 3,
+              "radio_state": 2,
+              "pending_command": 65,
+              "startup_attempts": 0,
+              "queue_count": 0,
+              "host_connected": false,
+              "host_services_resolved": false
+            },
+            {
+              "elapsed_seconds": 0.24,
+              "time_ms": 635233,
+              "phase": 2,
+              "radio_state": 2,
+              "pending_command": 32,
+              "startup_attempts": 0,
+              "queue_count": 0,
+              "host_connected": false,
+              "host_services_resolved": false
+            },
+            {
+              "elapsed_seconds": 15.872,
+              "time_ms": 650869,
+              "phase": 2,
+              "radio_state": 2,
+              "pending_command": 32,
+              "startup_attempts": 0,
+              "queue_count": 0,
+              "host_connected": false,
+              "host_services_resolved": false
+            }
+          ],
+          "stable_observed_spi_events": [
+            {
+              "sequence": 3,
+              "time_ms": 631429,
+              "event": 2,
+              "phase": 2,
+              "radio_state": 5,
+              "command": 32,
+              "tx_length": 0,
+              "rx_length": 3,
+              "attempts": 3,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "",
+              "received": "b6 00 03"
+            },
+            {
+              "sequence": 4,
+              "time_ms": 631899,
+              "event": 2,
+              "phase": 2,
+              "radio_state": 5,
+              "command": 32,
+              "tx_length": 0,
+              "rx_length": 3,
+              "attempts": 3,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "",
+              "received": "b6 00 03"
+            },
+            {
+              "sequence": 5,
+              "time_ms": 635012,
+              "event": 1,
+              "phase": 3,
+              "radio_state": 2,
+              "command": 65,
+              "tx_length": 3,
+              "rx_length": 0,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 0,
+              "sent": "aa 03 01",
+              "received": ""
+            },
+            {
+              "sequence": 6,
+              "time_ms": 635017,
+              "event": 2,
+              "phase": 3,
+              "radio_state": 2,
+              "command": 65,
+              "tx_length": 3,
+              "rx_length": 3,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "aa 03 01",
+              "received": "00 00 00"
+            }
+          ]
+        }
+      ],
+      "target_hci_events": [],
+      "diagnostic_application_sha256": "f0775701be023b9cfe8ccc62eb2128b0a9dd3e92b43b20ae17adfe22bfb74d5d"
+    },
+    "stock_empty_report_batch": {
+      "date": "2026-11-17T14:21:53.084687+00:00",
+      "host_connect_request_sent": false,
+      "pairing_request_sent": false,
+      "stages": [
+        {
+          "action": "startup",
+          "state_changes_and_final_sample": [
+            {
+              "elapsed_seconds": 0.014,
+              "time_ms": 702,
+              "phase": 0,
+              "radio_state": 0,
+              "pending_command": 128,
+              "startup_attempts": 4,
+              "queue_count": 3,
+              "host_connected": false,
+              "host_services_resolved": false,
+              "host_hid_input": false
+            },
+            {
+              "elapsed_seconds": 0.357,
+              "time_ms": 1045,
+              "phase": 1,
+              "radio_state": 0,
+              "pending_command": 128,
+              "startup_attempts": 4,
+              "queue_count": 3,
+              "host_connected": false,
+              "host_services_resolved": false,
+              "host_hid_input": false
+            },
+            {
+              "elapsed_seconds": 1.842,
+              "time_ms": 2529,
+              "phase": 2,
+              "radio_state": 0,
+              "pending_command": 128,
+              "startup_attempts": 3,
+              "queue_count": 3,
+              "host_connected": false,
+              "host_services_resolved": false,
+              "host_hid_input": false
+            },
+            {
+              "elapsed_seconds": 1.962,
+              "time_ms": 2644,
+              "phase": 2,
+              "radio_state": 5,
+              "pending_command": 32,
+              "startup_attempts": 3,
+              "queue_count": 0,
+              "host_connected": false,
+              "host_services_resolved": false,
+              "host_hid_input": false
+            },
+            {
+              "elapsed_seconds": 5.923,
+              "time_ms": 6604,
+              "phase": 2,
+              "radio_state": 5,
+              "pending_command": 32,
+              "startup_attempts": 3,
+              "queue_count": 0,
+              "host_connected": false,
+              "host_services_resolved": false,
+              "host_hid_input": false
+            }
+          ],
+          "stable_observed_spi_events": [
+            {
+              "sequence": 0,
+              "time_ms": 25,
+              "event": 0,
+              "phase": 0,
+              "radio_state": 0,
+              "command": 128,
+              "tx_length": 0,
+              "rx_length": 0,
+              "attempts": 4,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "",
+              "received": ""
+            },
+            {
+              "sequence": 6,
+              "time_ms": 2562,
+              "event": 1,
+              "phase": 3,
+              "radio_state": 5,
+              "command": 241,
+              "tx_length": 5,
+              "rx_length": 0,
+              "attempts": 3,
+              "queued": 2,
+              "spi_sr": 0,
+              "sent": "a2 (input payload omitted)",
+              "received": ""
+            },
+            {
+              "sequence": 7,
+              "time_ms": 2563,
+              "event": 2,
+              "phase": 3,
+              "radio_state": 5,
+              "command": 241,
+              "tx_length": 5,
+              "rx_length": 5,
+              "attempts": 3,
+              "queued": 2,
+              "spi_sr": 3,
+              "sent": "a2 (input payload omitted)",
+              "received": "00 00 00 00 00"
+            },
+            {
+              "sequence": 8,
+              "time_ms": 2573,
+              "event": 1,
+              "phase": 3,
+              "radio_state": 5,
+              "command": 242,
+              "tx_length": 2,
+              "rx_length": 0,
+              "attempts": 3,
+              "queued": 1,
+              "spi_sr": 0,
+              "sent": "a3 (input payload omitted)",
+              "received": ""
+            },
+            {
+              "sequence": 9,
+              "time_ms": 2574,
+              "event": 2,
+              "phase": 3,
+              "radio_state": 5,
+              "command": 242,
+              "tx_length": 2,
+              "rx_length": 2,
+              "attempts": 3,
+              "queued": 1,
+              "spi_sr": 3,
+              "sent": "a3 (input payload omitted)",
+              "received": "00 00"
+            },
+            {
+              "sequence": 10,
+              "time_ms": 3072,
+              "event": 2,
+              "phase": 2,
+              "radio_state": 5,
+              "command": 32,
+              "tx_length": 0,
+              "rx_length": 3,
+              "attempts": 3,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "",
+              "received": "b6 00 03"
+            }
+          ]
+        },
+        {
+          "action": "select saved slot",
+          "state_changes_and_final_sample": [
+            {
+              "elapsed_seconds": 0.02,
+              "time_ms": 6726,
+              "phase": 3,
+              "radio_state": 2,
+              "pending_command": 65,
+              "startup_attempts": 0,
+              "queue_count": 0,
+              "host_connected": false,
+              "host_services_resolved": false,
+              "host_hid_input": false
+            },
+            {
+              "elapsed_seconds": 0.14,
+              "time_ms": 6846,
+              "phase": 2,
+              "radio_state": 2,
+              "pending_command": 32,
+              "startup_attempts": 0,
+              "queue_count": 0,
+              "host_connected": false,
+              "host_services_resolved": false,
+              "host_hid_input": false
+            },
+            {
+              "elapsed_seconds": 2.202,
+              "time_ms": 8891,
+              "phase": 2,
+              "radio_state": 5,
+              "pending_command": 32,
+              "startup_attempts": 0,
+              "queue_count": 0,
+              "host_connected": true,
+              "host_services_resolved": false,
+              "host_hid_input": true
+            },
+            {
+              "elapsed_seconds": 16.014,
+              "time_ms": 22716,
+              "phase": 2,
+              "radio_state": 5,
+              "pending_command": 32,
+              "startup_attempts": 0,
+              "queue_count": 0,
+              "host_connected": true,
+              "host_services_resolved": false,
+              "host_hid_input": true
+            }
+          ],
+          "stable_observed_spi_events": [
+            {
+              "sequence": 9,
+              "time_ms": 2574,
+              "event": 2,
+              "phase": 3,
+              "radio_state": 5,
+              "command": 242,
+              "tx_length": 2,
+              "rx_length": 2,
+              "attempts": 3,
+              "queued": 1,
+              "spi_sr": 3,
+              "sent": "a3 (input payload omitted)",
+              "received": "00 00"
+            },
+            {
+              "sequence": 10,
+              "time_ms": 3072,
+              "event": 2,
+              "phase": 2,
+              "radio_state": 5,
+              "command": 32,
+              "tx_length": 0,
+              "rx_length": 3,
+              "attempts": 3,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "",
+              "received": "b6 00 03"
+            },
+            {
+              "sequence": 11,
+              "time_ms": 6724,
+              "event": 1,
+              "phase": 3,
+              "radio_state": 2,
+              "command": 65,
+              "tx_length": 3,
+              "rx_length": 0,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 0,
+              "sent": "aa 03 01",
+              "received": ""
+            },
+            {
+              "sequence": 12,
+              "time_ms": 6728,
+              "event": 2,
+              "phase": 3,
+              "radio_state": 2,
+              "command": 65,
+              "tx_length": 3,
+              "rx_length": 3,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "aa 03 01",
+              "received": "00 00 00"
+            },
+            {
+              "sequence": 13,
+              "time_ms": 8878,
+              "event": 2,
+              "phase": 2,
+              "radio_state": 5,
+              "command": 32,
+              "tx_length": 0,
+              "rx_length": 3,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "",
+              "received": "b6 00 03"
+            },
+            {
+              "sequence": 14,
+              "time_ms": 8885,
+              "event": 2,
+              "phase": 2,
+              "radio_state": 5,
+              "command": 32,
+              "tx_length": 0,
+              "rx_length": 3,
+              "attempts": 0,
+              "queued": 0,
+              "spi_sr": 3,
+              "sent": "",
+              "received": "b6 01 00"
+            }
+          ]
+        },
+        {
+          "action": "send stock empty A1/A3/A2 reports",
+          "state_changes_and_final_sample": [
+            {
+              "elapsed_seconds": 0.02,
+              "time_ms": 22838,
+              "phase": 3,
+              "radio_state": 5,
+              "pending_command": 240,
+              "startup_attempts": 0,
+              "queue_count": 3,
+              "host_connected": true,
+              "host_services_resolved": false,
+              "host_hid_input": true
+            },
+            {
+              "elapsed_seconds": 0.14,
+              "time_ms": 22958,
+              "phase": 2,
+              "radio_state": 5,
+              "pending_command": 32,
+              "startup_attempts": 0,
+              "queue_count": 0,
+              "host_connected": true,
+              "host_services_resolved": false,
+              "host_hid_input": true
+            },
+            {
+              "elapsed_seconds": 16.005,
+              "time_ms": 38820,
+              "phase": 2,
+              "radio_state": 5,
+              "pending_command": 32,
+              "startup_attempts": 0,
+              "queue_count": 0,
+              "host_connected": true,
+              "host_services_resolved": false,
+              "host_hid_input": true
+            }
+          ],
+          "stable_observed_spi_events": [
+            {
+              "sequence": 17,
+              "time_ms": 22854,
+              "event": 1,
+              "phase": 3,
+              "radio_state": 5,
+              "command": 242,
+              "tx_length": 2,
+              "rx_length": 0,
+              "attempts": 0,
+              "queued": 2,
+              "spi_sr": 0,
+              "sent": "a3 (input payload omitted)",
+              "received": ""
+            },
+            {
+              "sequence": 18,
+              "time_ms": 22860,
+              "event": 2,
+              "phase": 3,
+              "radio_state": 5,
+              "command": 242,
+              "tx_length": 2,
+              "rx_length": 2,
+              "attempts": 0,
+              "queued": 2,
+              "spi_sr": 3,
+              "sent": "a3 (input payload omitted)",
+              "received": "00 00"
+            },
+            {
+              "sequence": 19,
+              "time_ms": 22870,
+              "event": 1,
+              "phase": 3,
+              "radio_state": 5,
+              "command": 241,
+              "tx_length": 5,
+              "rx_length": 0,
+              "attempts": 0,
+              "queued": 1,
+              "spi_sr": 0,
+              "sent": "a2 (input payload omitted)",
+              "received": ""
+            },
+            {
+              "sequence": 20,
+              "time_ms": 22881,
+              "event": 2,
+              "phase": 3,
+              "radio_state": 5,
+              "command": 241,
+              "tx_length": 5,
+              "rx_length": 5,
+              "attempts": 0,
+              "queued": 1,
+              "spi_sr": 3,
+              "sent": "a2 (input payload omitted)",
+              "received": "00 00 00 00 00"
+            }
+          ]
+        }
+      ],
+      "target_hci_events": [
+        [
+          "> HCI Event: Connect Request (0x04) plen 10                         #1 3.552592",
+          "Address: 20:73:10:01:5B:BF (OUI 20-73-10)",
+          "Link type: ACL (0x01)"
+        ],
+        [
+          "< HCI Command: Accept Connection Request (0x01|0x0009) plen 7       #2 3.552642",
+          "Address: 20:73:10:01:5B:BF (OUI 20-73-10)",
+          "Role: Central (0x00)"
+        ],
+        [
+          "> HCI Event: Role Change (0x12) plen 8                              #4 3.672582",
+          "Status: Success (0x00)",
+          "Address: 20:73:10:01:5B:BF (OUI 20-73-10)",
+          "Role: Central (0x00)"
+        ],
+        [
+          "> HCI Event: Connect Complete (0x03) plen 11                        #5 3.865582",
+          "Status: Success (0x00)",
+          "Handle: 512",
+          "Address: 20:73:10:01:5B:BF (OUI 20-73-10)",
+          "Link type: ACL (0x01)",
+          "Encryption: Disabled (0x00)"
+        ],
+        [
+          "< HCI Command: Read Remote Supported Features (0x01|0x001b) plen 2  #6 3.865711",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Max Slots Change (0x1b) plen 3                         #8 3.870546",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Read Remote Supported Features (0x0b) plen 11          #9 3.873563",
+          "Status: Success (0x00)",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "< HCI Command: Read Remote Extended Features (0x01|0x001c) plen 3  #10 3.873578",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Disconnect Complete (0x05) plen 4                     #12 4.033570",
+          "Status: Success (0x00)",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)",
+          "Reason: Remote User Terminated Connection (0x13)"
+        ],
+        [
+          "> HCI Event: Connect Request (0x04) plen 10                        #13 8.685576",
+          "Address: 20:73:10:01:5B:BF (OUI 20-73-10)",
+          "Link type: ACL (0x01)"
+        ],
+        [
+          "< HCI Command: Accept Connection Request (0x01|0x0009) plen 7      #14 8.685623",
+          "Address: 20:73:10:01:5B:BF (OUI 20-73-10)",
+          "Role: Central (0x00)"
+        ],
+        [
+          "> HCI Event: Role Change (0x12) plen 8                             #16 8.807572",
+          "Status: Success (0x00)",
+          "Address: 20:73:10:01:5B:BF (OUI 20-73-10)",
+          "Role: Central (0x00)"
+        ],
+        [
+          "> HCI Event: Connect Complete (0x03) plen 11                       #17 8.998576",
+          "Status: Success (0x00)",
+          "Handle: 512",
+          "Address: 20:73:10:01:5B:BF (OUI 20-73-10)",
+          "Link type: ACL (0x01)",
+          "Encryption: Disabled (0x00)"
+        ],
+        [
+          "< HCI Command: Read Remote Supported Featu.. (0x01|0x001b) plen 2  #18 8.998700",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Max Slots Change (0x1b) plen 3                        #20 9.004558",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Read Remote Supported Features (0x0b) plen 11         #21 9.007557",
+          "Status: Success (0x00)",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "< HCI Command: Read Remote Extended Features (0x01|0x001c) plen 3  #22 9.007586",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Read Remote Extended Features (0x23) plen 13          #24 9.014569",
+          "Status: Success (0x00)",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "< HCI Command: Remote Name Request (0x01|0x0019) plen 10           #25 9.014607",
+          "Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Link Key Request (0x17) plen 6                        #29 9.021560",
+          "Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "< HCI Command: Link Key Request Reply (0x01|0x000b) plen 22        #30 9.021579",
+          "Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Remote Name Req Complete (0x07) plen 255              #33 9.027560",
+          "Status: Success (0x00)",
+          "Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "@ MGMT Event: Device Connected (0x000b) plen 28               {0x0001} 9.027576"
+        ],
+        [
+          "> HCI Event: Command Complete (0x0e) plen 10                       #34 9.029556",
+          "Status: Success (0x00)",
+          "Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Encryption Change (0x08) plen 4                       #37 9.078571",
+          "Status: Success (0x00)",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)",
+          "Encryption: Enabled with E0 (0x01)"
+        ],
+        [
+          "< HCI Command: Read Encryption Key Size (0x05|0x0008) plen 2       #38 9.078601",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Command Complete (0x0e) plen 7                        #39 9.081566",
+          "Status: Success (0x00)",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ],
+        [
+          "> HCI Event: Mode Change (0x14) plen 6                            #96 10.132576",
+          "Status: Success (0x00)",
+          "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+        ]
+      ],
+      "diagnostic_application_sha256": "7f90518f8e81062d37b36837a36328c5bea7c161e20a628f5d8a56fbe2dae37d"
+    }
+  },
+  "later_cold_input_record": "docs/hardware-calibration/bluetooth-reconnect-cold-input.json",
+  "independent_review": {
+    "reviewer": "gpt-6-astra at maximum reasoning effort",
+    "binary_elf_patch_and_probe_hashes_match": true,
+    "instrumented_sources_reconstructed_from_saved_patches": true,
+    "no_production_change_justified_by_this_evidence": true,
+    "corrections_applied": [
+      "Qualified historical failure summaries and linked later owner-confirmed typing",
+      "Removed stale v1 pointer to the current v2 probe",
+      "Attributed each diagnostic observation to its firmware hash"
+    ]
+  }
+}

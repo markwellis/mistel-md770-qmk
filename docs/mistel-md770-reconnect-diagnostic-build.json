@@ -1,0 +1,124 @@
+{
+  "date": "2026-11-17T13:00:07.158249+00:00",
+  "status": "Both diagnostic revisions removed; ordinary production QMK restored and independently checksum-verified",
+  "qmk_baseline_commit": "e5b5479c53f3da7b28dac3666e9463ef606f4e27",
+  "userspace_baseline_commit": "b8ec105",
+  "target": "mistel_md770rgb_bt_right_markwellis_reconnect_diagnostics_v2",
+  "application_bytes": 52408,
+  "application_sha256": "7f90518f8e81062d37b36837a36328c5bea7c161e20a628f5d8a56fbe2dae37d",
+  "elf_sha256": "94abf44aad647cd73a39489da11998e41108b82bf9b1780fd2d4b97d18cb2ae5",
+  "build_command": "nix-shell --run 'qmk compile -kb mistel/md770rgb_bt/right -km markwellis -j 4 -e TARGET=mistel_md770rgb_bt_right_markwellis_reconnect_diagnostics_v2 -e EXTRAFLAGS=-DMD770_RECONNECT_DIAGNOSTICS'",
+  "patches": {
+    "tests/md770_bluetooth/review/reconnect-diagnostics-qmk.patch": "8eeb31bfbfabe9ae61202434427dbacfe81c86d23df519acb429339a489c1fbe",
+    "tests/md770_bluetooth/review/reconnect-diagnostics-keymap.patch": "077564ec55891dcc28af31eef4765265a57574b8641739048190bbe3382e1798"
+  },
+  "source_sha256": {
+    "QMK keyboards/mistel/md770rgb_bt/bluetooth.c": {
+      "original": "edd7bfb71f46de4073cce6291918e440ad7ef2bb92f3c05d101c805de5bdcc45",
+      "instrumented": "fc2ff15237a964605a2094c4c2b00e3a8c986d96c4a5324b61c020226bf3d22a"
+    },
+    "keyboards/mistel/md770rgb_bt/keymaps/markwellis/notification.c": {
+      "original": "d12790c7c2206f5444d26e8ccc954a0a9a759a108714135691573b92b0fcb555",
+      "instrumented": "d22d120942973b0cc8dfa06749327c2e21dacd1134d506b1c14273cad93a145d"
+    }
+  },
+  "original_sources_restored_after_build": true,
+  "readout": "tests/md770_bluetooth/read_reconnect_diagnostics.py",
+  "trace_records": 4,
+  "trace_record_bytes": 28,
+  "free_heap_bytes": 216,
+  "verification_record": "docs/mistel-md770-reconnect-diagnostic-checks.json",
+  "latched_error_regression": {
+    "diagnostic_elf_sha256": "94abf44aad647cd73a39489da11998e41108b82bf9b1780fd2d4b97d18cb2ae5",
+    "spi_error_injected": 128,
+    "diagnostic_event": 3,
+    "diagnostic_status": 131,
+    "latched_error_preserved": true,
+    "stock_empty_report_batch": [
+      [
+        170,
+        3,
+        1
+      ],
+      [
+        161,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        163,
+        0
+      ],
+      [
+        162,
+        0,
+        0,
+        0,
+        0
+      ]
+    ],
+    "connected_status_injected_for_report_batch": false
+  },
+  "latched_error_regression_source": "tests/md770_bluetooth/check_reconnect_probe.py",
+  "limitations": [
+    "Snapshots are not atomic; the reader reports trace-count changes during reading",
+    "Only the latest four trace records are retained",
+    "Instrumentation adds execution time; ordinary radio state transitions are retained",
+    "This image is temporary diagnostic firmware, not a shipping fix"
+  ],
+  "installation_record": "docs/mistel-md770-reconnect-diagnostic-v2-flash-right.json",
+  "previous_build": {
+    "date": "2026-11-17T13:00:07.158249+00:00",
+    "qmk_baseline_commit": "e5b5479c53f3da7b28dac3666e9463ef606f4e27",
+    "userspace_baseline_commit": "b8ec105",
+    "target": "mistel_md770rgb_bt_right_markwellis_reconnect_diagnostics",
+    "application_bytes": 52368,
+    "application_sha256": "f0775701be023b9cfe8ccc62eb2128b0a9dd3e92b43b20ae17adfe22bfb74d5d",
+    "elf_sha256": "ba92cf3d53c2f343c037a6f7913249fbb26b4bfe803b4158b10c04f34766a897",
+    "build_command": "nix-shell --run 'qmk compile -kb mistel/md770rgb_bt/right -km markwellis -j 4 -e TARGET=mistel_md770rgb_bt_right_markwellis_reconnect_diagnostics -e EXTRAFLAGS=-DMD770_RECONNECT_DIAGNOSTICS'",
+    "patches": {
+      "tests/md770_bluetooth/review/reconnect-diagnostics-qmk-v1.patch": "b2e70975d6efe7b3146d3b465319cf355b77aaa223f43acdf82742b3aee443c6",
+      "tests/md770_bluetooth/review/reconnect-diagnostics-keymap-v1.patch": "f51e5909b8e7a7b2b8bc0d2a090d7f98ef5d3021a83c468e01575ab9f01b06e4"
+    },
+    "source_sha256": {
+      "QMK keyboards/mistel/md770rgb_bt/bluetooth.c": {
+        "original": "edd7bfb71f46de4073cce6291918e440ad7ef2bb92f3c05d101c805de5bdcc45",
+        "instrumented": "2d805406bb1750cd3c27ff175e95fb498d3f358a6b9a871dd9937a53942ccc90"
+      },
+      "keyboards/mistel/md770rgb_bt/keymaps/markwellis/notification.c": {
+        "original": "d12790c7c2206f5444d26e8ccc954a0a9a759a108714135691573b92b0fcb555",
+        "instrumented": "c4cdd147a1c18505b069801a1cfce40aa61eb6757600a8b3aea4e85a35565623"
+      }
+    },
+    "original_sources_restored_after_build": true,
+    "readout": "tests/md770_bluetooth/read_reconnect_diagnostics.py",
+    "trace_records": 4,
+    "trace_record_bytes": 28,
+    "free_heap_bytes": 216,
+    "verification_record": "docs/mistel-md770-reconnect-diagnostic-checks.json",
+    "latched_error_regression": {
+      "diagnostic_elf_sha256": "ba92cf3d53c2f343c037a6f7913249fbb26b4bfe803b4158b10c04f34766a897",
+      "spi_error_injected": 128,
+      "diagnostic_event": 3,
+      "diagnostic_status": 131,
+      "latched_error_preserved": true
+    },
+    "limitations": [
+      "Snapshots are not atomic; the reader reports trace-count changes during reading",
+      "Only the latest four trace records are retained",
+      "Instrumentation adds execution time; ordinary radio state transitions are retained",
+      "This image is temporary diagnostic firmware, not a shipping fix"
+    ],
+    "latched_error_regression_note": "Historical v1 check result; the current probe targets v2"
+  },
+  "revision_change": "Diagnostic page 36 queues the exact empty A1/A3/A2 batch observed in stock; no production behaviour changed",
+  "restoration_record": "docs/mistel-md770-reconnect-restored-flash-right.json",
+  "verification_note": "The 70-test record applies to the first diagnostic ELF; the second revision adds only page 36 and passes the recorded error-latch and exact empty-report native checks",
+  "latched_error_regression_source_sha256": "95de0a9205044206eac952f7b407d72c499045aa3a2b1b88c45d700367e1df7d"
+}

@@ -1,0 +1,223 @@
+{
+  "host_connect_request_sent": false,
+  "pairing_request_sent": false,
+  "states": [
+    {
+      "elapsed_seconds": 0.0,
+      "connected": false,
+      "services_resolved": false
+    },
+    {
+      "elapsed_seconds": 58.12,
+      "connected": true,
+      "services_resolved": false
+    }
+  ],
+  "J_events": [],
+  "other_key_event_count": 0,
+  "input_device": {
+    "name": "Mistel 1 Keyboard",
+    "bus": 5,
+    "uniq": "20:73:10:01:5b:bf",
+    "grabbed_at_seconds": 58.416
+  },
+  "elapsed_seconds": 69.475,
+  "target_hci_events": [
+    [
+      "> HCI Event: Connect Request (0x04) plen 10                     #5675 58.169026",
+      "Address: 20:73:10:01:5B:BF (OUI 20-73-10)",
+      "Link type: ACL (0x01)"
+    ],
+    [
+      "< HCI Command: Accept Connection Request (0x01|0x0009) plen 7   #5676 58.169048",
+      "Address: 20:73:10:01:5B:BF (OUI 20-73-10)",
+      "Role: Central (0x00)"
+    ],
+    [
+      "> HCI Event: Role Change (0x12) plen 8                          #5689 58.288025",
+      "Status: Success (0x00)",
+      "Address: 20:73:10:01:5B:BF (OUI 20-73-10)",
+      "Role: Central (0x00)"
+    ],
+    [
+      "> HCI Event: Connect Complete (0x03) plen 11                    #5708 58.466025",
+      "Status: Success (0x00)",
+      "Handle: 768",
+      "Address: 20:73:10:01:5B:BF (OUI 20-73-10)",
+      "Link type: ACL (0x01)",
+      "Encryption: Disabled (0x00)"
+    ],
+    [
+      "< HCI Command: Read Remote Supported Fe.. (0x01|0x001b) plen 2  #5709 58.466146",
+      "Handle: 768 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+    ],
+    [
+      "> HCI Event: Max Slots Change (0x1b) plen 3                     #5711 58.471017",
+      "Handle: 768 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+    ],
+    [
+      "> HCI Event: Read Remote Supported Features (0x0b) plen 11      #5713 58.476022",
+      "Status: Success (0x00)",
+      "Handle: 768 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+    ],
+    [
+      "< HCI Command: Read Remote Extended Fea.. (0x01|0x001c) plen 3  #5714 58.476034",
+      "Handle: 768 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+    ],
+    [
+      "> HCI Event: Read Remote Extended Features (0x23) plen 13       #5716 58.483024",
+      "Status: Success (0x00)",
+      "Handle: 768 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+    ],
+    [
+      "< HCI Command: Remote Name Request (0x01|0x0019) plen 10        #5717 58.483047",
+      "Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+    ],
+    [
+      "< ACL Data TX: Handle 768 flags 0x00 dlen 10                    #5718 58.483054",
+      "L2CAP: Information Request (0x0a) ident 1 len 2"
+    ],
+    [
+      "> HCI Event: Link Key Request (0x17) plen 6                     #5721 58.488008",
+      "Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+    ],
+    [
+      "< HCI Command: Link Key Request Reply (0x01|0x000b) plen 22     #5722 58.488022",
+      "Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+    ],
+    [
+      "> HCI Event: Command Complete (0x0e) plen 10                    #5723 58.491020",
+      "Status: Success (0x00)",
+      "Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+    ],
+    [
+      "> ACL Data RX: Handle 768 flags 0x02 dlen 16                    #5726 58.498087",
+      "L2CAP: Information Response (0x0b) ident 1 len 8",
+      "Result: Success (0x0000)"
+    ],
+    [
+      "< ACL Data TX: Handle 768 flags 0x00 dlen 10                    #5727 58.498104",
+      "L2CAP: Information Request (0x0a) ident 2 len 2"
+    ],
+    [
+      "> HCI Event: Remote Name Req Complete (0x07) plen 255           #5728 58.503016",
+      "Status: Success (0x00)",
+      "Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+    ],
+    [
+      "@ MGMT Event: Device Connected (0x000b) plen 28              {0x0001} 58.503030"
+    ],
+    [
+      "> HCI Event: Encryption Change (0x08) plen 4                    #5740 58.597013",
+      "Status: Success (0x00)",
+      "Handle: 768 Address: 20:73:10:01:5B:BF (OUI 20-73-10)",
+      "Encryption: Enabled with E0 (0x01)"
+    ],
+    [
+      "< HCI Command: Read Encryption Key Size (0x05|0x0008) plen 2    #5741 58.597027",
+      "Handle: 768 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+    ],
+    [
+      "> HCI Event: Command Complete (0x0e) plen 7                     #5742 58.600020",
+      "Status: Success (0x00)",
+      "Handle: 768 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+    ],
+    [
+      "> ACL Data RX: Handle 768 flags 0x02 dlen 20                    #5745 58.616085",
+      "L2CAP: Information Response (0x0b) ident 2 len 12",
+      "Result: Success (0x0000)"
+    ],
+    [
+      "> ACL Data RX: Handle 768 flags 0x02 dlen 12                    #5748 58.636090",
+      "L2CAP: Connection Request (0x02) ident 2 len 4",
+      "PSM: 17 (0x0011)",
+      "Source CID: 65"
+    ],
+    [
+      "< ACL Data TX: Handle 768 flags 0x00 dlen 16                    #5749 58.636147",
+      "L2CAP: Connection Response (0x03) ident 2 len 8",
+      "Destination CID: 64",
+      "Source CID: 65",
+      "Result: Connection successful (0x0000)",
+      "Status: No further information available (0x0000)"
+    ],
+    [
+      "< ACL Data TX: Handle 768 flags 0x00 dlen 12                    #5750 58.636154",
+      "L2CAP: Configure Request (0x04) ident 3 len 4",
+      "Destination CID: 65"
+    ],
+    [
+      "> ACL Data RX: Handle 768 flags 0x02 dlen 16                    #5757 58.679262",
+      "L2CAP: Configure Request (0x04) ident 3 len 8",
+      "Destination CID: 64"
+    ],
+    [
+      "< ACL Data TX: Handle 768 flags 0x00 dlen 18                    #5758 58.679276",
+      "L2CAP: Configure Response (0x05) ident 3 len 10",
+      "Source CID: 65",
+      "Result: Success (0x0000)"
+    ],
+    [
+      "> ACL Data RX: Handle 768 flags 0x02 dlen 14                    #5760 58.688112",
+      "L2CAP: Configure Response (0x05) ident 3 len 6",
+      "Source CID: 64",
+      "Result: Success (0x0000)"
+    ],
+    [
+      "> ACL Data RX: Handle 768 flags 0x02 dlen 12                    #5762 58.690088",
+      "L2CAP: Connection Request (0x02) ident 4 len 4",
+      "PSM: 19 (0x0013)",
+      "Source CID: 66"
+    ],
+    [
+      "< ACL Data TX: Handle 768 flags 0x00 dlen 16                    #5763 58.690110",
+      "L2CAP: Connection Response (0x03) ident 4 len 8",
+      "Destination CID: 65",
+      "Source CID: 66",
+      "Result: Connection pending (0x0001)",
+      "Status: Authorization pending (0x0002)"
+    ],
+    [
+      "< ACL Data TX: Handle 768 flags 0x00 dlen 16                    #5764 58.690181",
+      "L2CAP: Connection Response (0x03) ident 4 len 8",
+      "Destination CID: 65",
+      "Source CID: 66",
+      "Result: Connection successful (0x0000)",
+      "Status: No further information available (0x0000)"
+    ],
+    [
+      "< ACL Data TX: Handle 768 flags 0x00 dlen 12                    #5765 58.690187",
+      "L2CAP: Configure Request (0x04) ident 4 len 4",
+      "Destination CID: 66"
+    ],
+    [
+      "> ACL Data RX: Handle 768 flags 0x02 dlen 16                    #5769 58.700088",
+      "L2CAP: Configure Request (0x04) ident 5 len 8",
+      "Destination CID: 65"
+    ],
+    [
+      "> ACL Data RX: Handle 768 flags 0x02 dlen 14                    #5770 58.700090",
+      "L2CAP: Configure Response (0x05) ident 4 len 6",
+      "Source CID: 65",
+      "Result: Success (0x0000)"
+    ],
+    [
+      "< ACL Data TX: Handle 768 flags 0x00 dlen 18                    #5771 58.700105",
+      "L2CAP: Configure Response (0x05) ident 5 len 10",
+      "Source CID: 66",
+      "Result: Success (0x0000)"
+    ],
+    [
+      "> HCI Event: Mode Change (0x14) plen 6                          #5915 59.754016",
+      "Status: Success (0x00)",
+      "Handle: 768 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+    ]
+  ],
+  "J_press_and_release_captured": false,
+  "firmware_sha256": "c29dae348fc922c0d155f91f9ee41c367ec432396e648cefcf97db7ad392b1f8",
+  "physical_setup": "Joined halves, right powered from power bank, no USB to laptop",
+  "owner_sequence": "Power cycle, tap Pn+1, wait five seconds, tap J",
+  "owner_subsequent_confirmation": "Bluetooth typing started working without any further key shortcut or host Connect request",
+  "owner_confirmation_time": "2026-11-17T14:31:16.431997+00:00",
+  "assessment": "Saved-bond cold reconnection and both HID channels completed automatically. No J captured in the initial window; owner subsequently confirmed typing. Initial five-second operator wait did not establish actual readiness."
+}

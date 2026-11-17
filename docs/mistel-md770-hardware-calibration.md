@@ -69,12 +69,25 @@ all ten events and the declared timing limits. Its duration was 940.042 ms,
 with at most 6.000 ms relative event-time error. USB powered the keyboard
 from a power bank, with no host USB connection.
 
-Bluetooth reconnection remains unresolved. Host connection attempts failed
-after startup and a short Pn+F1 slot selection. Holding Pn+F1 for three
-seconds opened the pairing window and allowed the existing paired host to
-connect. No bond was removed. The owner suspects stock reconnected
-successfully; this has not been verified. The connected playback pass does
-not establish correct cold reconnection.
+Bluetooth reconnection was investigated separately after these input checks.
+The owner authorised a settings reset and a temporary stock comparison,
+including a fresh slot-1 pairing. Stock typing worked, but its initial cold
+restart check did not type. Temporary QMK diagnostics then demonstrated
+incoming saved-bond connections and successful encryption. Sending stock's
+empty keyboard/system/consumer report batch changed no observed connection
+state; it was not retained as a firmware change.
+
+Ordinary production QMK was restored and checksum-verified. During a real
+power-bank cold start, the keyboard initiated both HID channels without a
+pairing shortcut or laptop Connect request. The initial J was not captured;
+the owner subsequently confirmed Bluetooth typing without another recovery
+action. Linux still reported `ServicesResolved=false` while typing worked,
+so that property cannot establish input failure. A final cold restart without
+an output-selection shortcut is pending. See the
+[investigation](hardware-calibration/bluetooth-reconnect-investigation.json)
+and [cold input observation](hardware-calibration/bluetooth-reconnect-cold-input.json).
+No production firmware change was made, and the temporary controller setting
+was restored. The cause and exact delay of recovery remain unmeasured.
 
 The [USB device wake check](hardware-calibration/usb-wake-visual.json)
 passed without suspending the laptop. The owner saw the controlled red
