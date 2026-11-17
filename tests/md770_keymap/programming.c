@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 #include "dynamic_keymap.h"
-#include "keyboards/mistel/md770rgb_bt/keymaps/default/keymap.h"
+#include "keyboards/mistel/md770rgb_bt/keymaps/default_mistel/keymap.h"
 #include "keyboards/mistel/md770rgb_bt/md770rgb_bt.h"
 #include "send_string.h"
 #include "keymap_data.h"
@@ -784,6 +784,23 @@ static void load_macro(const uint8_t *data, size_t size) {
     keycodes[PROFILE1][3][2] = QK_MACRO;
 }
 
+static void playback_tap_timing(void) {
+    const uint8_t data[] = {SS_QMK_PREFIX, SS_TAP_CODE, KC_CAPS, 'a', 0};
+    load_macro(data, sizeof(data));
+    tap(3, 2);
+    assert(played == 1 && host_keys[KC_CAPS]);
+    run_for(TAP_HOLD_CAPS_DELAY - 1);
+    assert(played == 1 && host_keys[KC_CAPS]);
+    run_for(1);
+    assert(played == 4 && !host_keys[KC_CAPS] && !host_keys[KC_A]);
+    assert(playback[0].code == KC_CAPS && playback[0].down);
+    assert(playback[1].code == KC_CAPS && !playback[1].down);
+    assert(playback[1].time - playback[0].time == TAP_HOLD_CAPS_DELAY);
+    assert(playback[2].code == KC_A && playback[2].down);
+    assert(playback[3].code == KC_A && !playback[3].down);
+    assert(playback[3].time - playback[2].time == TAP_CODE_DELAY);
+}
+
 static void playback_held(void) {
     const uint8_t data[] = {1, SS_DOWN_CODE, KC_A, 1, SS_DELAY_CODE, '1', '0', '0', '|', 1, SS_UP_CODE, KC_A, 1, SS_TAP_CODE, KC_A, 'a', 0};
     load_macro(data, sizeof(data));
@@ -1032,6 +1049,8 @@ int main(int argc, char **argv) {
         playback_overlap();
     else if (!strcmp(argv[1], "playback_repeat_tap"))
         playback_repeat_tap();
+    else if (!strcmp(argv[1], "playback_tap_timing"))
+        playback_tap_timing();
     else if (!strcmp(argv[1], "relocated_fn_t"))
         relocated_fn_delay(13, 2);
     else if (!strcmp(argv[1], "relocated_fn_g"))

@@ -145,16 +145,16 @@ int main(int argc, char **argv) {
     } else if (test == "periodic") {
         connect();
         for (unsigned i = 0; i < 63; ++i) { matrix[8] ^= 1; task(1); }
-        assert(frames.empty());
+        assert(frames.size() == 63);
         matrix[8] = 7;
         task(1);
-        assert(frames.size() == 1 && payload(frames[0], 8)[0] == uint8_t(~7));
+        assert(frames.size() == 64 && payload(frames.back(), 8)[0] == uint8_t(~7));
         task();
-        assert(frames.size() == 1);
+        assert(frames.size() == 64);
         for (unsigned i = 0; i < 63; ++i) task(100);
-        assert(frames.size() == 1);
+        assert(frames.size() == 64);
         task(100);
-        assert(frames.size() == 2);
+        assert(frames.size() == 65);
     } else if (test == "disabled_counter") {
         connect();
         for (unsigned i = 0; i < 10; ++i) task(1);

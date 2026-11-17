@@ -52,7 +52,7 @@ plan generation:
 nix-shell --run 'bash tests/md770_bluetooth/run-software.sh'
 ```
 
-This builds both halves and keymaps with ordinary production flags, then
+This builds both halves with the minimal, factory and personal userspace configurations, then
 separate right-half links retaining the macro and input entry points.
 It runs the component, native driver/programming, USB queue, split-link,
 flash power, clock/wake, stock probe and host-tool checks. Candidate records
@@ -74,11 +74,11 @@ responses, including ID/status initialisation, retry limits and rejection of exh
 `emulator*.py` and `emulator_abi.c` execute compiled QMK and stock components
 against the same bounded peripheral model. The Nix shell supplies Unicorn,
 pyelftools, Capstone and the firmware compiler. Apply the dependency patches
-from the [keymap setup](../../keyboards/mistel/md770rgb_bt/keymaps/markwellis/readme.md#pending-upstream-changes)
-and rebuild the right default keymap before running the comparisons:
+from the [keymap setup](../../users/markwellis/readme.md#pending-upstream-changes)
+and rebuild the right factory keymap before running the comparisons:
 
 ```fish
-nix-shell --run 'qmk compile -kb mistel/md770rgb_bt/right -km default -j 4'
+nix-shell --run 'qmk compile -kb mistel/md770rgb_bt/right -km default_mistel -j 4'
 nix-shell --run 'python3 -B tests/md770_bluetooth/check_emulator.py'
 ```
 

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
-#include "keyboards/mistel/md770rgb_bt/keymaps/default/keymap.h"
+#include "keyboards/mistel/md770rgb_bt/keymaps/default_mistel/keymap.h"
 #include "keyboards/mistel/md770rgb_bt/md770rgb_bt.h"
 #include <assert.h>
 #include <stdio.h>
@@ -116,7 +116,7 @@ uint8_t scale8(uint8_t value, uint8_t scale) {
     uint8_t first = 0, last = RGB_MATRIX_LED_COUNT; \
     (void)params
 #define RGB_MATRIX_TEST_LED_FLAGS()
-#include "keyboards/mistel/md770rgb_bt/keymaps/default/rgb_matrix_user.inc"
+#include "keyboards/mistel/md770rgb_bt/keymaps/default_mistel/rgb_matrix_user.inc"
 
 uint8_t get_highest_layer(layer_state_t state) {
     uint8_t layer = 0;

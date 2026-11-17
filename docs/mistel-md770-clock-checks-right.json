@@ -1,6 +1,6 @@
 {
   "side": "right",
-  "elf_sha256": "9a66b7be1be18dc772280699c8e965f0dae30e6ed0688bd8ab2843e16ee25f2a",
+  "elf_sha256": "91918e3980a9693429042f1ddeead96fb2e3e8548ec476d2d569d9f6899ac9b1",
   "stock_reference_sha256": "8fafdca096756f23626802d5b586b270b0bd512fe5d1c0327db4eafcd4f689b2",
   "checks": [
     "UART drain before sleep",

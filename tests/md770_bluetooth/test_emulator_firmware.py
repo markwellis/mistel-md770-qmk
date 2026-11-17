@@ -22,7 +22,7 @@ class FirmwareTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.qmk_home = cls.qmk_home.resolve()
-        cls.elf_path = cls.elf_path or cls.qmk_home / '.build/mistel_md770rgb_bt_right_default.elf'
+        cls.elf_path = cls.elf_path or cls.qmk_home / '.build/mistel_md770rgb_bt_right_default_mistel.elf'
         cls.abi_provenance = {}
         cls.abi = layout(cls.qmk_home, cls.elf_path, provenance=cls.abi_provenance)
         cls.image = cls.elf_path.read_bytes()

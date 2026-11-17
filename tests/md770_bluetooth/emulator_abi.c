@@ -8,7 +8,7 @@
 #include <stddef.h>
 #include "quantum/nvm/eeprom/nvm_eeprom_eeconfig_internal.h"
 #include "tmk_core/protocol/chibios/usb_main.h"
-#include "keyboards/mistel/md770rgb_bt/keymaps/default/keymap.h"
+#include "keyboards/mistel/md770rgb_bt/keymaps/default_mistel/keymap.h"
 #include "keyboards/mistel/md770rgb_bt/bluetooth.c"
 
 const uint32_t emulator_abi[] = {

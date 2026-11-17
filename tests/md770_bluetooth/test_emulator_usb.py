@@ -13,7 +13,7 @@ class UsbTests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.elf_path = cls.elf_path or cls.qmk_home / '.build/mistel_md770rgb_bt_right_default_conformance_validation.elf'
+        cls.elf_path = cls.elf_path or cls.qmk_home / '.build/mistel_md770rgb_bt_right_default_mistel_conformance_validation.elf'
         cls.abi = layout(cls.qmk_home.resolve(), cls.elf_path.resolve())
         cls.image = cls.elf_path.read_bytes()
 

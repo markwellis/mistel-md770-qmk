@@ -34,7 +34,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--model-only', action='store_true', help='Run without QMK or stock firmware')
     parser.add_argument('--qmk-home', type=Path, default=FirmwareTests.qmk_home)
-    parser.add_argument('--elf', type=Path, help='Right-half QMK ELF; defaults to the default keymap build')
+    parser.add_argument('--elf', type=Path, help='Right-half QMK ELF; defaults to the factory keymap build')
     parser.add_argument('--macro-elf', type=Path, help='Validation ELF retaining the compiled macro entry points')
     parser.add_argument('--conformance', action='store_true', help='Include the new transition regressions')
     parser.add_argument('--stock', type=Path, default=FirmwareTests.stock_path)

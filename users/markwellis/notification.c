@@ -80,6 +80,10 @@ bool rgb_matrix_indicators_user(void) {
     return true;
 }
 
+void housekeeping_task_keymap(void) {
+    md770_notification_task();
+}
+
 void md770_notification_task(void) {
     if (!active || rgb_matrix_is_enabled() || rgb_matrix_get_suspend_state()) return;
     // QMK can clear the off-mode buffer between our timed flushes.

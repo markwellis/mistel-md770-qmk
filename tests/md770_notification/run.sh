@@ -11,8 +11,8 @@ gcc -std=gnu11 -Wall -Wextra -Werror -fsanitize=address,undefined,bounds -fno-sa
     -Itests/md770_keymap -I../qmk_firmware -I../qmk_firmware/quantum \
     '-DQMK_KEYBOARD_H="keyboards/mistel/md770rgb_bt/md770rgb_bt.h"' \
     -DRGB_MATRIX_ENABLE -DDYNAMIC_KEYMAP_ENABLE -DRAW_ENABLE \
-    keyboards/mistel/md770rgb_bt/keymaps/markwellis/keymap.c \
-    keyboards/mistel/md770rgb_bt/keymaps/markwellis/notification.c \
+    ../qmk_firmware/keyboards/mistel/md770rgb_bt/keymaps/default_mistel/keymap.c \
+    users/markwellis/notification.c \
     tests/md770_keymap/test.c -o "$md770_native_dir/notification"
 "$md770_native_dir/notification"
 

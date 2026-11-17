@@ -18,7 +18,7 @@ class ConformanceTests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.elf_path = cls.elf_path or cls.qmk_home / '.build/mistel_md770rgb_bt_right_default_conformance_validation.elf'
+        cls.elf_path = cls.elf_path or cls.qmk_home / '.build/mistel_md770rgb_bt_right_default_mistel_conformance_validation.elf'
         cls.abi = layout(cls.qmk_home.resolve(), cls.elf_path.resolve())
         cls.image = cls.elf_path.read_bytes()
         cls.stock_image = cls.stock_path.read_bytes()
@@ -119,13 +119,13 @@ class ConformanceTests(unittest.TestCase):
         qmk.call('register_code', 6)
         self.assertEqual(qmk.usb_reports[-1][2], 6)
 
-    def test_battery_boot_reselects_bluetooth_after_connection_initialisation(self):
+    def test_battery_boot_preserves_saved_usb_selection(self):
         qmk = self.qmk()
         qmk.matrix()
         qmk.set_host('host_usb')
         qmk.call('keyboard_post_init_kb')
         qmk.matrix()
-        self.assertEqual(qmk.call('connection_get_host'), self.abi['host_bluetooth'])
+        self.assertEqual(qmk.call('connection_get_host'), self.abi['host_usb'])
 
     def test_usb_resume_keeps_a_manual_bluetooth_selection(self):
         qmk = self.qmk()

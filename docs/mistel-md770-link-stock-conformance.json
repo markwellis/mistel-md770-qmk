@@ -1,13 +1,13 @@
 {
-  "date": "2026-11-17T08:51:07.626107+00:00",
+  "date": "2026-11-17T16:55:12.639802+00:00",
   "passed": true,
   "scope": "Native QMK link source versus stock left PB8 and both halves periodic-send instructions; USB transport and UART enqueue boundaries supplied",
   "stock_sha256": "febc84d9dc1fd23152218232839279ecb59f255615a6d6c5b4d951a848c85064",
   "right_stock_sha256": "8fafdca096756f23626802d5b586b270b0bd512fe5d1c0327db4eafcd4f689b2",
-  "qmk_link_sha256": "35c1987845257292ef383dfc0ac923a18c38051b3788956f04c94b8264973544",
+  "qmk_link_sha256": "705131f60400a91b0ef93be1417d98ce26dad767938ce640854e5be8e8133f9c",
   "test_sources_sha256": {
     "check_stock.py": "50cc67807a01e6dfe651f4ee412b228151d4ea3513ef2c5456ca485586682c8f",
-    "test.cpp": "739cece06f9b245df2bdad3d05fdccd168f87cab64ddf2f957c57455247d83cf",
+    "test.cpp": "9ea52f286e973d084526e5ff64f08bd9443edf25b68aef8e8eef93c882a0c4f0",
     "quantum.h": "140081c66ebfac8b9f8ed628b1803cc0a52143132b4e13983ae34a77aaebb5e7",
     "usb_main.h": "e37ddf0f90efa48cba805e6845502e3340c16a77911d2c9cc681c781969c9a47"
   },

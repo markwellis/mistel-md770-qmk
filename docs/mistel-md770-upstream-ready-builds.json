@@ -1,0 +1,139 @@
+{
+  "date": "2026-11-17T17:00:43.284044+00:00",
+  "qmk_source_commit": "d39c45248bec4abc477b43bbfe8eb670c178fa98",
+  "images_built_before_source_commit": true,
+  "build_command": "nix-shell --run 'qmk userspace-compile -j 4'",
+  "stock_build_commands": [
+    "qmk compile -kb mistel/md770rgb_bt/<half> -km <default|default_mistel> -j 4 -e TARGET=<target>"
+  ],
+  "qmk_source_sha256": {
+    "keyboards/mistel/md770rgb_bt/bluetooth.c": "910d76547fa38d3d64664200ac9844ac7009827a8c08b8315165a057aaee2a43",
+    "keyboards/mistel/md770rgb_bt/chconf.h": "338db518cb95866f56f9dac9506ecb6905dfaa21b2666aa40313bd02385a2f38",
+    "keyboards/mistel/md770rgb_bt/config.h": "b1df38eb5179b200044555cd36f1e034f9bbc53dfa974d04b8aee33846d7d826",
+    "keyboards/mistel/md770rgb_bt/halconf.h": "ad962b5ce9b330fe2d2685e1a663eb2fd137ce191b65950153809fbacc83ec8b",
+    "keyboards/mistel/md770rgb_bt/indicators.c": "ec893bc22d9d08a6b9d9866fa56e9951cac3baad9727cfeb5af225afd3fd8917",
+    "keyboards/mistel/md770rgb_bt/info.json": "d2c56bd01170c9030033082bd172b81654c3464ac816a0fee222cc95f287a13a",
+    "keyboards/mistel/md770rgb_bt/keymaps/default/keymap.c": "88d3daeb872cc84a366880b2d8f51193ade4b1304df7e436fca72133bdeac6c7",
+    "keyboards/mistel/md770rgb_bt/keymaps/default/keymap.h": "3560020243bc1dbbbc04aa9fb7fe9049388b27ab5e94588fbe0f1f6014634bdd",
+    "keyboards/mistel/md770rgb_bt/keymaps/default/keymap.json": "38cc497577b325b0b93dec91d13adf5634730328323bb790998bc10b07ba1f53",
+    "keyboards/mistel/md770rgb_bt/keymaps/default_mistel/config.h": "c6b88065aacf642353a8660cbdc2f32942ca77fd6a70bd24d43a244ca285e257",
+    "keyboards/mistel/md770rgb_bt/keymaps/default_mistel/keymap.c": "251dcec93246f22c7170e8aa5503179483bf090758e3e7ef1f23734836d92236",
+    "keyboards/mistel/md770rgb_bt/keymaps/default_mistel/keymap.h": "3e723224b09749ae328b04c7037cbe467c1f56aa3745a4f79c1c9f0317a3ade7",
+    "keyboards/mistel/md770rgb_bt/keymaps/default_mistel/keymap.json": "2881ba0a67bae0ec12b21586b7f410a17727fd2115a53ef86e5adb9edd568ade",
+    "keyboards/mistel/md770rgb_bt/keymaps/default_mistel/programming.c": "d10d2a133e44e95cb412ff78caa7931f25955de2ecf3a21ee323f4547895132e",
+    "keyboards/mistel/md770rgb_bt/keymaps/default_mistel/programming.h": "c17553a9e44a31a14852e79ece262f81d6a526a544fcbbd142ec3f1da707db1e",
+    "keyboards/mistel/md770rgb_bt/keymaps/default_mistel/rgb_matrix_user.inc": "f7be74b0f7f13f4d55de4229a9bc018d66e9d8217d360c7ba60295d67645e065",
+    "keyboards/mistel/md770rgb_bt/keymaps/default_mistel/rules.mk": "4383eeac5ee387055ccfe91d0b2c427324bd0f1b7b39bfda33993cbb440ba181",
+    "keyboards/mistel/md770rgb_bt/ld/ht32f52352_md770.ld": "926d28afa52016c44ced415ef6633c07065ae76a0ca1bb6e302af5e39fdfe361",
+    "keyboards/mistel/md770rgb_bt/left/keyboard.json": "6b8a334e886a70e525f721b1e262145ffc3ef3f11a76ee1a61e28aee5204e242",
+    "keyboards/mistel/md770rgb_bt/left/rules.mk": "2aef93a07fd597b1eaf014575e61a734d9236eb77070da2f50b3e8ee41479743",
+    "keyboards/mistel/md770rgb_bt/link.c": "705131f60400a91b0ef93be1417d98ce26dad767938ce640854e5be8e8133f9c",
+    "keyboards/mistel/md770rgb_bt/mcuconf.h": "65580271e5698d1524f2351ae0fd762205526fa9aa52848d82863e8dda2c99f9",
+    "keyboards/mistel/md770rgb_bt/md770rgb_bt.c": "b3c5215da754d0bd022a3550fd694df4f3740a955783b36b8dd7d9b20d1f8481",
+    "keyboards/mistel/md770rgb_bt/md770rgb_bt.h": "e4ae36759c3190d5c92c79c00e5f5a8b5d4ba48d34fb55c5c47b5094c2f8a0e2",
+    "keyboards/mistel/md770rgb_bt/power.c": "5298faece70b307ae5b77f6e02bf6f14eee4fd1f518e41b553915702711d02b2",
+    "keyboards/mistel/md770rgb_bt/power_clock.c": "d7723f95c72e6882e0833836408d88b2eca8a35630db19aaf0174a4b9f7229ea",
+    "keyboards/mistel/md770rgb_bt/protocol.c": "f96e1a827e18437ceafd231edafc19f51ce170604558b53a8e75fbf5354b6eb3",
+    "keyboards/mistel/md770rgb_bt/protocol.h": "6d92924fecda05a7ff43e8b64b6456bab0914bd6902778bb22d28ef0f5b14502",
+    "keyboards/mistel/md770rgb_bt/rgb.c": "5549d28041840f143f1322febf61655c4e28d2b445ef276d2d6db1e73458a4a7",
+    "keyboards/mistel/md770rgb_bt/right/keyboard.json": "c3e88669a49f0695c7ac4d5f7b65ed053baae3f1a25db1aac486bb35ff1cf4e8",
+    "keyboards/mistel/md770rgb_bt/right/rules.mk": "7f7d73e45086d1f55b414daa4040aef68151880dc8dbdac62fa11e1b794b0e9d",
+    "keyboards/mistel/md770rgb_bt/rules.mk": "99202fc76b9b7391045923bd07a0850f126f0f009e356eef972a2dff272290c4",
+    "keyboards/mistel/md770rgb_bt/scan.c": "211941ff39507fb08afc7196a5fbaa8d01eaf8282024942d418b465472145d85",
+    "keyboards/mistel/md770rgb_bt/storage.c": "8db126955b675f568f2c4311d39f1d00ce1d6ad18f9be73eb8bfaa456e608ec6"
+  },
+  "userspace_source_sha256": {
+    "qmk.json": "533bf0b24d951d38d7df107cd49a6bca6f6562491402ce45f36b2d5a2f5073dd",
+    "users/markwellis/notification.c": "2a7d2c011037c7bbcea77477f58b72639f7215e688cb7c9273175fa54f733728",
+    "users/markwellis/notification.h": "e0faac01a2ca2a93085a55bdd452a34d9dc079d4df06ca3f9afe74676c6b0af6",
+    "users/markwellis/rules.mk": "49e352701ced91269cc9c32ab426fba25f45d37ecb31dff83403cc8600928560"
+  },
+  "builds": [
+    {
+      "keyboard": "mistel/md770rgb_bt/right",
+      "keymap": "default",
+      "user_name": null,
+      "target": "mistel_md770rgb_bt_right_default_upstream_ready",
+      "application_bytes": 39296,
+      "binary_sha256": "a2e3e1422b643d25605c38682be0ed7701db4a3e344d10aded38901bc7291300",
+      "elf_sha256": "c0833f90d61287a976f8aff5a9c44a35f49e9b7ab9471f5f9f8720db6407234b"
+    },
+    {
+      "keyboard": "mistel/md770rgb_bt/right",
+      "keymap": "default_mistel",
+      "user_name": null,
+      "target": "mistel_md770rgb_bt_right_default_mistel_upstream_ready",
+      "application_bytes": 50508,
+      "binary_sha256": "6df298a8dcba06029be89274a87eea878821509be81a1dad7dc6281333d9c2a1",
+      "elf_sha256": "f34a724b2b93ecb885e43fe33f56a9753ec11e2ad9003e9f7fba035c6ad06256"
+    },
+    {
+      "keyboard": "mistel/md770rgb_bt/right",
+      "keymap": "default_mistel",
+      "user_name": "markwellis",
+      "target": "mistel_md770rgb_bt_right_markwellis",
+      "application_bytes": 51784,
+      "binary_sha256": "2328428fd8e25cdc47f91f2cbf85cdc3b330114468345cd81034b29ee189e70c",
+      "elf_sha256": "81f0caff9fdb1629ed1bc945b03928d7dfc6e35b3ee10ef2086ddbe850420f7a"
+    },
+    {
+      "keyboard": "mistel/md770rgb_bt/left",
+      "keymap": "default",
+      "user_name": null,
+      "target": "mistel_md770rgb_bt_left_default_upstream_ready",
+      "application_bytes": 30892,
+      "binary_sha256": "29c90b0642b9c360dda5dd028f7c7c07d4e562b7c1bfc3244223709b6d250df4",
+      "elf_sha256": "3cee324fb1e67f8f53ef810c2d8cd03fe37653fcccda292f312167757e3435ca"
+    },
+    {
+      "keyboard": "mistel/md770rgb_bt/left",
+      "keymap": "default_mistel",
+      "user_name": null,
+      "target": "mistel_md770rgb_bt_left_default_mistel_upstream_ready",
+      "application_bytes": 36540,
+      "binary_sha256": "cb883aba9a61c546e912723c9660b88b02eb700d93e8461af26cb7c6e2bbf7f4",
+      "elf_sha256": "35f05b96fe071112d865ac60a1fd9d936b142f008319d9d353131794779bf7d7"
+    },
+    {
+      "keyboard": "mistel/md770rgb_bt/left",
+      "keymap": "default_mistel",
+      "user_name": "markwellis",
+      "target": "mistel_md770rgb_bt_left_markwellis",
+      "application_bytes": 36540,
+      "binary_sha256": "cb883aba9a61c546e912723c9660b88b02eb700d93e8461af26cb7c6e2bbf7f4",
+      "elf_sha256": "35f05b96fe071112d865ac60a1fd9d936b142f008319d9d353131794779bf7d7"
+    }
+  ],
+  "shared_qmk_changes": false,
+  "dependency_pin_changed": false,
+  "contrib_checkout": "150639d39a0dfbfbc129a23c9eda2dcfed8d2844",
+  "contrib_changes": [
+    "HT32 reset-controller address (#469)",
+    "32-bit BFTM counter type (#470)"
+  ],
+  "factory_layout_unchanged": true,
+  "factory_storage_layout_unchanged": true,
+  "astra_max_review": "No new P1/P2 findings in final firmware changes; no core changes required",
+  "verification": {
+    "strict_qmk_lint_both_halves": true,
+    "clang_format": true,
+    "userspace_doctor": true,
+    "native_qmk_tests": 18,
+    "native_programming_cases": 41,
+    "notification_rgb_tests": 8,
+    "notification_host_tests": 9,
+    "software_workflow": "tests/md770_bluetooth/run-software.sh",
+    "software_workflow_passed": true,
+    "host_tool_tests": 47,
+    "factory_integration": "docs/mistel-md770-conformance-checks-default_mistel.json",
+    "personal_integration": "docs/mistel-md770-conformance-checks-markwellis.json",
+    "production_components": "docs/mistel-md770-upstream-ready-tests.json",
+    "retained_components": "docs/mistel-md770-upstream-ready-verification-tests.json"
+  },
+  "hardware_flashed": false,
+  "remaining_conditions": [
+    "Use develop as PR base; master currently includes unrelated upstream development changes",
+    "The two Contrib fixes must reach QMK's dependency chain independently before merge",
+    "Battery sleep/wake, runtime and charging remain unvalidated"
+  ]
+}

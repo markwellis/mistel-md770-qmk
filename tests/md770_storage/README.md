@@ -42,4 +42,4 @@ it into the keyboard folder as `flash_identify.c`, add
 console. Remove it from the final build. The captured
 [identification](../../docs/mistel-md770-flash-identification.json) records
 the 512 KiB capacity and supported erase sizes. See the
-[GPL text](../../keyboards/mistel/md770rgb_bt/keymaps/markwellis/LICENSE).
+[GPL text](../../users/markwellis/LICENSE).

@@ -1,7 +1,21 @@
 {
     "userspace_version": "1.1",
     "build_targets": [
-        ["mistel/md770rgb_bt/right", "markwellis"],
-        ["mistel/md770rgb_bt/left", "markwellis"]
+        [
+            "mistel/md770rgb_bt/right",
+            "default_mistel",
+            {
+                "USER_NAME": "markwellis",
+                "TARGET": "mistel_md770rgb_bt_right_markwellis"
+            }
+        ],
+        [
+            "mistel/md770rgb_bt/left",
+            "default_mistel",
+            {
+                "USER_NAME": "markwellis",
+                "TARGET": "mistel_md770rgb_bt_left_markwellis"
+            }
+        ]
     ]
 }

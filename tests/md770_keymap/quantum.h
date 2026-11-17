@@ -4,6 +4,13 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifndef TAP_CODE_DELAY
+#    define TAP_CODE_DELAY 0
+#endif
+#ifndef TAP_HOLD_CAPS_DELAY
+#    define TAP_HOLD_CAPS_DELAY 80
+#endif
+
 #define MATRIX_ROWS 16
 #define MATRIX_COLS 7
 #define RGB_MATRIX_LED_COUNT 85

@@ -1,5 +1,56 @@
 # MD770 QMK development
 
+## Keymap split and upstream preparation, 2026-11-17
+
+QMK commit `d39c45248bec4abc477b43bbfe8eb670c178fa98` contains this preparation.
+
+The QMK keyboard now supplies a minimal three-layer `default` and the full
+factory-style `default_mistel`. Factory DIP mappings, profiles, onboard
+programming, relocation and colour editing belong to `default_mistel`.
+Its layout JSON, custom keycode values and storage layout match the former
+personal keymap, so that build keeps existing saved settings and macros.
+
+The companion repository uses QMK's native `USER_NAME=markwellis` option to
+compile `default_mistel` with `users/markwellis/notification.c`. It contains
+no copy of the factory keymap or programming implementation. One weak
+`housekeeping_task_keymap()` callback composes notifications with the
+factory's existing housekeeping task, in the same order as before.
+
+Two keyboard-local defects from the Astra Max review are corrected. Left
+matrix changes are sent promptly, with the cache updated only after a
+complete UART write; the existing periodic snapshots remain. Imported tap
+commands use native `TAP_CODE_DELAY` or `TAP_HOLD_CAPS_DELAY` through the
+existing playback scheduler. A 20 ms left tap and an 80 ms Caps Lock tap
+have dedicated regressions. Other driver edits are formatting only.
+
+Astra Max reviewed the final firmware changes independently and found no
+new P1/P2 issue or need for shared-core changes. The QMK diff is confined to
+`keyboards/mistel/md770rgb_bt/` and the three MD770 test groups. ChibiOS and
+the tracked Contrib revision are unchanged; the local dependency still has
+only the existing reset-address and counter-width fixes.
+
+Use `develop` as the PR base for this branch. A comparison against `master`
+currently includes unrelated upstream development commits. The two Contrib
+fixes must still reach QMK's dependency chain independently before merge.
+Battery sleep/wake, runtime and charging remain outside the measured hardware
+scope. This preparation has not been flashed to the keyboard.
+
+All six ordinary build configurations pass, as do strict QMK lint for both
+halves, formatting, userspace discovery, 18 native QMK tests, 41 programming
+cases and the notification checks. The full software workflow passes 102
+test groups and 408 parameterised subtests for each factory/personal build;
+two startup checks require retained entry points. The separate retained
+personal build passes all 72 component tests without skips. Driver, USB,
+split protocol, flash power, clock/wake, stock probe and 47 host-tool checks
+also pass. These remain software checks with supplied hardware boundaries.
+
+The [build record](mistel-md770-upstream-ready-builds.json),
+[production component result](mistel-md770-upstream-ready-tests.json),
+[retained component result](mistel-md770-upstream-ready-verification-tests.json),
+[factory integration result](mistel-md770-conformance-checks-default_mistel.json)
+and [personal integration result](mistel-md770-conformance-checks-markwellis.json)
+record the tested source and image hashes.
+
 ## Simplification and independent review, 2026-11-17
 
 QMK commit `e5b5479c53` on `mistel-md770-support` keeps existing shared files identical to

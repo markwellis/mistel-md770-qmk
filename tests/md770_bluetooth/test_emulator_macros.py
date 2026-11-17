@@ -33,7 +33,7 @@ class MacroTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.qmk_home = Path(cls.qmk_home).resolve()
-        cls.elf_path = cls.elf_path or cls.qmk_home / '.build/mistel_md770rgb_bt_right_default_conformance_validation.elf'
+        cls.elf_path = cls.elf_path or cls.qmk_home / '.build/mistel_md770rgb_bt_right_default_mistel_conformance_validation.elf'
         cls.abi_provenance = {}
         cls.abi = layout(cls.qmk_home, cls.elf_path, provenance=cls.abi_provenance)
         cls.image = cls.elf_path.read_bytes()
@@ -60,7 +60,7 @@ class MacroTests(unittest.TestCase):
     def delay(self, milliseconds):
         return bytes([self.abi['string_prefix'], self.abi['string_delay']]) + str(milliseconds).encode() + b'|'
 
-    def test_powered_boot_uses_saved_output_until_initial_usb_configuration(self):
+    def test_powered_boot_preserves_saved_output_after_usb_configuration(self):
         for saved in ('host_usb', 'host_bluetooth'):
             machine = self.machine()
             machine.hardware.pin(1, 12, True)
@@ -72,7 +72,7 @@ class MacroTests(unittest.TestCase):
             self.assertEqual(machine.read(machine.symbol('active_host'), 1), self.abi[saved])
             machine.usb(True)
             machine.matrix()
-            self.assertEqual(machine.read(machine.symbol('active_host'), 1), self.abi['host_usb'])
+            self.assertEqual(machine.read(machine.symbol('active_host'), 1), self.abi[saved])
 
     def test_slot_selection_switches_the_real_host_driver_without_usb_configuration(self):
         for saved in ('host_usb', 'host_bluetooth'):

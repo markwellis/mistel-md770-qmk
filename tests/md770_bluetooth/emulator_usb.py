@@ -16,7 +16,6 @@ class UsbQmk(Qmk):
         self.write(self.symbol('driver'), self.symbol('chibios_driver'))
         self.hardware.pin(1, 12, True)
         self.write(self.symbol('supply_known'), 1, 1)
-        self.write(self.symbol('usb_configured'), 1, 1)
         self.write(self.symbol('external'), 1, 1)
         driver = self.symbol('USBD1')
         self.write(driver + abi['usb_driver_config'], self.function('usbcfg'))
