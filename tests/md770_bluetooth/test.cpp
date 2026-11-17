@@ -20,6 +20,10 @@ static uint16_t keycodes[MATRIX_ROWS][MATRIX_COLS], system_usage, consumer_usage
 static unsigned resets, wake_requests, saved_hosts, usb_flushes;
 static unsigned radio_pin_mode;
 static connection_host_t host = CONNECTION_HOST_BLUETOOTH;
+static uint32_t stored_slot;
+static unsigned slot_writes;
+uint32_t eeconfig_read_kb(void) { return stored_slot; }
+void eeconfig_update_kb(uint32_t value) { stored_slot = value; ++slot_writes; }
 
 void chSysLock(void) { assert(!locked); locked = true; }
 void chSysUnlock(void) { assert(locked); locked = false; }
@@ -131,6 +135,12 @@ static void boot(void) {
     assert(startup_attempts == 3);
     tick(10);
     assert(finish() == std::vector<uint8_t>({0xa7, 2, 0, 2}));
+    clocks({0xb6, 0, 3});
+    if (host == CONNECTION_HOST_BLUETOOTH) {
+        tick(10);
+        assert(finish() == std::vector<uint8_t>({0xaa, 3, saved_slot}));
+        drain();
+    }
     clocks({0xb6, 0, 2});
     tick(10);
     assert(bluetooth_is_connected() && pending_command == NO_COMMAND);
@@ -139,8 +149,49 @@ static void boot(void) {
 int main(int argc, char **argv) {
     assert(argc == 2);
     std::string test = argv[1];
+    if (test == "startup_usb") host = CONNECTION_HOST_USB;
+    if (test == "startup_slot2") stored_slot = 2;
+    if (test == "startup_slot3") stored_slot = 3;
+    if (test == "startup_invalid") stored_slot = 0xffffffff;
+    if (test == "startup_failure") {
+        bluetooth_init();
+        for (unsigned attempt = 0; attempt < 5; ++attempt) {
+            tick(1000);
+            tick(1500);
+            tick(10);
+            tick(2000);
+        }
+        assert(phase == FAILED && !deferred_slot && pending_command == COMMAND_STOP);
+        keyrecord_t event{};
+        event.event.pressed = true;
+        process_record_kb(QK_BLUETOOTH_PROFILE1, &event);
+        event.event.pressed = false;
+        process_record_kb(QK_BLUETOOTH_PROFILE1, &event);
+        bluetooth_task();
+        assert(phase == RESET_HIGH && pending_command == COMMAND_SELECT_SLOT1);
+        std::puts("startup_failure passed");
+        return 0;
+    }
     boot();
-    if (test == "sleep") {
+    if (test.compare(0, 8, "startup_") == 0) {
+        assert(!slot_writes);
+        pins[B12] = true;
+        USBD1.state = USB_ACTIVE;
+        USBD1.configuration = 1;
+        connection_host_t before = host;
+        md770_power_task();
+        assert(host == before);
+        pins[B12] = false;
+        md770_power_task();
+        assert(host == before);
+        md770_radio_select(2, false);
+        drain();
+        assert(stored_slot == 2);
+        unsigned writes = slot_writes;
+        md770_radio_select(2, true);
+        drain();
+        assert(slot_writes == writes);
+    } else if (test == "sleep") {
         report_keyboard_t report{.keys = {4}};
         bluetooth_send_keyboard(&report);
         md770_radio_select(2, true);
@@ -201,6 +252,7 @@ int main(int argc, char **argv) {
         if (test != "long") assert(drain()[0][3] == 4);
         else assert(drain().empty());
     } else if (test == "timeout") {
+        clocks({0xb6, 2, 3});
         report_keyboard_t report{.keys = {4}};
         bluetooth_send_keyboard(&report);
         tick(10);
@@ -279,6 +331,8 @@ int main(int argc, char **argv) {
         assert(process_record_kb(QK_BLUETOOTH_PROFILE1, &event) == false);
     } else if (test == "leds") {
         radio_state = 2;
+        radio_phase = false;
+        radio_countdown = 0;
         md770_radio_indicate(false);
         md770_indicators_task();
         assert(PWMD_MCTM0.width[3] == 6000);

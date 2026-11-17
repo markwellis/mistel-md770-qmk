@@ -3,7 +3,7 @@
 import hashlib
 import struct
 
-from unicorn.arm_const import UC_ARM_REG_R0
+from unicorn.arm_const import UC_ARM_REG_R0, UC_ARM_REG_R1, UC_ARM_REG_R2
 
 from emulator import Machine, SPI_IRQ, STOP, Unsupported
 from stock_probe import STOCK_SHA256
@@ -17,6 +17,7 @@ class Qmk(Machine):
         if self.scratch + 8 > self.symbol('__heap_end__'):
             raise ValueError('The firmware has no space for a supplied report')
         self.persistent_writes = 0
+        self.eeprom_writes = []
         self.sleep_action = None
         self.sleep_ticks = 0
         self.tick_hz = (self.read(self.symbol('md770_system_tick_frequency'))
@@ -28,6 +29,7 @@ class Qmk(Machine):
         self.hooks[self.function('__port_irq_epilogue')] = lambda: None
         self.hooks[self.function('chThdSleep')] = self._sleep
         self.hooks[self.function('nvm_eeconfig_update_connection')] = self._persist
+        self.hooks[self.function('wear_leveling_write')] = self._eeprom_write
         self.hook('iqGetTimeout', lambda: -1)
         self.hardware.registers[0x4008802C] = (1 << 14) | (1 << 4)
         self.hardware.registers[0x40088030] = (1 << 16) | (1 << 9)
@@ -43,6 +45,8 @@ class Qmk(Machine):
         self.hardware.gpio[1][4] = self.hardware.gpio[1][8] = 1 << 12
         self.hardware.gpio[2][4] = self.hardware.gpio[2][8] = 1 << 13
         self.hardware.pin(1, 12, False)
+        for pad in range(2, 6):
+            self.hardware.pin(1, pad, False)
         self.set_host('host_bluetooth')
         self.write(self.symbol('active_host'), abi['host_bluetooth'], 1)
         self._hal()
@@ -62,6 +66,17 @@ class Qmk(Machine):
 
     def _persist(self):
         self.persistent_writes += 1
+
+    def _eeprom_write(self):
+        address = self.cpu.reg_read(UC_ARM_REG_R0)
+        source = self.cpu.reg_read(UC_ARM_REG_R1)
+        length = self.cpu.reg_read(UC_ARM_REG_R2)
+        if address + length > self.abi['eeprom_logical_size']:
+            raise Unsupported('EEPROM write exceeds the supplied cache')
+        value = bytes(self.cpu.mem_read(source, length))
+        self.cpu.mem_write(self.symbol('wear_leveling') + address, value)
+        self.eeprom_writes.append((address, value))
+        return 0
 
     def _hal(self):
         abi = self.abi
@@ -179,7 +194,8 @@ class Qmk(Machine):
                 if phase in quiescent and command == self.abi.get('radio_stop_command', 0):
                     return outgoing
                 if (not self.queued() and command == self.abi.get('radio_no_command', 0x20)
-                        and not self.read(self.symbol('deferred_slot'), 1)
+                        and (not self.read(self.symbol('deferred_slot'), 1)
+                             or self.read(self.symbol('config'), 1) != self.abi['host_bluetooth'])
                         and phase == ready):
                     return outgoing
             elif (not self.queued() and not self.read(self.symbol('resynchronise'), 1)

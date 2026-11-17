@@ -228,3 +228,5 @@ void bluetooth_send_system(uint16_t usage);
 
 uint16_t host_last_consumer_usage(void);
 uint16_t host_last_system_usage(void);
+uint32_t eeconfig_read_kb(void);
+void eeconfig_update_kb(uint32_t value);

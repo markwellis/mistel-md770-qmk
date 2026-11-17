@@ -91,7 +91,10 @@ build, such as `.build/mistel_md770rgb_bt_right_markwellis.elf` in QMK.
 The ABI probe uses current headers, the radio source and GCC with the saved build flags. The
 ELF must be rebuilt after changes to those inputs. The record includes the
 compiler, flags hash and preprocessed-probe hash; ELF-derived layouts are not
-claimed.
+claimed. Saved-slot startup tests use the verification ELF retaining
+`bluetooth_init`; ordinary production links may inline it and explicitly
+skip those two checks. EEPROM writes are supplied at the wear-levelling
+cache boundary, so these checks do not establish physical flash retention.
 The unlinked probe also supplies private radio enum values and widths.
 Recorded older ABIs without those fields use their historical fixture values.
 

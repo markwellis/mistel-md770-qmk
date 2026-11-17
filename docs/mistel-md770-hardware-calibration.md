@@ -82,12 +82,21 @@ power-bank cold start, the keyboard initiated both HID channels without a
 pairing shortcut or laptop Connect request. The initial J was not captured;
 the owner subsequently confirmed Bluetooth typing without another recovery
 action. Linux still reported `ServicesResolved=false` while typing worked,
-so that property cannot establish input failure. A final cold restart without
-an output-selection shortcut is pending. See the
-[investigation](hardware-calibration/bluetooth-reconnect-investigation.json)
-and [cold input observation](hardware-calibration/bluetooth-reconnect-cold-input.json).
-No production firmware change was made, and the temporary controller setting
-was restored. The cause and exact delay of recovery remain unmeasured.
+so that property cannot establish input failure. The subsequent
+[cold repeat](hardware-calibration/bluetooth-reconnect-cold-repeat.json) failed
+until a brief Pn+F1 slot selection. Ordinary typing and Pn+1 output selection
+did not reconnect it; no pairing or laptop Connect request was used.
+
+The resulting keyboard-local fix restores QMK's saved USB/Bluetooth choice
+and selects the last Bluetooth slot after the startup status transaction.
+The existing keyboard EEPROM word stores slots 1–3, defaulting invalid values
+to slot 1. Power changes no longer override the selected output. Radio
+firmware retry policy is unchanged. The
+[build record](mistel-md770-saved-output-build.json) links the native and
+instruction-level checks. Physical verification of this fix is pending.
+See the [investigation](hardware-calibration/bluetooth-reconnect-investigation.json)
+for the earlier hypotheses and temporary experiments; all diagnostic images
+were removed and the laptop's controller setting was restored.
 
 The [USB device wake check](hardware-calibration/usb-wake-visual.json)
 passed without suspending the laptop. The owner saw the controlled red

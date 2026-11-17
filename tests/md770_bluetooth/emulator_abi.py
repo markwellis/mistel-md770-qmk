@@ -36,7 +36,7 @@ NAMES = ['usb_configuration', 'usb_status', 'usb_configure_state',
          'out_queue_suspended', 'usb_out_params', 'usb_receiving',
          'radio_phase_bytes', 'radio_ready', 'radio_failed', 'radio_off',
          'radio_command_bytes', 'radio_stop_command', 'radio_no_command',
-         'radio_keyboard_command', 'radio_system_command']
+         'radio_keyboard_command', 'radio_system_command', 'eeconfig_keyboard', 'eeprom_logical_size']
 
 
 def firmware_binary(elf_path, image):

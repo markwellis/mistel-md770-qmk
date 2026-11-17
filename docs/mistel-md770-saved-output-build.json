@@ -1,0 +1,60 @@
+{
+  "date": "2026-11-17T15:05:18.798669+00:00",
+  "qmk_commit": "45b37a03a9",
+  "userspace_source_commit": "312f4fe",
+  "production_target": "mistel_md770rgb_bt_right_markwellis_saved_output",
+  "production_application_bytes": 51704,
+  "production_application_sha256": "770457a9708bb9b245f7a8af8ee388b265d25a1287d9616f023b7703aadb73b6",
+  "production_elf_sha256": "60975ad6d8ffcaabdd1e615368d8492b597cdbc65f77810fab77fcf378e77cc3",
+  "production_test_record": "docs/mistel-md770-saved-output-production-tests.json",
+  "verification_test_record": "docs/mistel-md770-saved-output-verification-tests.json",
+  "verification_target": "mistel_md770rgb_bt_right_markwellis_saved_output_verification",
+  "verification_elf_sha256": "0af0f3ca449dfde22c61c84a322db613111f4dfb6ea365109f2caf0e2283bd49",
+  "verification_difference": "Standard linker retention of bluetooth_init; identical production keyboard sources and compiler flags otherwise",
+  "production_binary_identical_after_final_commit": true,
+  "native_driver_suite_passed": true,
+  "native_driver_cases": 23,
+  "native_scope": "Actual keyboard C compiled against supplied registers, time, FIFO and EEPROM; address, undefined-behaviour and bounds sanitisers enabled",
+  "native_log_excerpt": [
+    "leds passed",
+    "ChibiOS wake uses the native keyboard clearing policy",
+    "RGB waveform, sleep pins and synchronous wake priming passed",
+    "RGB waveform, sleep pins and synchronous wake priming passed"
+  ],
+  "source_sha256": {
+    "keyboards/mistel/md770rgb_bt/bluetooth.c": "33bbee0cdc6ea61fe759fbd426e4154639acce5f72c0975196a7f0726dc51d80",
+    "keyboards/mistel/md770rgb_bt/power.c": "cdc0bacecb30aa0dd022828cf84dda9058da8ec6ad2e6a04b14f67d2ccb7f413"
+  },
+  "changed_qmk_scope": [
+    "keyboards/mistel/md770rgb_bt/bluetooth.c",
+    "keyboards/mistel/md770rgb_bt/power.c",
+    "keyboards/mistel/md770rgb_bt/readme.md"
+  ],
+  "shared_qmk_changes": false,
+  "contrib_patches": "Only the existing reset-register and 32-bit BFTM fixes; gitlink unchanged",
+  "stored_state": "Native QMK connection selection plus one last Bluetooth slot in the existing unused keyboard EEPROM word",
+  "independent_review": "Astra maximum effort: no functional blocker; startup failure clears deferred selection before manual recovery",
+  "physical_verification": "Pending flashing and a cold restart without shortcuts",
+  "tested_production_elf_sha256": "60975ad6d8ffcaabdd1e615368d8492b597cdbc65f77810fab77fcf378e77cc3",
+  "production_tests_applied": 70,
+  "verification_tests_passed": 72,
+  "left_application_sha256": "2794187230e1d866adb8c00fc8200ad2801d6da86462d430b8a9c78326f91bde",
+  "left_byte_identical_to_installed": true,
+  "additional_native_checks": [
+    "ChibiOS resume",
+    "Right RGB waveform/sleep/wake",
+    "Left RGB waveform/sleep/wake"
+  ],
+  "native_test_sources_sha256": {
+    "tests/md770_bluetooth/test.cpp": "60f3bd1ab4f9e17de60335e40b0c9762d2295fd2ee0c5ad2406b74f71979ca55",
+    "tests/md770_bluetooth/quantum.h": "7975a6a48d03b82751e317ad505df2e3548b3e4e901c08b62657cbcada1a2692",
+    "tests/md770_bluetooth/run.sh": "569624336acb307d4ab3430548ae88011a539f7aa8d02942bdd5c1dd319421b7"
+  },
+  "final_simplicity_review": {
+    "qmk_commit": "45b37a03a9",
+    "blockers": [],
+    "material_simplicity_concerns": [],
+    "summary": "One saved slot byte, native QMK EEPROM and connection selection, reused deferred dispatch, no additional radio retry mechanism; only three keyboard files changed",
+    "scope": "Independent source and test review; physical verification still pending"
+  }
+}

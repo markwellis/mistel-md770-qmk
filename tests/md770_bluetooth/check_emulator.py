@@ -71,6 +71,7 @@ def main() -> int:
             'passed': result.wasSuccessful(),
             'failures': [test.id() for test, _ in result.failures],
             'errors': [test.id() for test, _ in result.errors],
+            'skipped': [{'test': test.id(), 'reason': reason} for test, reason in result.skipped],
             'model_only': args.model_only,
             'scope': 'Component instruction execution with supplied time and RTOS boundaries; no physical validation',
             'model_sources_sha256': {

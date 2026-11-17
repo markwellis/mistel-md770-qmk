@@ -9,9 +9,9 @@
     "Mistel_Bluetooth_input_node_appeared_before_empty_batch": true,
     "empty_batch_changed_observed_state": false,
     "empty_batch_functional_typing_test_performed": false,
-    "cold_functional_reconnect_unresolved": false,
+    "cold_functional_reconnect_unresolved": true,
     "later_owner_confirmed_cold_typing": true,
-    "zero_shortcut_cold_restart": "Pending separate final check",
+    "zero_shortcut_cold_restart": "Pre-fix repeat failed; brief saved-slot selection restored typing. Keyboard-local fix now built; physical verification pending.",
     "typing_assessment": "Unmeasured during the diagnostic-only trials; owner subsequently confirmed cold-start typing on restored ordinary QMK"
   },
   "limitations": [
@@ -2955,5 +2955,6 @@
       "Removed stale v1 pointer to the current v2 probe",
       "Attributed each diagnostic observation to its firmware hash"
     ]
-  }
+  },
+  "later_pre_fix_cold_repeat": "docs/hardware-calibration/bluetooth-reconnect-cold-repeat.json"
 }

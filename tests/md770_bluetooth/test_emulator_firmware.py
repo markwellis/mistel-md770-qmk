@@ -101,6 +101,49 @@ class FirmwareTests(unittest.TestCase):
             self.assertEqual(machine.hardware.spi.registers[4], 0x108)
             self.assertEqual(machine.hardware.spi.registers[24], 0x410)
 
+    def test_saved_slot_is_selected_after_startup_only_for_bluetooth(self):
+        if 'bluetooth_init' not in self.qmk(connected=False).symbols:
+            self.skipTest('Use the verification ELF retaining bluetooth_init')
+        for slot, expected in ((0, 1), (1, 1), (2, 2), (3, 3), (0xffffffff, 1)):
+            for transport in ('host_usb', 'host_bluetooth'):
+                with self.subTest(slot=slot, transport=transport):
+                    qmk = self.qmk(connected=False)
+                    address = qmk.symbol('wear_leveling') + self.abi['eeconfig_keyboard']
+                    qmk.write(address, slot)
+                    qmk.set_host(transport)
+                    qmk.call('bluetooth_init')
+                    qmk.task(1000)
+                    qmk.task(1500)
+                    qmk.task(10)
+                    self.assertEqual(qmk.transfer(bytes(4)), [0xa7, 2, 0, 2])
+                    packets = qmk.drain()
+                    self.assertEqual(packets, [[0xaa, 3, expected]] if transport == 'host_bluetooth' else [])
+                    self.assertEqual(qmk.read(address), slot)
+                    self.assertEqual(qmk.eeprom_writes, [])
+                    qmk.usb(True)
+                    qmk.matrix()
+                    self.assertEqual(qmk.read(qmk.symbol('config'), 1), self.abi[transport])
+
+    def test_selected_slot_is_saved_for_the_next_startup(self):
+        if 'bluetooth_init' not in self.qmk(connected=False).symbols:
+            self.skipTest('Use the verification ELF retaining bluetooth_init')
+        for slot in (1, 2, 3):
+            with self.subTest(slot=slot):
+                qmk = self.qmk()
+                qmk.select(slot)
+                qmk.drain()
+                address = qmk.symbol('wear_leveling') + self.abi['eeconfig_keyboard']
+                self.assertEqual(qmk.read(address), slot)
+                persisted = bytes(qmk.cpu.mem_read(qmk.symbol('wear_leveling'), self.abi['eeprom_logical_size']))
+                reboot = self.qmk(connected=False)
+                reboot.cpu.mem_write(reboot.symbol('wear_leveling'), persisted)
+                reboot.call('bluetooth_init')
+                reboot.task(1000)
+                reboot.task(1500)
+                reboot.task(10)
+                self.assertEqual(reboot.transfer(bytes(4)), [0xa7, 2, 0, 2])
+                self.assertEqual(reboot.drain(), [[0xaa, 3, slot]])
+
     def test_host_selection_preserves_display_cache_like_stock(self):
         for slot in (1, 2, 3):
             for pair in (False, True):

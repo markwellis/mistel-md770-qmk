@@ -1,0 +1,38 @@
+{
+  "firmware_sha256": "c29dae348fc922c0d155f91f9ee41c367ec432396e648cefcf97db7ad392b1f8",
+  "date": "2026-11-17T14:59:20.890734+00:00",
+  "physical_setup": "Joined halves; right on power bank; no USB to laptop",
+  "power_off": {
+    "owner_confirmed_unplugged": true,
+    "start_time": "2026-11-17T14:39:42.157198+00:00",
+    "states": [
+      {
+        "time": "2026-11-17T14:39:42.160613+00:00",
+        "connected": false
+      }
+    ],
+    "confirmed_disconnected": true
+  },
+  "power_on_observation": {
+    "start_time": "2026-11-17T14:40:12.987809+00:00",
+    "no_host_connection_requests": true,
+    "states": [
+      {
+        "time": "2026-11-17T14:40:12.992039+00:00",
+        "connected": false,
+        "services_resolved": false,
+        "hid_input_present": false
+      }
+    ]
+  },
+  "owner_confirmed_no_keys_during_startup": true,
+  "pairing_shortcut_used": false,
+  "laptop_Connect_requested": false,
+  "owner_reports": {
+    "startup_without_shortcut_reconnected": false,
+    "ordinary_J_wait_and_word_typed": false,
+    "Pn_1_after_full_startup_then_word_typed": false,
+    "brief_Pn_F1_then_word_typed": true
+  },
+  "conclusion": "Short saved-slot selection restored connection and typing; output selection and ordinary keys did not. A keyboard-local startup slot selection is justified."
+}
