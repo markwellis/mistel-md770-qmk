@@ -1,6 +1,6 @@
 {
   "date": "2026-11-17T12:04:05.006780+00:00",
-  "status": "Resolved: keyboard-only saved-output fix 45b37a03a9 is flashed, checksum-verified and physically verified through a complete power-off, automatic reconnection and typing",
+  "status": "Verified: complete-disconnection cold start and both one- and five-second rapid power cycles recovered automatically. Timed rapid-cycle traces show reconnection following the old host-link timeout; the owner confirmed operation.",
   "reference_firmware_sha256": "c29dae348fc922c0d155f91f9ee41c367ec432396e648cefcf97db7ad392b1f8",
   "hid_reconnect_mode": {
     "value": "device",
@@ -190,5 +190,15 @@
   "final_pre_fix_cold_repeat": "docs/hardware-calibration/bluetooth-reconnect-cold-repeat.json",
   "saved_output_installation": "docs/mistel-md770-saved-output-flash-right.json",
   "saved_output_after_flash": "docs/hardware-calibration/saved-output-after-flash.json",
-  "saved_output_cold_start": "docs/hardware-calibration/saved-output-cold-start.json"
+  "saved_output_cold_start": "docs/hardware-calibration/saved-output-cold-start.json",
+  "rapid_power_cycle_followup": {
+    "owner_reports_full_disconnect_before_powerup_succeeds": true,
+    "owner_reports_rapid_cycle_can_break_reconnection": true,
+    "one_repeat_recovered_without_intervention": true,
+    "timed_trace_pending": false,
+    "timed_repeats_passed": true,
+    "persistent_failure_reproduced": false,
+    "result_record": "docs/hardware-calibration/saved-output-rapid-power-cycles.json",
+    "further_firmware_changes_made": false
+  }
 }

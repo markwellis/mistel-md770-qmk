@@ -101,6 +101,9 @@ passed after verified complete disconnection: the keyboard reconnected without
 powered Pn shortcuts or laptop Connect, and the owner confirmed typing.
 The laptop's temporary connectable setting was off during this pass. USB
 output and slots 2/3 have software coverage; this physical repeat used slot 1.
+[Rapid one- and five-second power cycles](hardware-calibration/saved-output-rapid-power-cycles.json)
+also recovered automatically after the laptop timed out its old link. Neither
+repeat required a shortcut, laptop Connect or further firmware change.
 See the [investigation](hardware-calibration/bluetooth-reconnect-investigation.json)
 for the earlier hypotheses and temporary experiments; all diagnostic images
 were removed and the laptop's controller setting was restored.

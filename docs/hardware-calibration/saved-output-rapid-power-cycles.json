@@ -1,0 +1,702 @@
+{
+  "date": "2026-11-17T15:57:29.271639+00:00",
+  "firmware_application_sha256": "770457a9708bb9b245f7a8af8ee388b265d25a1287d9616f023b7703aadb73b6",
+  "qmk_commit": "45b37a03a9",
+  "physical_setup": "Joined halves; right on power bank; no laptop USB connection",
+  "result": "Both requested rapid power-cycle repeats recovered automatically",
+  "cases": [
+    {
+      "started": "2026-11-17T15:48:01.774378+00:00",
+      "host_connection_request_sent": false,
+      "pairing_requested": false,
+      "host_settings_changed": false,
+      "states": [
+        {
+          "time": "2026-11-17T15:48:01.778741+00:00",
+          "connected": true,
+          "services_resolved": false,
+          "hid_input_present": true
+        },
+        {
+          "time": "2026-11-17T15:49:14.257582+00:00",
+          "connected": false,
+          "services_resolved": false,
+          "hid_input_present": false
+        },
+        {
+          "time": "2026-11-17T15:49:15.795719+00:00",
+          "connected": true,
+          "services_resolved": false,
+          "hid_input_present": true
+        }
+      ],
+      "hci_events": [
+        {
+          "observed_at": "2026-11-17T15:49:15.655919+00:00",
+          "fields": [
+            "@ MGMT Event: Device Disconnected (0x000c) plen 8            {0x0001} 73.011562",
+            "Reason: Connection timeout (0x01)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:49:15.655987+00:00",
+          "fields": [
+            "> HCI Event: Connect Request (0x04) plen 10                        #5 74.337521",
+            "Address: 20:73:10:01:5B:BF (OUI 20-73-10)",
+            "Link type: ACL (0x01)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:49:15.656013+00:00",
+          "fields": [
+            "< HCI Command: Accept Connection Request (0x01|0x0009) plen 7      #6 74.337566",
+            "Address: 20:73:10:01:5B:BF (OUI 20-73-10)",
+            "Role: Central (0x00)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:49:15.656039+00:00",
+          "fields": [
+            "> HCI Event: Role Change (0x12) plen 8                             #8 74.456693",
+            "Status: Success (0x00)",
+            "Address: 20:73:10:01:5B:BF (OUI 20-73-10)",
+            "Role: Central (0x00)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:49:15.656066+00:00",
+          "fields": [
+            "> HCI Event: Connect Complete (0x03) plen 11                       #9 74.648510",
+            "Status: Success (0x00)",
+            "Handle: 256",
+            "Address: 20:73:10:01:5B:BF (OUI 20-73-10)",
+            "Link type: ACL (0x01)",
+            "Encryption: Disabled (0x00)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:49:15.656097+00:00",
+          "fields": [
+            "< HCI Command: Read Remote Supported Feat.. (0x01|0x001b) plen 2  #10 74.648613",
+            "Handle: 256 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:49:15.656127+00:00",
+          "fields": [
+            "> HCI Event: Max Slots Change (0x1b) plen 3                       #12 74.653489",
+            "Handle: 256 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:49:15.676664+00:00",
+          "fields": [
+            "> HCI Event: Read Remote Supported Features (0x0b) plen 11        #13 74.655496",
+            "Status: Success (0x00)",
+            "Handle: 256 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:49:15.676723+00:00",
+          "fields": [
+            "< HCI Command: Read Remote Extended Featu.. (0x01|0x001c) plen 3  #14 74.655508",
+            "Handle: 256 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:49:15.676758+00:00",
+          "fields": [
+            "> HCI Event: Read Remote Extended Features (0x23) plen 13         #16 74.662503",
+            "Status: Success (0x00)",
+            "Handle: 256 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:49:15.676779+00:00",
+          "fields": [
+            "< HCI Command: Remote Name Request (0x01|0x0019) plen 10          #17 74.662534",
+            "Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:49:15.676800+00:00",
+          "fields": [
+            "< ACL Data TX: Handle 256 flags 0x00 dlen 10                      #18 74.662541",
+            "L2CAP: Information Request (0x0a) ident 1 len 2"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:49:15.676822+00:00",
+          "fields": [
+            "> HCI Event: Link Key Request (0x17) plen 6                       #20 74.667484",
+            "Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:49:15.676839+00:00",
+          "fields": [
+            "< HCI Command: Link Key Request Reply (0x01|0x000b) plen 22       #21 74.667499",
+            "Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:49:15.676871+00:00",
+          "fields": [
+            "> ACL Data RX: Handle 256 flags 0x02 dlen 16                      #23 74.669085",
+            "L2CAP: Information Response (0x0b) ident 1 len 8",
+            "Result: Success (0x0000)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:49:15.676890+00:00",
+          "fields": [
+            "< ACL Data TX: Handle 256 flags 0x00 dlen 10                      #24 74.669117",
+            "L2CAP: Information Request (0x0a) ident 2 len 2"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:49:15.676907+00:00",
+          "fields": [
+            "> HCI Event: Remote Name Req Complete (0x07) plen 255             #25 74.674493",
+            "Status: Success (0x00)",
+            "Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:49:15.676949+00:00",
+          "fields": [
+            "@ MGMT Event: Device Connected (0x000b) plen 28              {0x0001} 74.674522"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:49:15.676974+00:00",
+          "fields": [
+            "> ACL Data RX: Handle 256 flags 0x02 dlen 20                      #26 74.676088",
+            "L2CAP: Information Response (0x0b) ident 2 len 12",
+            "Result: Success (0x0000)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:49:15.742619+00:00",
+          "fields": [
+            "> HCI Event: Command Complete (0x0e) plen 10                      #27 74.676493",
+            "Status: Success (0x00)",
+            "Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:49:15.742707+00:00",
+          "fields": [
+            "> HCI Event: Encryption Change (0x08) plen 4                      #29 74.721521",
+            "Status: Success (0x00)",
+            "Handle: 256 Address: 20:73:10:01:5B:BF (OUI 20-73-10)",
+            "Encryption: Enabled with E0 (0x01)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:49:15.742732+00:00",
+          "fields": [
+            "< HCI Command: Read Encryption Key Size (0x05|0x0008) plen 2      #30 74.721572",
+            "Handle: 256 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:49:15.742757+00:00",
+          "fields": [
+            "> HCI Event: Command Complete (0x0e) plen 7                       #31 74.724492",
+            "Status: Success (0x00)",
+            "Handle: 256 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:49:15.742790+00:00",
+          "fields": [
+            "> ACL Data RX: Handle 256 flags 0x02 dlen 12                      #32 74.725091",
+            "L2CAP: Connection Request (0x02) ident 2 len 4",
+            "PSM: 17 (0x0011)",
+            "Source CID: 64"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:49:15.742814+00:00",
+          "fields": [
+            "< ACL Data TX: Handle 256 flags 0x00 dlen 16                      #33 74.725140",
+            "L2CAP: Connection Response (0x03) ident 2 len 8",
+            "Destination CID: 64",
+            "Source CID: 64",
+            "Result: Connection successful (0x0000)",
+            "Status: No further information available (0x0000)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:49:15.742841+00:00",
+          "fields": [
+            "< ACL Data TX: Handle 256 flags 0x00 dlen 12                      #34 74.725149",
+            "L2CAP: Configure Request (0x04) ident 3 len 4",
+            "Destination CID: 64"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:49:15.742882+00:00",
+          "fields": [
+            "> ACL Data RX: Handle 256 flags 0x02 dlen 16                      #37 74.731086",
+            "L2CAP: Configure Request (0x04) ident 3 len 8",
+            "Destination CID: 64"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:49:15.742903+00:00",
+          "fields": [
+            "> ACL Data RX: Handle 256 flags 0x02 dlen 14                      #38 74.731088",
+            "L2CAP: Configure Response (0x05) ident 3 len 6",
+            "Source CID: 64",
+            "Result: Success (0x0000)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:49:15.742925+00:00",
+          "fields": [
+            "< ACL Data TX: Handle 256 flags 0x00 dlen 18                      #39 74.731116",
+            "L2CAP: Configure Response (0x05) ident 3 len 10",
+            "Source CID: 64",
+            "Result: Success (0x0000)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:49:15.742954+00:00",
+          "fields": [
+            "> ACL Data RX: Handle 256 flags 0x02 dlen 12                      #41 74.739092",
+            "L2CAP: Connection Request (0x02) ident 4 len 4",
+            "PSM: 19 (0x0013)",
+            "Source CID: 65"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:49:15.742975+00:00",
+          "fields": [
+            "< ACL Data TX: Handle 256 flags 0x00 dlen 16                      #42 74.739116",
+            "L2CAP: Connection Response (0x03) ident 4 len 8",
+            "Destination CID: 65",
+            "Source CID: 65",
+            "Result: Connection pending (0x0001)",
+            "Status: Authorization pending (0x0002)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:49:15.742997+00:00",
+          "fields": [
+            "< ACL Data TX: Handle 256 flags 0x00 dlen 16                      #43 74.739213",
+            "L2CAP: Connection Response (0x03) ident 4 len 8",
+            "Destination CID: 65",
+            "Source CID: 65",
+            "Result: Connection successful (0x0000)",
+            "Status: No further information available (0x0000)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:49:15.766219+00:00",
+          "fields": [
+            "< ACL Data TX: Handle 256 flags 0x00 dlen 12                      #44 74.739219",
+            "L2CAP: Configure Request (0x04) ident 4 len 4",
+            "Destination CID: 65"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:49:15.766326+00:00",
+          "fields": [
+            "> ACL Data RX: Handle 256 flags 0x02 dlen 16                      #47 74.746096",
+            "L2CAP: Configure Request (0x04) ident 5 len 8",
+            "Destination CID: 65"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:49:15.766355+00:00",
+          "fields": [
+            "> ACL Data RX: Handle 256 flags 0x02 dlen 14                      #48 74.746099",
+            "L2CAP: Configure Response (0x05) ident 4 len 6",
+            "Source CID: 65",
+            "Result: Success (0x0000)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:49:15.766381+00:00",
+          "fields": [
+            "< ACL Data TX: Handle 256 flags 0x00 dlen 18                      #49 74.746113",
+            "L2CAP: Configure Response (0x05) ident 5 len 10",
+            "Source CID: 65",
+            "Result: Success (0x0000)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:49:34.870943+00:00",
+          "fields": [
+            "> HCI Event: Mode Change (0x14) plen 6                            #88 75.774523",
+            "Status: Success (0x00)",
+            "Handle: 256 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+          ]
+        }
+      ],
+      "finished": "2026-11-17T15:51:34.609494+00:00",
+      "owner_cycle": {
+        "owner_confirmed_rapid_power_cycle": true,
+        "requested_gap_seconds": 1,
+        "acknowledged_at": "2026-11-17T15:49:27.123543+00:00",
+        "owner_instructed_no_keys_or_shortcuts": true
+      },
+      "owner_confirmed_typing_after_automatic_reconnection": true,
+      "firmware_application_sha256": "770457a9708bb9b245f7a8af8ee388b265d25a1287d9616f023b7703aadb73b6",
+      "qmk_commit": "45b37a03a9",
+      "old_link_timeout_to_incoming_connection_request_seconds": 1.325959,
+      "old_link_timeout_to_both_HID_channels_configured_seconds": 1.734551,
+      "interpretation": "This quick cycle automatically recovered after the laptop timed out its old link; no persistent failure reproduced"
+    },
+    {
+      "started": "2026-11-17T15:51:47.906694+00:00",
+      "host_connection_request_sent": false,
+      "pairing_requested": false,
+      "host_settings_changed": false,
+      "states": [
+        {
+          "time": "2026-11-17T15:51:47.911208+00:00",
+          "connected": true,
+          "services_resolved": false,
+          "hid_input_present": true
+        },
+        {
+          "time": "2026-11-17T15:52:03.426922+00:00",
+          "connected": false,
+          "services_resolved": false,
+          "hid_input_present": false
+        },
+        {
+          "time": "2026-11-17T15:52:03.934889+00:00",
+          "connected": true,
+          "services_resolved": false,
+          "hid_input_present": true
+        }
+      ],
+      "hci_events": [
+        {
+          "observed_at": "2026-11-17T15:52:03.674191+00:00",
+          "fields": [
+            "@ MGMT Event: Device Disconnected (0x000c) plen 8            {0x0001} 16.319874",
+            "Reason: Connection timeout (0x01)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:52:03.674254+00:00",
+          "fields": [
+            "> HCI Event: Connect Request (0x04) plen 10                        #2 16.348828",
+            "Address: 20:73:10:01:5B:BF (OUI 20-73-10)",
+            "Link type: ACL (0x01)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:52:03.674280+00:00",
+          "fields": [
+            "< HCI Command: Accept Connection Request (0x01|0x0009) plen 7      #3 16.348855",
+            "Address: 20:73:10:01:5B:BF (OUI 20-73-10)",
+            "Role: Central (0x00)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:52:03.674306+00:00",
+          "fields": [
+            "> HCI Event: Role Change (0x12) plen 8                             #5 16.467825",
+            "Status: Success (0x00)",
+            "Address: 20:73:10:01:5B:BF (OUI 20-73-10)",
+            "Role: Central (0x00)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:52:03.674334+00:00",
+          "fields": [
+            "> HCI Event: Connect Complete (0x03) plen 11                       #6 16.659842",
+            "Status: Success (0x00)",
+            "Handle: 512",
+            "Address: 20:73:10:01:5B:BF (OUI 20-73-10)",
+            "Link type: ACL (0x01)",
+            "Encryption: Disabled (0x00)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:52:03.674354+00:00",
+          "fields": [
+            "< HCI Command: Read Remote Supported Featu.. (0x01|0x001b) plen 2  #7 16.659959",
+            "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:52:03.674379+00:00",
+          "fields": [
+            "> HCI Event: Max Slots Change (0x1b) plen 3                        #9 16.664825",
+            "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:52:03.674430+00:00",
+          "fields": [
+            "> HCI Event: Read Remote Supported Features (0x0b) plen 11        #10 16.666831",
+            "Status: Success (0x00)",
+            "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:52:03.674450+00:00",
+          "fields": [
+            "< HCI Command: Read Remote Extended Featu.. (0x01|0x001c) plen 3  #11 16.666847",
+            "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:52:03.736212+00:00",
+          "fields": [
+            "> HCI Event: Read Remote Extended Features (0x23) plen 13         #13 16.673825",
+            "Status: Success (0x00)",
+            "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:52:03.736274+00:00",
+          "fields": [
+            "< HCI Command: Remote Name Request (0x01|0x0019) plen 10          #14 16.673852",
+            "Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:52:03.736304+00:00",
+          "fields": [
+            "< ACL Data TX: Handle 512 flags 0x00 dlen 10                      #15 16.673858",
+            "L2CAP: Information Request (0x0a) ident 1 len 2"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:52:03.736329+00:00",
+          "fields": [
+            "> HCI Event: Link Key Request (0x17) plen 6                       #17 16.678810",
+            "Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:52:03.736346+00:00",
+          "fields": [
+            "< HCI Command: Link Key Request Reply (0x01|0x000b) plen 22       #18 16.678823",
+            "Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:52:03.736374+00:00",
+          "fields": [
+            "> ACL Data RX: Handle 512 flags 0x02 dlen 16                      #19 16.680086",
+            "L2CAP: Information Response (0x0b) ident 1 len 8",
+            "Result: Success (0x0000)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:52:03.736393+00:00",
+          "fields": [
+            "< ACL Data TX: Handle 512 flags 0x00 dlen 10                      #20 16.680101",
+            "L2CAP: Information Request (0x0a) ident 2 len 2"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:52:03.736430+00:00",
+          "fields": [
+            "> HCI Event: Command Complete (0x0e) plen 10                      #22 16.682821",
+            "Status: Success (0x00)",
+            "Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:52:03.736473+00:00",
+          "fields": [
+            "> ACL Data RX: Handle 512 flags 0x02 dlen 20                      #24 16.688085",
+            "L2CAP: Information Response (0x0b) ident 2 len 12",
+            "Result: Success (0x0000)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:52:03.736493+00:00",
+          "fields": [
+            "> HCI Event: Remote Name Req Complete (0x07) plen 255             #25 16.690814",
+            "Status: Success (0x00)",
+            "Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:52:03.736515+00:00",
+          "fields": [
+            "@ MGMT Event: Device Connected (0x000b) plen 28              {0x0001} 16.690826"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:52:03.736538+00:00",
+          "fields": [
+            "> HCI Event: Encryption Change (0x08) plen 4                      #26 16.732829",
+            "Status: Success (0x00)",
+            "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)",
+            "Encryption: Enabled with E0 (0x01)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:52:03.736555+00:00",
+          "fields": [
+            "< HCI Command: Read Encryption Key Size (0x05|0x0008) plen 2      #27 16.732858",
+            "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:52:03.736575+00:00",
+          "fields": [
+            "> HCI Event: Command Complete (0x0e) plen 7                       #28 16.735816",
+            "Status: Success (0x00)",
+            "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:52:03.756249+00:00",
+          "fields": [
+            "> ACL Data RX: Handle 512 flags 0x02 dlen 12                      #29 16.736087",
+            "L2CAP: Connection Request (0x02) ident 2 len 4",
+            "PSM: 17 (0x0011)",
+            "Source CID: 64"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:52:03.756307+00:00",
+          "fields": [
+            "< ACL Data TX: Handle 512 flags 0x00 dlen 16                      #30 16.736112",
+            "L2CAP: Connection Response (0x03) ident 2 len 8",
+            "Destination CID: 64",
+            "Source CID: 64",
+            "Result: Connection successful (0x0000)",
+            "Status: No further information available (0x0000)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:52:03.756338+00:00",
+          "fields": [
+            "< ACL Data TX: Handle 512 flags 0x00 dlen 12                      #31 16.736118",
+            "L2CAP: Configure Request (0x04) ident 3 len 4",
+            "Destination CID: 64"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:52:03.756383+00:00",
+          "fields": [
+            "> ACL Data RX: Handle 512 flags 0x02 dlen 16                      #34 16.742092",
+            "L2CAP: Configure Request (0x04) ident 3 len 8",
+            "Destination CID: 64"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:52:03.756406+00:00",
+          "fields": [
+            "< ACL Data TX: Handle 512 flags 0x00 dlen 18                      #35 16.742108",
+            "L2CAP: Configure Response (0x05) ident 3 len 10",
+            "Source CID: 64",
+            "Result: Success (0x0000)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:52:03.756427+00:00",
+          "fields": [
+            "> ACL Data RX: Handle 512 flags 0x02 dlen 14                      #36 16.744087",
+            "L2CAP: Configure Response (0x05) ident 3 len 6",
+            "Source CID: 64",
+            "Result: Success (0x0000)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:52:03.756455+00:00",
+          "fields": [
+            "> ACL Data RX: Handle 512 flags 0x02 dlen 12                      #38 16.749089",
+            "L2CAP: Connection Request (0x02) ident 4 len 4",
+            "PSM: 19 (0x0013)",
+            "Source CID: 65"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:52:03.756476+00:00",
+          "fields": [
+            "< ACL Data TX: Handle 512 flags 0x00 dlen 16                      #39 16.749110",
+            "L2CAP: Connection Response (0x03) ident 4 len 8",
+            "Destination CID: 65",
+            "Source CID: 65",
+            "Result: Connection pending (0x0001)",
+            "Status: Authorization pending (0x0002)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:52:03.756496+00:00",
+          "fields": [
+            "< ACL Data TX: Handle 512 flags 0x00 dlen 16                      #40 16.749178",
+            "L2CAP: Connection Response (0x03) ident 4 len 8",
+            "Destination CID: 65",
+            "Source CID: 65",
+            "Result: Connection successful (0x0000)",
+            "Status: No further information available (0x0000)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:52:03.756521+00:00",
+          "fields": [
+            "< ACL Data TX: Handle 512 flags 0x00 dlen 12                      #41 16.749184",
+            "L2CAP: Configure Request (0x04) ident 4 len 4",
+            "Destination CID: 65"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:52:03.756561+00:00",
+          "fields": [
+            "> ACL Data RX: Handle 512 flags 0x02 dlen 16                      #44 16.756098",
+            "L2CAP: Configure Request (0x04) ident 5 len 8",
+            "Destination CID: 65"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:52:03.756580+00:00",
+          "fields": [
+            "> ACL Data RX: Handle 512 flags 0x02 dlen 14                      #45 16.756101",
+            "L2CAP: Configure Response (0x05) ident 4 len 6",
+            "Source CID: 65",
+            "Result: Success (0x0000)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:52:03.784968+00:00",
+          "fields": [
+            "< ACL Data TX: Handle 512 flags 0x00 dlen 18                      #46 16.756146",
+            "L2CAP: Configure Response (0x05) ident 5 len 10",
+            "Source CID: 65",
+            "Result: Success (0x0000)"
+          ]
+        },
+        {
+          "observed_at": "2026-11-17T15:52:07.921318+00:00",
+          "fields": [
+            "> HCI Event: Mode Change (0x14) plen 6                            #85 17.777847",
+            "Status: Success (0x00)",
+            "Handle: 512 Address: 20:73:10:01:5B:BF (OUI 20-73-10)"
+          ]
+        }
+      ],
+      "finished": "2026-11-17T15:52:37.245418+00:00",
+      "requested_power_off_seconds": 5,
+      "owner_confirmed_unplugged_and_replugged": true,
+      "owner_confirmed_automatic_reconnection": true,
+      "owner_confirmed_working_after_repeat": true,
+      "old_link_timeout_to_incoming_connection_request_seconds": 0.028954,
+      "old_link_timeout_to_both_HID_channels_configured_seconds": 0.436272
+    }
+  ],
+  "interpretation": "Each trace shows the PC clearing its timed-out old connection, followed by a keyboard-initiated encrypted connection and both HID channels without intervention. Both repeats recovered; persistent reconnection loss was not reproduced.",
+  "limitations": [
+    "Requested power-off intervals were performed by the owner rather than measured electrically",
+    "HCI relative timestamps measure timeout-to-reconnection; stdout observation times may be buffered",
+    "Radio firmware retry count and maximum retry duration were not established"
+  ],
+  "production_changes_from_followup": false,
+  "host_settings_changed": false,
+  "new_retry_mechanism_added": false
+}
