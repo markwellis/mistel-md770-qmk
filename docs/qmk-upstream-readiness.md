@@ -56,8 +56,11 @@ returned to normal QMK USB identities. The owner confirmed joined typing,
 both space bars and cross-half Shift. See
 [right](mistel-md770-simplified-flash-right.json) and
 [left](mistel-md770-simplified-flash-left.json) installation records.
-Physical KVM switching, Bluetooth, USB suspend/wake, deep-sleep wake and
-battery runtime for these images remain unverified.
+A subsequent short differential pass matched all 24 physical key events on
+Bluetooth/power-bank power and all 24 on USB against the installed production
+ELF. See [the comparison](hardware-calibration/simplified-input-summary.json).
+Automatic reconnect, macro playback calibration, KVM switching, USB
+suspend/wake, deep-sleep wake and battery runtime remain unverified.
 
 ## Separate USB-stop investigation
 

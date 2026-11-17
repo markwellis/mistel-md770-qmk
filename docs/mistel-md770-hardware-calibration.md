@@ -1,11 +1,47 @@
 # MD770 emulator calibration on hardware
 
-The owner rejected the current spread of QMK changes outside
-`keyboards/mistel/md770rgb_bt/`. Address that scope before continuing this
-hardware plan; see the [checkpoint](mistel-md770-emulator-checkpoint.md).
-The results below remain evidence for the identified installed images.
+## Current short differential pass
 
-The recommended pass is five short scenarios, with three macro recordings
+The QMK scope simplification is complete. On 2026-11-17, two short physical
+sequences passed on the installed `markwellis` production image: Bluetooth
+on a power bank with no host USB connection, followed by USB to the laptop.
+Each capture matched all 24 independently expected and emulated press/release
+events. See the [summary](hardware-calibration/simplified-input-summary.json),
+[Bluetooth capture](hardware-calibration/simplified-input-bt.json) and
+[USB capture](hardware-calibration/simplified-input-usb.json).
+
+The sequence uses A/J, both cross-half Shift combinations, each space bar
+and four quick J taps. It needs no macro recordings or diagnostic firmware.
+An initial capture with operator-reported accidental input was excluded;
+the clean Bluetooth repeat and USB capture passed strict ordered comparison.
+Manual Bluetooth reconnection was needed after flashing; this is recorded
+separately from the connected-input test.
+
+Predictions execute `action_exec()` and report/radio code from the exact
+installed production ELF. The fixture supplies decoded scan events, the
+compiled base keymap, RTOS boundaries and radio transactions. The live
+comparison measures ordered Linux key press/release events, not raw-report
+bytes or timing. It provides hardware evidence for these input/report paths;
+it does not establish every emulator contract or calibrate macro playback,
+USB wake, KVMs, interrupts or battery behaviour.
+
+Generate the fixed predictions before capturing:
+
+```fish
+nix-shell --run 'python3 -B tests/md770_bluetooth/predict_physical_input.py --elf ../qmk_firmware/.build/mistel_md770rgb_bt_right_markwellis_conformance.elf --out docs/hardware-calibration/simplified-input-plan.json'
+```
+
+Use `scripts/md770_calibrate.py` with that plan, the matching production
+binary, case `DP-BT` or `DP-USB`, and the appropriate event devices. Grab all
+relevant keyboard interfaces for the chosen transport. The installed image
+hash is checked, and the plan hash binds each capture to its predictions.
+
+## Optional broader macro calibration
+
+The older procedure below requires its separate validation image and three
+recorded macros. It has not been completed on the current installation.
+
+The older pass uses five short scenarios, with three macro recordings
 for setup. The earlier 20-case count repeated checks already recorded on
 hardware. The [wired results](mistel-md770-final-hardware-tests.json) and
 [personal results](mistel-md770-personal-hardware-tests.json) cover ordinary
@@ -14,7 +50,7 @@ modifiers/delays/cancellation and split recovery. Those results belong to
 the earlier wired build; the short pass below checks the new transport and
 changed wake path on the candidate.
 
-## Recommended five scenarios
+## Five macro scenarios
 
 | Scenario | Action | Pass condition |
 | --- | --- | --- |

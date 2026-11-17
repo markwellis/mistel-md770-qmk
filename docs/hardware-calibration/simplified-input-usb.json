@@ -1,0 +1,874 @@
+{
+  "date": "2026-11-17T09:51:03.390148+00:00",
+  "case": {
+    "id": "DP-USB",
+    "transport": "usb",
+    "connection": "connected",
+    "expected_key_events": [
+      [
+        4,
+        true
+      ],
+      [
+        4,
+        false
+      ],
+      [
+        13,
+        true
+      ],
+      [
+        13,
+        false
+      ],
+      [
+        225,
+        true
+      ],
+      [
+        13,
+        true
+      ],
+      [
+        13,
+        false
+      ],
+      [
+        225,
+        false
+      ],
+      [
+        229,
+        true
+      ],
+      [
+        4,
+        true
+      ],
+      [
+        4,
+        false
+      ],
+      [
+        229,
+        false
+      ],
+      [
+        44,
+        true
+      ],
+      [
+        44,
+        false
+      ],
+      [
+        44,
+        true
+      ],
+      [
+        44,
+        false
+      ],
+      [
+        13,
+        true
+      ],
+      [
+        13,
+        false
+      ],
+      [
+        13,
+        true
+      ],
+      [
+        13,
+        false
+      ],
+      [
+        13,
+        true
+      ],
+      [
+        13,
+        false
+      ],
+      [
+        13,
+        true
+      ],
+      [
+        13,
+        false
+      ]
+    ],
+    "physical_actions": [
+      {
+        "key": "a",
+        "pressed": true,
+        "matrix": [
+          12,
+          2
+        ]
+      },
+      {
+        "key": "a",
+        "pressed": false,
+        "matrix": [
+          12,
+          2
+        ]
+      },
+      {
+        "key": "j",
+        "pressed": true,
+        "matrix": [
+          1,
+          2
+        ]
+      },
+      {
+        "key": "j",
+        "pressed": false,
+        "matrix": [
+          1,
+          2
+        ]
+      },
+      {
+        "key": "left_shift",
+        "pressed": true,
+        "matrix": [
+          14,
+          2
+        ]
+      },
+      {
+        "key": "j",
+        "pressed": true,
+        "matrix": [
+          1,
+          2
+        ]
+      },
+      {
+        "key": "j",
+        "pressed": false,
+        "matrix": [
+          1,
+          2
+        ]
+      },
+      {
+        "key": "left_shift",
+        "pressed": false,
+        "matrix": [
+          14,
+          2
+        ]
+      },
+      {
+        "key": "right_shift",
+        "pressed": true,
+        "matrix": [
+          5,
+          3
+        ]
+      },
+      {
+        "key": "a",
+        "pressed": true,
+        "matrix": [
+          12,
+          2
+        ]
+      },
+      {
+        "key": "a",
+        "pressed": false,
+        "matrix": [
+          12,
+          2
+        ]
+      },
+      {
+        "key": "right_shift",
+        "pressed": false,
+        "matrix": [
+          5,
+          3
+        ]
+      },
+      {
+        "key": "left_space",
+        "pressed": true,
+        "matrix": [
+          11,
+          4
+        ]
+      },
+      {
+        "key": "left_space",
+        "pressed": false,
+        "matrix": [
+          11,
+          4
+        ]
+      },
+      {
+        "key": "right_space",
+        "pressed": true,
+        "matrix": [
+          0,
+          4
+        ]
+      },
+      {
+        "key": "right_space",
+        "pressed": false,
+        "matrix": [
+          0,
+          4
+        ]
+      },
+      {
+        "key": "j",
+        "pressed": true,
+        "matrix": [
+          1,
+          2
+        ]
+      },
+      {
+        "key": "j",
+        "pressed": false,
+        "matrix": [
+          1,
+          2
+        ]
+      },
+      {
+        "key": "j",
+        "pressed": true,
+        "matrix": [
+          1,
+          2
+        ]
+      },
+      {
+        "key": "j",
+        "pressed": false,
+        "matrix": [
+          1,
+          2
+        ]
+      },
+      {
+        "key": "j",
+        "pressed": true,
+        "matrix": [
+          1,
+          2
+        ]
+      },
+      {
+        "key": "j",
+        "pressed": false,
+        "matrix": [
+          1,
+          2
+        ]
+      },
+      {
+        "key": "j",
+        "pressed": true,
+        "matrix": [
+          1,
+          2
+        ]
+      },
+      {
+        "key": "j",
+        "pressed": false,
+        "matrix": [
+          1,
+          2
+        ]
+      }
+    ],
+    "emulator_prediction": {
+      "key_events": [
+        [
+          4,
+          true
+        ],
+        [
+          4,
+          false
+        ],
+        [
+          13,
+          true
+        ],
+        [
+          13,
+          false
+        ],
+        [
+          225,
+          true
+        ],
+        [
+          13,
+          true
+        ],
+        [
+          13,
+          false
+        ],
+        [
+          225,
+          false
+        ],
+        [
+          229,
+          true
+        ],
+        [
+          4,
+          true
+        ],
+        [
+          4,
+          false
+        ],
+        [
+          229,
+          false
+        ],
+        [
+          44,
+          true
+        ],
+        [
+          44,
+          false
+        ],
+        [
+          44,
+          true
+        ],
+        [
+          44,
+          false
+        ],
+        [
+          13,
+          true
+        ],
+        [
+          13,
+          false
+        ],
+        [
+          13,
+          true
+        ],
+        [
+          13,
+          false
+        ],
+        [
+          13,
+          true
+        ],
+        [
+          13,
+          false
+        ],
+        [
+          13,
+          true
+        ],
+        [
+          13,
+          false
+        ]
+      ],
+      "keyboard_reports": [
+        "00 00 04 00 00 00 00 00",
+        "00 00 00 00 00 00 00 00",
+        "00 00 0d 00 00 00 00 00",
+        "00 00 00 00 00 00 00 00",
+        "02 00 00 00 00 00 00 00",
+        "02 00 0d 00 00 00 00 00",
+        "02 00 00 00 00 00 00 00",
+        "00 00 00 00 00 00 00 00",
+        "20 00 00 00 00 00 00 00",
+        "20 00 04 00 00 00 00 00",
+        "20 00 00 00 00 00 00 00",
+        "00 00 00 00 00 00 00 00",
+        "00 00 2c 00 00 00 00 00",
+        "00 00 00 00 00 00 00 00",
+        "00 00 2c 00 00 00 00 00",
+        "00 00 00 00 00 00 00 00",
+        "00 00 0d 00 00 00 00 00",
+        "00 00 00 00 00 00 00 00",
+        "00 00 0d 00 00 00 00 00",
+        "00 00 00 00 00 00 00 00",
+        "00 00 0d 00 00 00 00 00",
+        "00 00 00 00 00 00 00 00",
+        "00 00 0d 00 00 00 00 00",
+        "00 00 00 00 00 00 00 00"
+      ],
+      "radio_packets": []
+    }
+  },
+  "capture_started": "2026-11-17T09:50:29.021432+00:00",
+  "timeout_seconds": 90.0,
+  "plan_sha256": "21474dd2a34b9e6f14c672b641439d768eb7017aabfed951995166588dc098c1",
+  "devices": [
+    {
+      "name": "Mistel MD770 RGB BT (QMK)",
+      "bus": 3,
+      "vendor": 1241,
+      "product": 1049
+    },
+    {
+      "name": "Mistel MD770 RGB BT (QMK) Keyboard",
+      "bus": 3,
+      "vendor": 1241,
+      "product": 1049
+    }
+  ],
+  "capture_mode": "live",
+  "reference_firmware_sha256": "c29dae348fc922c0d155f91f9ee41c367ec432396e648cefcf97db7ad392b1f8",
+  "events": [
+    {
+      "type": 1,
+      "code": 30,
+      "value": 1,
+      "time": 1794909056.827673
+    },
+    {
+      "type": 1,
+      "code": 30,
+      "value": 0,
+      "time": 1794909056.956663
+    },
+    {
+      "type": 1,
+      "code": 36,
+      "value": 1,
+      "time": 1794909057.256663
+    },
+    {
+      "type": 1,
+      "code": 36,
+      "value": 0,
+      "time": 1794909057.343673
+    },
+    {
+      "type": 1,
+      "code": 42,
+      "value": 1,
+      "time": 1794909057.727672
+    },
+    {
+      "type": 1,
+      "code": 42,
+      "value": 2,
+      "time": 1794909057.980081
+    },
+    {
+      "type": 1,
+      "code": 42,
+      "value": 2,
+      "time": 1794909058.014083
+    },
+    {
+      "type": 1,
+      "code": 42,
+      "value": 2,
+      "time": 1794909058.048083
+    },
+    {
+      "type": 1,
+      "code": 36,
+      "value": 1,
+      "time": 1794909058.059675
+    },
+    {
+      "type": 1,
+      "code": 36,
+      "value": 0,
+      "time": 1794909058.137671
+    },
+    {
+      "type": 1,
+      "code": 42,
+      "value": 0,
+      "time": 1794909058.340672
+    },
+    {
+      "type": 1,
+      "code": 54,
+      "value": 1,
+      "time": 1794909059.274675
+    },
+    {
+      "type": 1,
+      "code": 54,
+      "value": 2,
+      "time": 1794909059.532081
+    },
+    {
+      "type": 1,
+      "code": 54,
+      "value": 2,
+      "time": 1794909059.566081
+    },
+    {
+      "type": 1,
+      "code": 54,
+      "value": 2,
+      "time": 1794909059.600084
+    },
+    {
+      "type": 1,
+      "code": 54,
+      "value": 2,
+      "time": 1794909059.635082
+    },
+    {
+      "type": 1,
+      "code": 54,
+      "value": 2,
+      "time": 1794909059.669083
+    },
+    {
+      "type": 1,
+      "code": 54,
+      "value": 2,
+      "time": 1794909059.703081
+    },
+    {
+      "type": 1,
+      "code": 54,
+      "value": 2,
+      "time": 1794909059.737082
+    },
+    {
+      "type": 1,
+      "code": 54,
+      "value": 2,
+      "time": 1794909059.771083
+    },
+    {
+      "type": 1,
+      "code": 54,
+      "value": 2,
+      "time": 1794909059.805085
+    },
+    {
+      "type": 1,
+      "code": 54,
+      "value": 2,
+      "time": 1794909059.840082
+    },
+    {
+      "type": 1,
+      "code": 30,
+      "value": 1,
+      "time": 1794909059.853688
+    },
+    {
+      "type": 1,
+      "code": 30,
+      "value": 0,
+      "time": 1794909059.950681
+    },
+    {
+      "type": 1,
+      "code": 54,
+      "value": 0,
+      "time": 1794909060.086674
+    },
+    {
+      "type": 1,
+      "code": 57,
+      "value": 1,
+      "time": 1794909060.85268
+    },
+    {
+      "type": 1,
+      "code": 57,
+      "value": 0,
+      "time": 1794909060.91668
+    },
+    {
+      "type": 1,
+      "code": 57,
+      "value": 1,
+      "time": 1794909061.219683
+    },
+    {
+      "type": 1,
+      "code": 57,
+      "value": 0,
+      "time": 1794909061.317696
+    },
+    {
+      "type": 1,
+      "code": 36,
+      "value": 1,
+      "time": 1794909062.060683
+    },
+    {
+      "type": 1,
+      "code": 36,
+      "value": 0,
+      "time": 1794909062.162683
+    },
+    {
+      "type": 1,
+      "code": 36,
+      "value": 1,
+      "time": 1794909062.34669
+    },
+    {
+      "type": 1,
+      "code": 36,
+      "value": 0,
+      "time": 1794909062.451688
+    },
+    {
+      "type": 1,
+      "code": 36,
+      "value": 1,
+      "time": 1794909062.678689
+    },
+    {
+      "type": 1,
+      "code": 36,
+      "value": 0,
+      "time": 1794909062.774681
+    },
+    {
+      "type": 1,
+      "code": 36,
+      "value": 1,
+      "time": 1794909062.918692
+    },
+    {
+      "type": 1,
+      "code": 36,
+      "value": 0,
+      "time": 1794909063.012689
+    }
+  ],
+  "comparison_scope": "Ordered EV_KEY press/release events; repeats and timing are not scored",
+  "passed": true,
+  "lost_events": false,
+  "oracle_events_match": true,
+  "expected_evdev_key_events": [
+    [
+      30,
+      1
+    ],
+    [
+      30,
+      0
+    ],
+    [
+      36,
+      1
+    ],
+    [
+      36,
+      0
+    ],
+    [
+      42,
+      1
+    ],
+    [
+      36,
+      1
+    ],
+    [
+      36,
+      0
+    ],
+    [
+      42,
+      0
+    ],
+    [
+      54,
+      1
+    ],
+    [
+      30,
+      1
+    ],
+    [
+      30,
+      0
+    ],
+    [
+      54,
+      0
+    ],
+    [
+      57,
+      1
+    ],
+    [
+      57,
+      0
+    ],
+    [
+      57,
+      1
+    ],
+    [
+      57,
+      0
+    ],
+    [
+      36,
+      1
+    ],
+    [
+      36,
+      0
+    ],
+    [
+      36,
+      1
+    ],
+    [
+      36,
+      0
+    ],
+    [
+      36,
+      1
+    ],
+    [
+      36,
+      0
+    ],
+    [
+      36,
+      1
+    ],
+    [
+      36,
+      0
+    ]
+  ],
+  "actual_evdev_key_events": [
+    [
+      30,
+      1
+    ],
+    [
+      30,
+      0
+    ],
+    [
+      36,
+      1
+    ],
+    [
+      36,
+      0
+    ],
+    [
+      42,
+      1
+    ],
+    [
+      36,
+      1
+    ],
+    [
+      36,
+      0
+    ],
+    [
+      42,
+      0
+    ],
+    [
+      54,
+      1
+    ],
+    [
+      30,
+      1
+    ],
+    [
+      30,
+      0
+    ],
+    [
+      54,
+      0
+    ],
+    [
+      57,
+      1
+    ],
+    [
+      57,
+      0
+    ],
+    [
+      57,
+      1
+    ],
+    [
+      57,
+      0
+    ],
+    [
+      36,
+      1
+    ],
+    [
+      36,
+      0
+    ],
+    [
+      36,
+      1
+    ],
+    [
+      36,
+      0
+    ],
+    [
+      36,
+      1
+    ],
+    [
+      36,
+      0
+    ],
+    [
+      36,
+      1
+    ],
+    [
+      36,
+      0
+    ]
+  ],
+  "first_mismatch": null,
+  "emulator_events_match": true,
+  "oracle_matches_emulator": true,
+  "operator_power_source": "USB from laptop, after the Bluetooth power-bank test"
+}

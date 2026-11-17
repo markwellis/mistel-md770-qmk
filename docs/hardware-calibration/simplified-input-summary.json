@@ -1,0 +1,54 @@
+{
+  "date": "2026-11-17T09:54:27.127841+00:00",
+  "passed": true,
+  "scope": "Two short live physical-input comparisons against the exact installed production firmware",
+  "qmk_commit": "e5b5479c53f3da7b28dac3666e9463ef606f4e27",
+  "userspace_firmware_commit": "913c4c2d6f904174f842632f4ffde7404307263a",
+  "plan": "docs/hardware-calibration/simplified-input-plan.json",
+  "plan_sha256": "21474dd2a34b9e6f14c672b641439d768eb7017aabfed951995166588dc098c1",
+  "reference_firmware_sha256": "c29dae348fc922c0d155f91f9ee41c367ec432396e648cefcf97db7ad392b1f8",
+  "prediction_build_kind": "installed production firmware; no diagnostic flags",
+  "cases_passed": [
+    "DP-BT",
+    "DP-USB"
+  ],
+  "press_release_events_per_transport": 24,
+  "total_matching_events": 48,
+  "captures": [
+    "docs/hardware-calibration/simplified-input-bt.json",
+    "docs/hardware-calibration/simplified-input-usb.json"
+  ],
+  "checks": [
+    "Left and right ordinary keys",
+    "Left Shift with a right-hand key",
+    "Right Shift with a left-hand key",
+    "Both physical space bars, individually",
+    "Four quick right-hand taps with all releases"
+  ],
+  "operator_observations": {
+    "bluetooth_power": "Power bank, with host USB disconnected",
+    "bluetooth_reconnection": "Manual reconnection was required after the firmware update; automatic reconnection is not a pass criterion",
+    "usb_handover": "Moved from power bank to laptop USB and selected USB with Pn+2"
+  },
+  "invalid_attempts": [
+    {
+      "record": "docs/hardware-calibration/simplified-input-bt-invalid.json",
+      "reason": "Operator reported accidental input; excluded from passing evidence"
+    }
+  ],
+  "source_sha256": {
+    "tests/md770_bluetooth/predict_physical_input.py": "b823baa6bdc6c4af6b16635f2d6e529d51c0cb9998a643325b00ec95152f08a6",
+    "scripts/md770_calibrate.py": "b105bd594b79f97ec78c4bdf4bdc49153d3e3aabfe23fba4037465cb63d7ea51"
+  },
+  "software_check": {
+    "command": "nix-shell --run 'python3 -B -m unittest discover -s tests -p test_md770_calibrate.py'",
+    "tests": 18,
+    "passed": true
+  },
+  "not_validated": [
+    "Macro playback calibration",
+    "Automatic Bluetooth reconnection",
+    "Host suspend/remote wake and KVM behaviour",
+    "Cycle timing, auto-repeat, GPIO/IRQ/register contracts and analogue power"
+  ]
+}

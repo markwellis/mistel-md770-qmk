@@ -15,6 +15,9 @@ personal images are now installed: application checksums and metadata match,
 and the owner confirmed typing, both space bars and cross-half Shift. See the
 [right](docs/mistel-md770-simplified-flash-right.json) and
 [left](docs/mistel-md770-simplified-flash-left.json) installation records.
+A subsequent [short differential pass](docs/hardware-calibration/simplified-input-summary.json)
+matched all 24 predicted key events on Bluetooth/power-bank power and all 24
+on USB.
 
 The QMK port remains in the separate
 [qmk_firmware fork](https://github.com/markwellis/qmk_firmware), on the

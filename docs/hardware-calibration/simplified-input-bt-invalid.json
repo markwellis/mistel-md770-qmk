@@ -1,0 +1,12 @@
+{
+  "date": "2026-11-17T09:44:29.071145+00:00",
+  "case_id": "DP-BT",
+  "capture_mode": "live",
+  "status": "invalid_operator_input",
+  "reason": "Operator reported accidental typing during the capture",
+  "captured_press_release_events": 34,
+  "expected_press_release_events": 24,
+  "lost_events": false,
+  "passed": false,
+  "retained_as_emulator_agreement": false
+}

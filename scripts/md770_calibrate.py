@@ -13,7 +13,7 @@ import select
 import time
 
 SOURCE_ROOT = Path(__file__).resolve().parents[1]
-HID_TO_EVDEV = {4: 30, 5: 48, 6: 46, 0xE0: 29, 0xE1: 42}
+HID_TO_EVDEV = {4: 30, 5: 48, 6: 46, 0x0D: 36, 0x2C: 57, 0xE0: 29, 0xE1: 42, 0xE5: 54}
 QUICK_CASES = {
     'HC01': {'transport': 'usb', 'trigger_half': 'left', 'macro_kind': 'text', 'modifier': 'none', 'connection': 'steady'},
     'HC08': {'transport': 'bluetooth', 'trigger_half': 'right', 'macro_kind': 'chord', 'modifier': 'shift', 'connection': 'steady'},

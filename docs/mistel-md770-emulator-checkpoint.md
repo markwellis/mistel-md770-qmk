@@ -28,9 +28,15 @@ The owner confirmed joined typing, both space bars and cross-half Shift.
 See [right installation](mistel-md770-simplified-flash-right.json) and
 [left installation](mistel-md770-simplified-flash-left.json).
 
-Bluetooth, KVM switching, USB suspend/wake and battery behaviour for these
-images remain untested. The older full stock-parity matrices below are
-historical research, not acceptance criteria for this implementation.
+A short differential pass subsequently matched all 24 predicted key events
+on Bluetooth/power-bank power and all 24 on laptop USB. It covered both
+halves, cross-half Shift, both space bars and quick taps using the exact
+installed production image. See the
+[comparison summary](hardware-calibration/simplified-input-summary.json).
+Bluetooth needed manual reconnection after flashing; automatic reconnection
+was not a pass condition. Macro playback calibration, KVMs, suspend/wake and
+battery behaviour remain untested on this installation. The older full
+stock-parity matrices below are historical research, not acceptance criteria.
 
 ## Historical investigation
 

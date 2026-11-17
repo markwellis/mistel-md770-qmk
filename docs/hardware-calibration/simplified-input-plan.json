@@ -1,0 +1,1138 @@
+{
+  "date": "2026-11-17T09:40:47.161858+00:00",
+  "scope": "Physical key/report ordering on the installed production binary",
+  "prediction_build": {
+    "validation_elf": "mistel_md770rgb_bt_right_markwellis_conformance.elf",
+    "validation_elf_sha256": "1b5b979284ffa669145040248cfe92f61190cfd99458edc92abff9392657acf1",
+    "validation_binary_sha256": "c29dae348fc922c0d155f91f9ee41c367ec432396e648cefcf97db7ad392b1f8",
+    "build_kind": "installed production firmware; no diagnostic flags",
+    "abi_provenance": {
+      "assumption": "Current headers and compiler must match the supplied ELF build; rebuild after changes",
+      "elf_sha256": "1b5b979284ffa669145040248cfe92f61190cfd99458edc92abff9392657acf1",
+      "compiler": "arm-none-eabi-gcc (Arm GNU Toolchain 15.2.Rel1 (Build arm-15.86)) 15.2.1 20251203",
+      "flags_sha256": "e8e88a5769b44caa74f18b860f1b896f70b25a28ee25b86f81e0d03019607138",
+      "preprocessed_probe_sha256": "714ff345b3ef15727b06550284b1e5967898dff0515765db2896179208a33564"
+    }
+  },
+  "boundaries": [
+    "Scan/debounce events and compiled base keymap are supplied",
+    "USB submissions are captured at the native driver callback",
+    "Bluetooth executes the radio SPI engine with supplied module transactions",
+    "Timing, repeat rate, IRQ/register accuracy and analogue power are not calibrated"
+  ],
+  "cases": [
+    {
+      "id": "DP-BT",
+      "transport": "bluetooth",
+      "connection": "connected",
+      "expected_key_events": [
+        [
+          4,
+          true
+        ],
+        [
+          4,
+          false
+        ],
+        [
+          13,
+          true
+        ],
+        [
+          13,
+          false
+        ],
+        [
+          225,
+          true
+        ],
+        [
+          13,
+          true
+        ],
+        [
+          13,
+          false
+        ],
+        [
+          225,
+          false
+        ],
+        [
+          229,
+          true
+        ],
+        [
+          4,
+          true
+        ],
+        [
+          4,
+          false
+        ],
+        [
+          229,
+          false
+        ],
+        [
+          44,
+          true
+        ],
+        [
+          44,
+          false
+        ],
+        [
+          44,
+          true
+        ],
+        [
+          44,
+          false
+        ],
+        [
+          13,
+          true
+        ],
+        [
+          13,
+          false
+        ],
+        [
+          13,
+          true
+        ],
+        [
+          13,
+          false
+        ],
+        [
+          13,
+          true
+        ],
+        [
+          13,
+          false
+        ],
+        [
+          13,
+          true
+        ],
+        [
+          13,
+          false
+        ]
+      ],
+      "physical_actions": [
+        {
+          "key": "a",
+          "pressed": true,
+          "matrix": [
+            12,
+            2
+          ]
+        },
+        {
+          "key": "a",
+          "pressed": false,
+          "matrix": [
+            12,
+            2
+          ]
+        },
+        {
+          "key": "j",
+          "pressed": true,
+          "matrix": [
+            1,
+            2
+          ]
+        },
+        {
+          "key": "j",
+          "pressed": false,
+          "matrix": [
+            1,
+            2
+          ]
+        },
+        {
+          "key": "left_shift",
+          "pressed": true,
+          "matrix": [
+            14,
+            2
+          ]
+        },
+        {
+          "key": "j",
+          "pressed": true,
+          "matrix": [
+            1,
+            2
+          ]
+        },
+        {
+          "key": "j",
+          "pressed": false,
+          "matrix": [
+            1,
+            2
+          ]
+        },
+        {
+          "key": "left_shift",
+          "pressed": false,
+          "matrix": [
+            14,
+            2
+          ]
+        },
+        {
+          "key": "right_shift",
+          "pressed": true,
+          "matrix": [
+            5,
+            3
+          ]
+        },
+        {
+          "key": "a",
+          "pressed": true,
+          "matrix": [
+            12,
+            2
+          ]
+        },
+        {
+          "key": "a",
+          "pressed": false,
+          "matrix": [
+            12,
+            2
+          ]
+        },
+        {
+          "key": "right_shift",
+          "pressed": false,
+          "matrix": [
+            5,
+            3
+          ]
+        },
+        {
+          "key": "left_space",
+          "pressed": true,
+          "matrix": [
+            11,
+            4
+          ]
+        },
+        {
+          "key": "left_space",
+          "pressed": false,
+          "matrix": [
+            11,
+            4
+          ]
+        },
+        {
+          "key": "right_space",
+          "pressed": true,
+          "matrix": [
+            0,
+            4
+          ]
+        },
+        {
+          "key": "right_space",
+          "pressed": false,
+          "matrix": [
+            0,
+            4
+          ]
+        },
+        {
+          "key": "j",
+          "pressed": true,
+          "matrix": [
+            1,
+            2
+          ]
+        },
+        {
+          "key": "j",
+          "pressed": false,
+          "matrix": [
+            1,
+            2
+          ]
+        },
+        {
+          "key": "j",
+          "pressed": true,
+          "matrix": [
+            1,
+            2
+          ]
+        },
+        {
+          "key": "j",
+          "pressed": false,
+          "matrix": [
+            1,
+            2
+          ]
+        },
+        {
+          "key": "j",
+          "pressed": true,
+          "matrix": [
+            1,
+            2
+          ]
+        },
+        {
+          "key": "j",
+          "pressed": false,
+          "matrix": [
+            1,
+            2
+          ]
+        },
+        {
+          "key": "j",
+          "pressed": true,
+          "matrix": [
+            1,
+            2
+          ]
+        },
+        {
+          "key": "j",
+          "pressed": false,
+          "matrix": [
+            1,
+            2
+          ]
+        }
+      ],
+      "emulator_prediction": {
+        "key_events": [
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ],
+          [
+            13,
+            true
+          ],
+          [
+            13,
+            false
+          ],
+          [
+            225,
+            true
+          ],
+          [
+            13,
+            true
+          ],
+          [
+            13,
+            false
+          ],
+          [
+            225,
+            false
+          ],
+          [
+            229,
+            true
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ],
+          [
+            229,
+            false
+          ],
+          [
+            44,
+            true
+          ],
+          [
+            44,
+            false
+          ],
+          [
+            44,
+            true
+          ],
+          [
+            44,
+            false
+          ],
+          [
+            13,
+            true
+          ],
+          [
+            13,
+            false
+          ],
+          [
+            13,
+            true
+          ],
+          [
+            13,
+            false
+          ],
+          [
+            13,
+            true
+          ],
+          [
+            13,
+            false
+          ],
+          [
+            13,
+            true
+          ],
+          [
+            13,
+            false
+          ]
+        ],
+        "keyboard_reports": [
+          "00 00 04 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00",
+          "00 00 0d 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00",
+          "02 00 00 00 00 00 00 00",
+          "02 00 0d 00 00 00 00 00",
+          "02 00 00 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00",
+          "20 00 00 00 00 00 00 00",
+          "20 00 04 00 00 00 00 00",
+          "20 00 00 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00",
+          "00 00 2c 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00",
+          "00 00 2c 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00",
+          "00 00 0d 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00",
+          "00 00 0d 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00",
+          "00 00 0d 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00",
+          "00 00 0d 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00"
+        ],
+        "radio_packets": [
+          [
+            161,
+            0,
+            0,
+            4,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            161,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            161,
+            0,
+            0,
+            13,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            161,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            161,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            161,
+            2,
+            0,
+            13,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            161,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            161,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            161,
+            32,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            161,
+            32,
+            0,
+            4,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            161,
+            32,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            161,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            161,
+            0,
+            0,
+            44,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            161,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            161,
+            0,
+            0,
+            44,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            161,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            161,
+            0,
+            0,
+            13,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            161,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            161,
+            0,
+            0,
+            13,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            161,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            161,
+            0,
+            0,
+            13,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            161,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            161,
+            0,
+            0,
+            13,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            161,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      }
+    },
+    {
+      "id": "DP-USB",
+      "transport": "usb",
+      "connection": "connected",
+      "expected_key_events": [
+        [
+          4,
+          true
+        ],
+        [
+          4,
+          false
+        ],
+        [
+          13,
+          true
+        ],
+        [
+          13,
+          false
+        ],
+        [
+          225,
+          true
+        ],
+        [
+          13,
+          true
+        ],
+        [
+          13,
+          false
+        ],
+        [
+          225,
+          false
+        ],
+        [
+          229,
+          true
+        ],
+        [
+          4,
+          true
+        ],
+        [
+          4,
+          false
+        ],
+        [
+          229,
+          false
+        ],
+        [
+          44,
+          true
+        ],
+        [
+          44,
+          false
+        ],
+        [
+          44,
+          true
+        ],
+        [
+          44,
+          false
+        ],
+        [
+          13,
+          true
+        ],
+        [
+          13,
+          false
+        ],
+        [
+          13,
+          true
+        ],
+        [
+          13,
+          false
+        ],
+        [
+          13,
+          true
+        ],
+        [
+          13,
+          false
+        ],
+        [
+          13,
+          true
+        ],
+        [
+          13,
+          false
+        ]
+      ],
+      "physical_actions": [
+        {
+          "key": "a",
+          "pressed": true,
+          "matrix": [
+            12,
+            2
+          ]
+        },
+        {
+          "key": "a",
+          "pressed": false,
+          "matrix": [
+            12,
+            2
+          ]
+        },
+        {
+          "key": "j",
+          "pressed": true,
+          "matrix": [
+            1,
+            2
+          ]
+        },
+        {
+          "key": "j",
+          "pressed": false,
+          "matrix": [
+            1,
+            2
+          ]
+        },
+        {
+          "key": "left_shift",
+          "pressed": true,
+          "matrix": [
+            14,
+            2
+          ]
+        },
+        {
+          "key": "j",
+          "pressed": true,
+          "matrix": [
+            1,
+            2
+          ]
+        },
+        {
+          "key": "j",
+          "pressed": false,
+          "matrix": [
+            1,
+            2
+          ]
+        },
+        {
+          "key": "left_shift",
+          "pressed": false,
+          "matrix": [
+            14,
+            2
+          ]
+        },
+        {
+          "key": "right_shift",
+          "pressed": true,
+          "matrix": [
+            5,
+            3
+          ]
+        },
+        {
+          "key": "a",
+          "pressed": true,
+          "matrix": [
+            12,
+            2
+          ]
+        },
+        {
+          "key": "a",
+          "pressed": false,
+          "matrix": [
+            12,
+            2
+          ]
+        },
+        {
+          "key": "right_shift",
+          "pressed": false,
+          "matrix": [
+            5,
+            3
+          ]
+        },
+        {
+          "key": "left_space",
+          "pressed": true,
+          "matrix": [
+            11,
+            4
+          ]
+        },
+        {
+          "key": "left_space",
+          "pressed": false,
+          "matrix": [
+            11,
+            4
+          ]
+        },
+        {
+          "key": "right_space",
+          "pressed": true,
+          "matrix": [
+            0,
+            4
+          ]
+        },
+        {
+          "key": "right_space",
+          "pressed": false,
+          "matrix": [
+            0,
+            4
+          ]
+        },
+        {
+          "key": "j",
+          "pressed": true,
+          "matrix": [
+            1,
+            2
+          ]
+        },
+        {
+          "key": "j",
+          "pressed": false,
+          "matrix": [
+            1,
+            2
+          ]
+        },
+        {
+          "key": "j",
+          "pressed": true,
+          "matrix": [
+            1,
+            2
+          ]
+        },
+        {
+          "key": "j",
+          "pressed": false,
+          "matrix": [
+            1,
+            2
+          ]
+        },
+        {
+          "key": "j",
+          "pressed": true,
+          "matrix": [
+            1,
+            2
+          ]
+        },
+        {
+          "key": "j",
+          "pressed": false,
+          "matrix": [
+            1,
+            2
+          ]
+        },
+        {
+          "key": "j",
+          "pressed": true,
+          "matrix": [
+            1,
+            2
+          ]
+        },
+        {
+          "key": "j",
+          "pressed": false,
+          "matrix": [
+            1,
+            2
+          ]
+        }
+      ],
+      "emulator_prediction": {
+        "key_events": [
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ],
+          [
+            13,
+            true
+          ],
+          [
+            13,
+            false
+          ],
+          [
+            225,
+            true
+          ],
+          [
+            13,
+            true
+          ],
+          [
+            13,
+            false
+          ],
+          [
+            225,
+            false
+          ],
+          [
+            229,
+            true
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ],
+          [
+            229,
+            false
+          ],
+          [
+            44,
+            true
+          ],
+          [
+            44,
+            false
+          ],
+          [
+            44,
+            true
+          ],
+          [
+            44,
+            false
+          ],
+          [
+            13,
+            true
+          ],
+          [
+            13,
+            false
+          ],
+          [
+            13,
+            true
+          ],
+          [
+            13,
+            false
+          ],
+          [
+            13,
+            true
+          ],
+          [
+            13,
+            false
+          ],
+          [
+            13,
+            true
+          ],
+          [
+            13,
+            false
+          ]
+        ],
+        "keyboard_reports": [
+          "00 00 04 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00",
+          "00 00 0d 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00",
+          "02 00 00 00 00 00 00 00",
+          "02 00 0d 00 00 00 00 00",
+          "02 00 00 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00",
+          "20 00 00 00 00 00 00 00",
+          "20 00 04 00 00 00 00 00",
+          "20 00 00 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00",
+          "00 00 2c 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00",
+          "00 00 2c 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00",
+          "00 00 0d 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00",
+          "00 00 0d 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00",
+          "00 00 0d 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00",
+          "00 00 0d 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00"
+        ],
+        "radio_packets": []
+      }
+    }
+  ]
+}

@@ -1,5 +1,13 @@
 # MD770 Bluetooth and power checks
 
+The current short hardware comparison uses `predict_physical_input.py` and
+two live captures of the same physical key sequence. Predictions execute
+the exact installed production ELF. Bluetooth/power-bank and USB captures
+each matched all 24 press/release events; see the
+[comparison record](../../docs/hardware-calibration/simplified-input-summary.json).
+The [calibration guide](../../docs/mistel-md770-hardware-calibration.md)
+describes its scope and the optional broader macro checks.
+
 `run.sh` compiles the actual QMK keyboard drivers and ChibiOS resume function
 against supplied registers, a FIFO model, GPIO, time and host services. It
 uses address, undefined-behaviour and bounds sanitisers. C++ register proxies
@@ -166,7 +174,7 @@ The full macro/suspend hardware calibration remains pending. Battery-specific ch
 until a battery is available. Use the
 [calibration guide](../../docs/mistel-md770-hardware-calibration.md) for the
 small measured hardware set and automatic host-event comparison.
-The recommended `--quick` command guides five scenarios and prints separate
+The optional older `--quick` command guides five macro scenarios and prints separate
 Bluetooth-functional and emulator-agreement results. Three live traces are
 compared with the actual emulator output exported after the software checks;
 the two manual observation results are kept separate. The optional full
