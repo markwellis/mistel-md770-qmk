@@ -1,0 +1,352 @@
+{
+  "date": "2026-11-17T10:19:42.366165+00:00",
+  "case": {
+    "id": "MT-USB",
+    "transport": "usb",
+    "expected_key_events": [
+      [
+        225,
+        true
+      ],
+      [
+        4,
+        true
+      ],
+      [
+        4,
+        false
+      ],
+      [
+        225,
+        false
+      ],
+      [
+        5,
+        true
+      ],
+      [
+        5,
+        false
+      ],
+      [
+        6,
+        true
+      ],
+      [
+        6,
+        false
+      ],
+      [
+        7,
+        true
+      ],
+      [
+        7,
+        false
+      ]
+    ],
+    "emulator_prediction": {
+      "key_events": [
+        [
+          225,
+          true
+        ],
+        [
+          4,
+          true
+        ],
+        [
+          4,
+          false
+        ],
+        [
+          225,
+          false
+        ],
+        [
+          5,
+          true
+        ],
+        [
+          5,
+          false
+        ],
+        [
+          6,
+          true
+        ],
+        [
+          6,
+          false
+        ],
+        [
+          7,
+          true
+        ],
+        [
+          7,
+          false
+        ]
+      ],
+      "relative_event_times_ms": [
+        0,
+        40,
+        80,
+        120,
+        135,
+        175,
+        315,
+        355,
+        895,
+        935
+      ],
+      "keyboard_reports": [
+        "02 00 00 00 00 00 00 00",
+        "02 00 04 00 00 00 00 00",
+        "02 00 00 00 00 00 00 00",
+        "00 00 00 00 00 00 00 00",
+        "00 00 05 00 00 00 00 00",
+        "00 00 00 00 00 00 00 00",
+        "00 00 06 00 00 00 00 00",
+        "00 00 00 00 00 00 00 00",
+        "00 00 07 00 00 00 00 00",
+        "00 00 00 00 00 00 00 00"
+      ]
+    },
+    "expected_event_times_ms": [
+      0,
+      40,
+      80,
+      120,
+      135,
+      175,
+      315,
+      355,
+      895,
+      935
+    ],
+    "timing_limits": {
+      "minimum_scale": 0.98,
+      "maximum_scale": 1.02,
+      "maximum_event_error_ms": 10
+    }
+  },
+  "capture_started": "2026-11-17T10:18:13.810875+00:00",
+  "timeout_seconds": 90.0,
+  "plan_sha256": "bb54ff8a93599519f03f7f65ea2ce991a6472be7d0af2f967f99ad5031d9af49",
+  "devices": [
+    {
+      "name": "Mistel MD770 RGB BT (QMK)",
+      "bus": 3,
+      "vendor": 1241,
+      "product": 1049
+    },
+    {
+      "name": "Mistel MD770 RGB BT (QMK) Keyboard",
+      "bus": 3,
+      "vendor": 1241,
+      "product": 1049
+    }
+  ],
+  "capture_mode": "live",
+  "reference_firmware_sha256": "c29dae348fc922c0d155f91f9ee41c367ec432396e648cefcf97db7ad392b1f8",
+  "events": [
+    {
+      "type": 1,
+      "code": 42,
+      "value": 1,
+      "time": 1794910781.085003
+    },
+    {
+      "type": 1,
+      "code": 30,
+      "value": 1,
+      "time": 1794910781.123997
+    },
+    {
+      "type": 1,
+      "code": 30,
+      "value": 0,
+      "time": 1794910781.165003
+    },
+    {
+      "type": 1,
+      "code": 42,
+      "value": 0,
+      "time": 1794910781.204016
+    },
+    {
+      "type": 1,
+      "code": 48,
+      "value": 1,
+      "time": 1794910781.21899
+    },
+    {
+      "type": 1,
+      "code": 48,
+      "value": 0,
+      "time": 1794910781.258994
+    },
+    {
+      "type": 1,
+      "code": 46,
+      "value": 1,
+      "time": 1794910781.400012
+    },
+    {
+      "type": 1,
+      "code": 46,
+      "value": 0,
+      "time": 1794910781.439006
+    },
+    {
+      "type": 1,
+      "code": 32,
+      "value": 1,
+      "time": 1794910781.98
+    },
+    {
+      "type": 1,
+      "code": 32,
+      "value": 0,
+      "time": 1794910782.01899
+    }
+  ],
+  "comparison_scope": "Ordered EV_KEY press/release events and relative timing; repeats are not scored",
+  "passed": true,
+  "lost_events": false,
+  "oracle_events_match": true,
+  "expected_evdev_key_events": [
+    [
+      42,
+      1
+    ],
+    [
+      30,
+      1
+    ],
+    [
+      30,
+      0
+    ],
+    [
+      42,
+      0
+    ],
+    [
+      48,
+      1
+    ],
+    [
+      48,
+      0
+    ],
+    [
+      46,
+      1
+    ],
+    [
+      46,
+      0
+    ],
+    [
+      32,
+      1
+    ],
+    [
+      32,
+      0
+    ]
+  ],
+  "actual_evdev_key_events": [
+    [
+      42,
+      1
+    ],
+    [
+      30,
+      1
+    ],
+    [
+      30,
+      0
+    ],
+    [
+      42,
+      0
+    ],
+    [
+      48,
+      1
+    ],
+    [
+      48,
+      0
+    ],
+    [
+      46,
+      1
+    ],
+    [
+      46,
+      0
+    ],
+    [
+      32,
+      1
+    ],
+    [
+      32,
+      0
+    ]
+  ],
+  "first_mismatch": null,
+  "emulator_events_match": true,
+  "oracle_matches_emulator": true,
+  "timing": {
+    "passed": true,
+    "actual_relative_ms": [
+      0.0,
+      38.99407386779785,
+      80.00016212463379,
+      119.01307106018066,
+      133.9871883392334,
+      173.99120330810547,
+      315.00911712646484,
+      354.0031909942627,
+      894.9971199035645,
+      933.9871406555176
+    ],
+    "predicted_relative_ms": [
+      0,
+      40,
+      80,
+      120,
+      135,
+      175,
+      315,
+      355,
+      895,
+      935
+    ],
+    "event_error_ms": [
+      0.0,
+      -1.0059261322021484,
+      0.0001621246337890625,
+      -0.9869289398193359,
+      -1.0128116607666016,
+      -1.0087966918945312,
+      0.00911712646484375,
+      -0.9968090057373047,
+      -0.002880096435546875,
+      -1.0128593444824219
+    ],
+    "duration_scale": 0.9989167279738156,
+    "maximum_event_error_ms": 1.0128593444824219,
+    "limits": {
+      "minimum_scale": 0.98,
+      "maximum_scale": 1.02,
+      "maximum_event_error_ms": 10
+    }
+  }
+}

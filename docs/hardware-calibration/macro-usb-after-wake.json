@@ -1,0 +1,356 @@
+{
+  "date": "2026-11-17T11:11:51.462162+00:00",
+  "capture_started": "2026-11-17T11:10:21.346606+00:00",
+  "plan_sha256": "bb54ff8a93599519f03f7f65ea2ce991a6472be7d0af2f967f99ad5031d9af49",
+  "devices": [
+    {
+      "name": "Mistel MD770 RGB BT (QMK)",
+      "bus": 3,
+      "vendor": 1241,
+      "product": 1049
+    },
+    {
+      "name": "Mistel MD770 RGB BT (QMK) Keyboard",
+      "bus": 3,
+      "vendor": 1241,
+      "product": 1049
+    }
+  ],
+  "reference_firmware_sha256": "c29dae348fc922c0d155f91f9ee41c367ec432396e648cefcf97db7ad392b1f8",
+  "case": {
+    "id": "MT-USB",
+    "transport": "usb",
+    "expected_key_events": [
+      [
+        225,
+        true
+      ],
+      [
+        4,
+        true
+      ],
+      [
+        4,
+        false
+      ],
+      [
+        225,
+        false
+      ],
+      [
+        5,
+        true
+      ],
+      [
+        5,
+        false
+      ],
+      [
+        6,
+        true
+      ],
+      [
+        6,
+        false
+      ],
+      [
+        7,
+        true
+      ],
+      [
+        7,
+        false
+      ]
+    ],
+    "emulator_prediction": {
+      "key_events": [
+        [
+          225,
+          true
+        ],
+        [
+          4,
+          true
+        ],
+        [
+          4,
+          false
+        ],
+        [
+          225,
+          false
+        ],
+        [
+          5,
+          true
+        ],
+        [
+          5,
+          false
+        ],
+        [
+          6,
+          true
+        ],
+        [
+          6,
+          false
+        ],
+        [
+          7,
+          true
+        ],
+        [
+          7,
+          false
+        ]
+      ],
+      "relative_event_times_ms": [
+        0,
+        40,
+        80,
+        120,
+        135,
+        175,
+        315,
+        355,
+        895,
+        935
+      ],
+      "keyboard_reports": [
+        "02 00 00 00 00 00 00 00",
+        "02 00 04 00 00 00 00 00",
+        "02 00 00 00 00 00 00 00",
+        "00 00 00 00 00 00 00 00",
+        "00 00 05 00 00 00 00 00",
+        "00 00 00 00 00 00 00 00",
+        "00 00 06 00 00 00 00 00",
+        "00 00 00 00 00 00 00 00",
+        "00 00 07 00 00 00 00 00",
+        "00 00 00 00 00 00 00 00"
+      ]
+    },
+    "expected_event_times_ms": [
+      0,
+      40,
+      80,
+      120,
+      135,
+      175,
+      315,
+      355,
+      895,
+      935
+    ],
+    "timing_limits": {
+      "minimum_scale": 0.98,
+      "maximum_scale": 1.02,
+      "maximum_event_error_ms": 10
+    }
+  },
+  "capture_mode": "live_segment",
+  "strict_capture_passed": false,
+  "selection": "Post-hoc observation of the final activity burst after the owner confirmed F3; a gap greater than two seconds separates it from earlier input. This is not a strict full-window pass.",
+  "excluded_before_macro_event_count": 10,
+  "preceding_quiet_seconds": 26.10090398788452,
+  "macro_observation": {
+    "events": [
+      {
+        "type": 1,
+        "code": 42,
+        "value": 1,
+        "time": 1794913864.165126
+      },
+      {
+        "type": 1,
+        "code": 30,
+        "value": 1,
+        "time": 1794913864.204099
+      },
+      {
+        "type": 1,
+        "code": 30,
+        "value": 0,
+        "time": 1794913864.244111
+      },
+      {
+        "type": 1,
+        "code": 42,
+        "value": 0,
+        "time": 1794913864.2841
+      },
+      {
+        "type": 1,
+        "code": 48,
+        "value": 1,
+        "time": 1794913864.299096
+      },
+      {
+        "type": 1,
+        "code": 48,
+        "value": 0,
+        "time": 1794913864.339112
+      },
+      {
+        "type": 1,
+        "code": 46,
+        "value": 1,
+        "time": 1794913864.479113
+      },
+      {
+        "type": 1,
+        "code": 46,
+        "value": 0,
+        "time": 1794913864.520124
+      },
+      {
+        "type": 1,
+        "code": 32,
+        "value": 1,
+        "time": 1794913865.0601
+      },
+      {
+        "type": 1,
+        "code": 32,
+        "value": 0,
+        "time": 1794913865.100097
+      }
+    ],
+    "passed": true,
+    "lost_events": false,
+    "oracle_events_match": true,
+    "expected_evdev_key_events": [
+      [
+        42,
+        1
+      ],
+      [
+        30,
+        1
+      ],
+      [
+        30,
+        0
+      ],
+      [
+        42,
+        0
+      ],
+      [
+        48,
+        1
+      ],
+      [
+        48,
+        0
+      ],
+      [
+        46,
+        1
+      ],
+      [
+        46,
+        0
+      ],
+      [
+        32,
+        1
+      ],
+      [
+        32,
+        0
+      ]
+    ],
+    "actual_evdev_key_events": [
+      [
+        42,
+        1
+      ],
+      [
+        30,
+        1
+      ],
+      [
+        30,
+        0
+      ],
+      [
+        42,
+        0
+      ],
+      [
+        48,
+        1
+      ],
+      [
+        48,
+        0
+      ],
+      [
+        46,
+        1
+      ],
+      [
+        46,
+        0
+      ],
+      [
+        32,
+        1
+      ],
+      [
+        32,
+        0
+      ]
+    ],
+    "first_mismatch": null,
+    "emulator_events_match": true,
+    "oracle_matches_emulator": true,
+    "timing": {
+      "passed": true,
+      "actual_relative_ms": [
+        0.0,
+        38.97285461425781,
+        78.98497581481934,
+        118.97397041320801,
+        133.9700222015381,
+        173.98595809936523,
+        313.98701667785645,
+        354.9978733062744,
+        894.9739933013916,
+        934.9708557128906
+      ],
+      "predicted_relative_ms": [
+        0,
+        40,
+        80,
+        120,
+        135,
+        175,
+        315,
+        355,
+        895,
+        935
+      ],
+      "event_error_ms": [
+        0.0,
+        -1.0271453857421875,
+        -1.015024185180664,
+        -1.0260295867919922,
+        -1.029977798461914,
+        -1.0140419006347656,
+        -1.0129833221435547,
+        -0.0021266937255859375,
+        -0.026006698608398438,
+        -0.029144287109375
+      ],
+      "duration_scale": 0.9999688296394552,
+      "maximum_event_error_ms": 1.029977798461914,
+      "limits": {
+        "minimum_scale": 0.98,
+        "maximum_scale": 1.02,
+        "maximum_event_error_ms": 10
+      }
+    }
+  }
+}

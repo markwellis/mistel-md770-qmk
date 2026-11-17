@@ -1,0 +1,66 @@
+{
+  "date": "2026-11-17",
+  "passed": true,
+  "scope": "Recorded macro event order and relative timing on USB and Bluetooth; USB device runtime suspend, lighting suppression and key wake",
+  "plan_sha256": "bb54ff8a93599519f03f7f65ea2ce991a6472be7d0af2f967f99ad5031d9af49",
+  "reference_firmware_sha256": "c29dae348fc922c0d155f91f9ee41c367ec432396e648cefcf97db7ad392b1f8",
+  "predictions": "Paired verification ELF with the same verified keyboard sources; hardware remains on the production image",
+  "macro_captures": {
+    "MT-USB": {
+      "record": "docs/hardware-calibration/macro-usb.json",
+      "passed": true,
+      "matched_key_events": 10,
+      "duration_ms": 933.9871406555176,
+      "predicted_duration_ms": 935,
+      "maximum_event_error_ms": 1.0128593444824219
+    },
+    "MT-BT": {
+      "record": "docs/hardware-calibration/macro-bt.json",
+      "passed": true,
+      "matched_key_events": 10,
+      "duration_ms": 940.0420188903809,
+      "predicted_duration_ms": 935,
+      "maximum_event_error_ms": 6.00006103515625
+    }
+  },
+  "usb_device_wake": {
+    "record": "docs/hardware-calibration/usb-wake-visual.json",
+    "passed": true,
+    "operator_confirmed_red_before_suspend": true,
+    "operator_confirmed_both_halves_dark": true,
+    "operator_confirmed_A_woke_keyboard": true,
+    "wake_key_captured": true,
+    "same_usb_enumeration": true,
+    "suspended_seconds": 25.964625636001074,
+    "power_settings_and_notification_interface_restored": true,
+    "laptop_suspended": false
+  },
+  "post_wake_macro": {
+    "record": "docs/hardware-calibration/macro-usb-after-wake.json",
+    "macro_observation_passed": true,
+    "strict_capture_passed": false,
+    "qualification": "Earlier typing preceded the prompted macro; the final macro burst was scored separately after capture and is supporting evidence only"
+  },
+  "temporary_F3_macro": {
+    "restored_to_ordinary_F3": true,
+    "verification": "Owner confirmed the one-key F3 replacement was saved and the editor exited"
+  },
+  "bluetooth_reconnection": {
+    "passed": false,
+    "observation": "Host connection attempts after power-bank startup failed, including after a short Pn+F1 slot selection. A three-second Pn+F1 pairing-window request allowed the existing paired host to connect. No bond was removed.",
+    "stock_comparison": "Unverified; owner now suspects stock reconnected successfully",
+    "status": "Unresolved possible firmware regression; excluded from the playback/timing pass"
+  },
+  "firmware_source_changes_during_calibration": false,
+  "verification": {
+    "calibration_scorer_unit_tests": 21
+  },
+  "uncalibrated": [
+    "Automatic Bluetooth cold reconnection",
+    "CPU/IRQ and peripheral register contracts",
+    "Internal radio states and RF behaviour",
+    "Electrical USB signalling and wake latency",
+    "Full boot and analogue power/battery behaviour",
+    "Auto-repeat"
+  ]
+}

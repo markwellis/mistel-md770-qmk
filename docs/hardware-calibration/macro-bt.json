@@ -1,0 +1,346 @@
+{
+  "date": "2026-11-17T11:18:50.103233+00:00",
+  "case": {
+    "id": "MT-BT",
+    "transport": "bluetooth",
+    "expected_key_events": [
+      [
+        225,
+        true
+      ],
+      [
+        4,
+        true
+      ],
+      [
+        4,
+        false
+      ],
+      [
+        225,
+        false
+      ],
+      [
+        5,
+        true
+      ],
+      [
+        5,
+        false
+      ],
+      [
+        6,
+        true
+      ],
+      [
+        6,
+        false
+      ],
+      [
+        7,
+        true
+      ],
+      [
+        7,
+        false
+      ]
+    ],
+    "emulator_prediction": {
+      "key_events": [
+        [
+          225,
+          true
+        ],
+        [
+          4,
+          true
+        ],
+        [
+          4,
+          false
+        ],
+        [
+          225,
+          false
+        ],
+        [
+          5,
+          true
+        ],
+        [
+          5,
+          false
+        ],
+        [
+          6,
+          true
+        ],
+        [
+          6,
+          false
+        ],
+        [
+          7,
+          true
+        ],
+        [
+          7,
+          false
+        ]
+      ],
+      "relative_event_times_ms": [
+        0,
+        40,
+        80,
+        120,
+        135,
+        175,
+        315,
+        355,
+        895,
+        935
+      ],
+      "keyboard_reports": [
+        "02 00 00 00 00 00 00 00",
+        "02 00 04 00 00 00 00 00",
+        "02 00 00 00 00 00 00 00",
+        "00 00 00 00 00 00 00 00",
+        "00 00 05 00 00 00 00 00",
+        "00 00 00 00 00 00 00 00",
+        "00 00 06 00 00 00 00 00",
+        "00 00 00 00 00 00 00 00",
+        "00 00 07 00 00 00 00 00",
+        "00 00 00 00 00 00 00 00"
+      ]
+    },
+    "expected_event_times_ms": [
+      0,
+      40,
+      80,
+      120,
+      135,
+      175,
+      315,
+      355,
+      895,
+      935
+    ],
+    "timing_limits": {
+      "minimum_scale": 0.95,
+      "maximum_scale": 1.05,
+      "maximum_event_error_ms": 45
+    }
+  },
+  "capture_started": "2026-11-17T11:18:44.252114+00:00",
+  "timeout_seconds": 150.0,
+  "plan_sha256": "bb54ff8a93599519f03f7f65ea2ce991a6472be7d0af2f967f99ad5031d9af49",
+  "devices": [
+    {
+      "name": "Mistel 1 Keyboard",
+      "bus": 5,
+      "vendor": 2652,
+      "product": 34050
+    }
+  ],
+  "capture_mode": "live",
+  "reference_firmware_sha256": "c29dae348fc922c0d155f91f9ee41c367ec432396e648cefcf97db7ad392b1f8",
+  "events": [
+    {
+      "type": 1,
+      "code": 42,
+      "value": 1,
+      "time": 1794914328.837203
+    },
+    {
+      "type": 1,
+      "code": 30,
+      "value": 1,
+      "time": 1794914328.877189
+    },
+    {
+      "type": 1,
+      "code": 30,
+      "value": 0,
+      "time": 1794914328.917172
+    },
+    {
+      "type": 1,
+      "code": 42,
+      "value": 0,
+      "time": 1794914328.957202
+    },
+    {
+      "type": 1,
+      "code": 48,
+      "value": 1,
+      "time": 1794914328.977173
+    },
+    {
+      "type": 1,
+      "code": 48,
+      "value": 0,
+      "time": 1794914329.017265
+    },
+    {
+      "type": 1,
+      "code": 46,
+      "value": 1,
+      "time": 1794914329.157206
+    },
+    {
+      "type": 1,
+      "code": 46,
+      "value": 0,
+      "time": 1794914329.198203
+    },
+    {
+      "type": 1,
+      "code": 32,
+      "value": 1,
+      "time": 1794914329.737201
+    },
+    {
+      "type": 1,
+      "code": 32,
+      "value": 0,
+      "time": 1794914329.777245
+    }
+  ],
+  "comparison_scope": "Ordered EV_KEY press/release events and relative timing; repeats are not scored",
+  "passed": true,
+  "lost_events": false,
+  "oracle_events_match": true,
+  "expected_evdev_key_events": [
+    [
+      42,
+      1
+    ],
+    [
+      30,
+      1
+    ],
+    [
+      30,
+      0
+    ],
+    [
+      42,
+      0
+    ],
+    [
+      48,
+      1
+    ],
+    [
+      48,
+      0
+    ],
+    [
+      46,
+      1
+    ],
+    [
+      46,
+      0
+    ],
+    [
+      32,
+      1
+    ],
+    [
+      32,
+      0
+    ]
+  ],
+  "actual_evdev_key_events": [
+    [
+      42,
+      1
+    ],
+    [
+      30,
+      1
+    ],
+    [
+      30,
+      0
+    ],
+    [
+      42,
+      0
+    ],
+    [
+      48,
+      1
+    ],
+    [
+      48,
+      0
+    ],
+    [
+      46,
+      1
+    ],
+    [
+      46,
+      0
+    ],
+    [
+      32,
+      1
+    ],
+    [
+      32,
+      0
+    ]
+  ],
+  "first_mismatch": null,
+  "emulator_events_match": true,
+  "oracle_matches_emulator": true,
+  "timing": {
+    "passed": true,
+    "actual_relative_ms": [
+      0.0,
+      39.98589515686035,
+      79.96892929077148,
+      119.99893188476562,
+      139.970064163208,
+      180.06205558776855,
+      320.0030326843262,
+      361.00006103515625,
+      899.9979496002197,
+      940.0420188903809
+    ],
+    "predicted_relative_ms": [
+      0,
+      40,
+      80,
+      120,
+      135,
+      175,
+      315,
+      355,
+      895,
+      935
+    ],
+    "event_error_ms": [
+      0.0,
+      -0.014104843139648438,
+      -0.031070709228515625,
+      -0.001068115234375,
+      4.970064163208008,
+      5.062055587768555,
+      5.003032684326172,
+      6.00006103515625,
+      4.997949600219727,
+      5.042018890380859
+    ],
+    "duration_scale": 1.0053925335726,
+    "maximum_event_error_ms": 6.00006103515625,
+    "limits": {
+      "minimum_scale": 0.95,
+      "maximum_scale": 1.05,
+      "maximum_event_error_ms": 45
+    }
+  }
+}

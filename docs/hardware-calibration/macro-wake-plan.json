@@ -1,0 +1,303 @@
+{
+  "date": "2026-11-17T10:14:43.294941+00:00",
+  "scope": "One recorded text/modifier/delay macro and USB suspend/wake",
+  "recording": "F3: Left Shift+A, release Shift; Fn+T, B; Fn+G, C; Fn+B, D",
+  "macro_bytes_hex": "0102e1010434307c010204010434307c010304010434307c0103e1010431357c010205010434307c01030501043134307c010206010434307c01030601043534307c010207010434307c01030700",
+  "prediction_build": {
+    "validation_elf": "mistel_md770rgb_bt_right_markwellis_conformance_validation.elf",
+    "validation_elf_sha256": "09b856434b84f0f7552fcb47763513912c0129d9704a53cbdd716d3301733e52",
+    "verification_binary_sha256": "662f4ebddf28e8f7b302efc5646b5cc2f1fb244d3df24fc4738223ba3af2fe84",
+    "validation_binary_sha256": "c29dae348fc922c0d155f91f9ee41c367ec432396e648cefcf97db7ad392b1f8",
+    "build_kind": "Paired verification link with the same verified keyboard sources; hardware remains on production",
+    "abi_provenance": {
+      "assumption": "Current headers and compiler must match the supplied ELF build; rebuild after changes",
+      "elf_sha256": "09b856434b84f0f7552fcb47763513912c0129d9704a53cbdd716d3301733e52",
+      "compiler": "arm-none-eabi-gcc (Arm GNU Toolchain 15.2.Rel1 (Build arm-15.86)) 15.2.1 20251203",
+      "flags_sha256": "215a8c3e40b1709039dda7a605679953614702a1db810f93b9dd6d8410c7335e",
+      "preprocessed_probe_sha256": "714ff345b3ef15727b06550284b1e5967898dff0515765db2896179208a33564"
+    }
+  },
+  "wake_prediction": {
+    "suspend_recognised": true,
+    "lighting_suspended": true,
+    "remote_wake_requests_with_permission": 1,
+    "resume_recognised": true,
+    "post_resume_macro_expected": "A fresh invocation has the normal macro output and delays"
+  },
+  "timing_method": "Native player serviced every supplied millisecond; SPI transactions complete when requested",
+  "nominal_inter_event_gaps_ms": [
+    40,
+    40,
+    40,
+    15,
+    40,
+    140,
+    40,
+    540,
+    40
+  ],
+  "cases": [
+    {
+      "id": "MT-USB",
+      "transport": "usb",
+      "expected_key_events": [
+        [
+          225,
+          true
+        ],
+        [
+          4,
+          true
+        ],
+        [
+          4,
+          false
+        ],
+        [
+          225,
+          false
+        ],
+        [
+          5,
+          true
+        ],
+        [
+          5,
+          false
+        ],
+        [
+          6,
+          true
+        ],
+        [
+          6,
+          false
+        ],
+        [
+          7,
+          true
+        ],
+        [
+          7,
+          false
+        ]
+      ],
+      "emulator_prediction": {
+        "key_events": [
+          [
+            225,
+            true
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ],
+          [
+            225,
+            false
+          ],
+          [
+            5,
+            true
+          ],
+          [
+            5,
+            false
+          ],
+          [
+            6,
+            true
+          ],
+          [
+            6,
+            false
+          ],
+          [
+            7,
+            true
+          ],
+          [
+            7,
+            false
+          ]
+        ],
+        "relative_event_times_ms": [
+          0,
+          40,
+          80,
+          120,
+          135,
+          175,
+          315,
+          355,
+          895,
+          935
+        ],
+        "keyboard_reports": [
+          "02 00 00 00 00 00 00 00",
+          "02 00 04 00 00 00 00 00",
+          "02 00 00 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00",
+          "00 00 05 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00",
+          "00 00 06 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00",
+          "00 00 07 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00"
+        ]
+      },
+      "expected_event_times_ms": [
+        0,
+        40,
+        80,
+        120,
+        135,
+        175,
+        315,
+        355,
+        895,
+        935
+      ],
+      "timing_limits": {
+        "minimum_scale": 0.98,
+        "maximum_scale": 1.02,
+        "maximum_event_error_ms": 10
+      }
+    },
+    {
+      "id": "MT-BT",
+      "transport": "bluetooth",
+      "expected_key_events": [
+        [
+          225,
+          true
+        ],
+        [
+          4,
+          true
+        ],
+        [
+          4,
+          false
+        ],
+        [
+          225,
+          false
+        ],
+        [
+          5,
+          true
+        ],
+        [
+          5,
+          false
+        ],
+        [
+          6,
+          true
+        ],
+        [
+          6,
+          false
+        ],
+        [
+          7,
+          true
+        ],
+        [
+          7,
+          false
+        ]
+      ],
+      "emulator_prediction": {
+        "key_events": [
+          [
+            225,
+            true
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ],
+          [
+            225,
+            false
+          ],
+          [
+            5,
+            true
+          ],
+          [
+            5,
+            false
+          ],
+          [
+            6,
+            true
+          ],
+          [
+            6,
+            false
+          ],
+          [
+            7,
+            true
+          ],
+          [
+            7,
+            false
+          ]
+        ],
+        "relative_event_times_ms": [
+          0,
+          40,
+          80,
+          120,
+          135,
+          175,
+          315,
+          355,
+          895,
+          935
+        ],
+        "keyboard_reports": [
+          "02 00 00 00 00 00 00 00",
+          "02 00 04 00 00 00 00 00",
+          "02 00 00 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00",
+          "00 00 05 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00",
+          "00 00 06 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00",
+          "00 00 07 00 00 00 00 00",
+          "00 00 00 00 00 00 00 00"
+        ]
+      },
+      "expected_event_times_ms": [
+        0,
+        40,
+        80,
+        120,
+        135,
+        175,
+        315,
+        355,
+        895,
+        935
+      ],
+      "timing_limits": {
+        "minimum_scale": 0.95,
+        "maximum_scale": 1.05,
+        "maximum_event_error_ms": 45
+      }
+    }
+  ]
+}

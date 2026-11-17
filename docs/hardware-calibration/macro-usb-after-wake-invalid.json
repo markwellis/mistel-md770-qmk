@@ -1,0 +1,27 @@
+{
+  "date": "2026-11-17T10:43:44.560156+00:00",
+  "capture_started": "2026-11-17T10:41:14.435188+00:00",
+  "timeout_seconds": 150.0,
+  "plan_sha256": "bb54ff8a93599519f03f7f65ea2ce991a6472be7d0af2f967f99ad5031d9af49",
+  "devices": [
+    {
+      "name": "Mistel MD770 RGB BT (QMK)",
+      "bus": 3,
+      "vendor": 1241,
+      "product": 1049
+    },
+    {
+      "name": "Mistel MD770 RGB BT (QMK) Keyboard",
+      "bus": 3,
+      "vendor": 1241,
+      "product": 1049
+    }
+  ],
+  "reference_firmware_sha256": "c29dae348fc922c0d155f91f9ee41c367ec432396e648cefcf97db7ad392b1f8",
+  "excluded_reason": "The operator reported accidental extra keys; strict ordered comparison rejected the capture.",
+  "case_id": "MT-USB",
+  "capture_mode": "excluded",
+  "passed": false,
+  "expected_event_count": 10,
+  "captured_event_count": 50
+}

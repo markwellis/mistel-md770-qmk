@@ -13,7 +13,7 @@ import select
 import time
 
 SOURCE_ROOT = Path(__file__).resolve().parents[1]
-HID_TO_EVDEV = {4: 30, 5: 48, 6: 46, 0x0D: 36, 0x2C: 57, 0xE0: 29, 0xE1: 42, 0xE5: 54}
+HID_TO_EVDEV = {4: 30, 5: 48, 6: 46, 7: 32, 0x0D: 36, 0x2C: 57, 0xE0: 29, 0xE1: 42, 0xE5: 54}
 QUICK_CASES = {
     'HC01': {'transport': 'usb', 'trigger_half': 'left', 'macro_kind': 'text', 'modifier': 'none', 'connection': 'steady'},
     'HC08': {'transport': 'bluetooth', 'trigger_half': 'right', 'macro_kind': 'chord', 'modifier': 'shift', 'connection': 'steady'},
@@ -42,6 +42,25 @@ def score(case, events):
         result['emulator_events_match'] = not lost_events and actual == predicted
         result['oracle_matches_emulator'] = expected == predicted
         result['passed'] &= result['emulator_events_match'] and result['oracle_matches_emulator']
+    if 'expected_event_times_ms' in case:
+        stamps = [event.get('time') for event in events
+                  if event['type'] == 1 and event['value'] in (0, 1)]
+        predicted = case['expected_event_times_ms']
+        valid = (result['oracle_events_match'] and len(stamps) == len(predicted)
+                 and len(stamps) > 1 and all(isinstance(t, (int, float)) for t in stamps))
+        timing = {'passed': False}
+        if valid:
+            relative = [(stamp - stamps[0]) * 1000 for stamp in stamps]
+            errors = [actual - target for actual, target in zip(relative, predicted, strict=True)]
+            scale = relative[-1] / predicted[-1]
+            limits = case['timing_limits']
+            timing = {'passed': (limits['minimum_scale'] <= scale <= limits['maximum_scale']
+                                  and max(map(abs, errors)) <= limits['maximum_event_error_ms']),
+                      'actual_relative_ms': relative, 'predicted_relative_ms': predicted,
+                      'event_error_ms': errors, 'duration_scale': scale,
+                      'maximum_event_error_ms': max(map(abs, errors)), 'limits': limits}
+        result['timing'] = timing
+        result['passed'] &= timing['passed']
     return result
 
 
@@ -144,7 +163,9 @@ def capture_result(case, plan_hash, firmware_hash, paths, timeout):
             'capture_started': started, 'timeout_seconds': timeout,
             'plan_sha256': plan_hash, 'devices': identities, 'capture_mode': 'live',
             'reference_firmware_sha256': firmware_hash, 'events': events,
-            'comparison_scope': 'Ordered EV_KEY press/release events; repeats and timing are not scored',
+            'comparison_scope': ('Ordered EV_KEY press/release events and relative timing; repeats are not scored'
+                                 if 'expected_event_times_ms' in case else
+                                 'Ordered EV_KEY press/release events; repeats and timing are not scored'),
             **score(case, events)}
 
 
@@ -309,7 +330,10 @@ def main():
         events = json.loads(args.events.read_text())['events']
         result = {'date': datetime.now(timezone.utc).isoformat(), 'case': case,
                   'plan_sha256': plan_hash, 'devices': [], 'capture_mode': 'replay',
-                  'events': events, 'comparison_scope': 'Ordered EV_KEY press/release events; repeats and timing are not scored',
+                  'events': events,
+                  'comparison_scope': ('Ordered EV_KEY press/release events and relative timing; repeats are not scored'
+                                       if 'expected_event_times_ms' in case else
+                                       'Ordered EV_KEY press/release events; repeats and timing are not scored'),
                   **score(case, events)}
     else:
         result = capture_result(case, plan_hash, firmware_hash, args.device, args.timeout)

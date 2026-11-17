@@ -21,6 +21,39 @@ EVENTS = [{'type': 1, 'code': 30, 'value': 1}, {'type': 1, 'code': 30, 'value': 
 
 
 class CalibrationTests(unittest.TestCase):
+    def test_timing_checks_clock_scale_even_when_keys_match(self):
+        case = CASE | {'expected_event_times_ms': [0, 40],
+                       'timing_limits': {'minimum_scale': 0.98, 'maximum_scale': 1.02,
+                                         'maximum_event_error_ms': 10}}
+        for duration, passed in ((0.04, True), (0.24, False), (0.006, False)):
+            with self.subTest(duration=duration):
+                events = [EVENTS[0] | {'time': 100}, EVENTS[1] | {'time': 100 + duration}]
+                result = calibrate.score(case, events)
+                self.assertTrue(result['oracle_events_match'])
+                self.assertEqual(result['timing']['passed'], passed)
+                self.assertEqual(result['passed'], passed)
+
+    def test_timing_requires_captured_timestamps(self):
+        case = CASE | {'expected_event_times_ms': [0, 40],
+                       'timing_limits': {'minimum_scale': 0.98, 'maximum_scale': 1.02,
+                                         'maximum_event_error_ms': 10}}
+        result = calibrate.score(case, EVENTS)
+        self.assertFalse(result['timing']['passed'])
+        self.assertFalse(result['passed'])
+
+    def test_timing_rejects_wrong_gap_with_correct_total_duration(self):
+        case = CASE | {'expected_key_events': [[4, True], [4, False], [5, True], [5, False]],
+                       'expected_event_times_ms': [0, 40, 140, 180],
+                       'timing_limits': {'minimum_scale': 0.98, 'maximum_scale': 1.02,
+                                         'maximum_event_error_ms': 10}}
+        events = [{'type': 1, 'code': code, 'value': down, 'time': stamp}
+                  for code, down, stamp in ((30, 1, 0), (30, 0, .08), (48, 1, .14), (48, 0, .18))]
+        result = calibrate.score(case, events)
+        self.assertTrue(result['oracle_events_match'])
+        self.assertAlmostEqual(result['timing']['duration_scale'], 1)
+        self.assertAlmostEqual(result['timing']['maximum_event_error_ms'], 40)
+        self.assertFalse(result['passed'])
+
     def quick_fixture(self):
         plan = json.loads((SOURCE.parent.parent / 'docs/mistel-md770-hardware-calibration.json').read_text())
         captures = []

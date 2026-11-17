@@ -22,8 +22,9 @@ installed production ELF. The fixture supplies decoded scan events, the
 compiled base keymap, RTOS boundaries and radio transactions. The live
 comparison measures ordered Linux key press/release events, not raw-report
 bytes or timing. It provides hardware evidence for these input/report paths;
-it does not establish every emulator contract or calibrate macro playback,
-USB wake, KVMs, interrupts or battery behaviour.
+it does not establish every emulator contract. The additional macro timing
+and USB wake checks are described below. KVMs, interrupts and battery
+behaviour remain outside these hardware comparisons.
 
 Generate the fixed predictions before capturing:
 
@@ -36,10 +37,73 @@ binary, case `DP-BT` or `DP-USB`, and the appropriate event devices. Grab all
 relevant keyboard interfaces for the chosen transport. The installed image
 hash is checked, and the plan hash binds each capture to its predictions.
 
-## Optional broader macro calibration
+## Macro timing and USB device wake
 
-The older procedure below requires its separate validation image and three
-recorded macros. It has not been completed on the current installation.
+The current installation uses one temporary F3 recording: Left Shift+A,
+release Shift, then B/C/D with the Fn+T, Fn+G and Fn+B delays. The fixed
+[prediction plan](hardware-calibration/macro-wake-plan.json) was generated
+before capture. Its ten key/modifier events span 935 ms. Timing limits were
+also fixed before capture: USB permits 2% duration error and 10 ms per-event
+error; Bluetooth permits 5% and 45 ms.
+
+The macro player is inlined in the installed production ELF. These
+predictions therefore execute the paired verification ELF, which retains
+the macro entry points and uses the same verified keyboard sources.
+The plan records both image hashes. The keyboard keeps its production
+firmware; no calibration firmware is flashed.
+
+The first [USB macro capture](hardware-calibration/macro-usb.json) matched
+all ten events. Its duration was 933.987 ms, and its largest relative
+event-time error was 1.013 ms.
+
+The [post-wake observation](hardware-calibration/macro-usb-after-wake.json)
+also matched all ten macro events: 934.971 ms total, with at most 1.030 ms
+relative event-time error. Its full capture failed strict comparison
+because capture started before the chat prompt and included earlier
+typing. The record explicitly identifies the final macro burst, separated
+from that input by 26.101 seconds. This supports normal post-wake playback;
+it is not counted as a strict full-window calibration pass.
+
+The [Bluetooth macro capture](hardware-calibration/macro-bt.json) matched
+all ten events and the declared timing limits. Its duration was 940.042 ms,
+with at most 6.000 ms relative event-time error. USB powered the keyboard
+from a power bank, with no host USB connection.
+
+Bluetooth reconnection remains unresolved. Host connection attempts failed
+after startup and a short Pn+F1 slot selection. Holding Pn+F1 for three
+seconds opened the pairing window and allowed the existing paired host to
+connect. No bond was removed. The owner suspects stock reconnected
+successfully; this has not been verified. The connected playback pass does
+not establish correct cold reconnection.
+
+The [USB device wake check](hardware-calibration/usb-wake-visual.json)
+passed without suspending the laptop. The owner saw the controlled red
+notification, confirmed both halves went dark during USB runtime suspend,
+and tapped A to wake the keyboard. Linux recorded suspend, resume and A's
+press/release, with the same USB enumeration. The notification Raw HID
+interface was temporarily unbound to prevent host alerts from waking USB
+before the key press. The script restored that interface and all original
+USB power settings.
+
+The earlier wake attempts remain excluded: the
+[first attempt](hardware-calibration/usb-wake-inconclusive.json) lacked a
+captured wake key and visual sleep confirmation; an
+[incomplete attempt](hardware-calibration/usb-wake-isolated-incomplete.json)
+missed the input window; a subsequent
+[host-only result](hardware-calibration/usb-wake-isolated.json) lacked visual
+confirmation. None counts as a complete wake pass.
+
+The owner restored ordinary F3 through the onboard editor after capture.
+The [combined record](hardware-calibration/macro-wake-summary.json) binds
+these results to the fixed prediction plan and installed production image.
+All 21 host-scorer checks pass, including rejection of the wrong clock scale
+and of wrong intermediate gaps with the correct total duration.
+
+## Historical broader macro calibration
+
+The procedure below describes the earlier candidate and its separate
+validation image. Its shared-QMK changes were subsequently removed. It is
+retained as historical context, not as the current installation procedure.
 
 The older pass uses five short scenarios, with three macro recordings
 for setup. The earlier 20-case count repeated checks already recorded on

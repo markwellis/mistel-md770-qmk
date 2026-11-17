@@ -1,0 +1,44 @@
+{
+  "date": "2026-11-17T10:30:19.639360+00:00",
+  "scope": "USB device runtime suspend/wake; the laptop remains awake",
+  "usb_device": "3-1.1.2",
+  "original_power_settings": {
+    "control": "on",
+    "autosuspend_delay_ms": "2000",
+    "wakeup": "enabled"
+  },
+  "device_number_before": "14",
+  "suspend_observed": true,
+  "resume_observed": false,
+  "settings_restored": true,
+  "host_state_passed": false,
+  "events": [],
+  "operator_action": "Tap A once after USB_SUSPENDED",
+  "notification_interface_isolated": "3-1.1.2:1.1",
+  "controlled_notification_colour": "red",
+  "before": {
+    "runtime_status": "active",
+    "runtime_active_time": "2429543",
+    "runtime_suspended_time": "32626",
+    "wakeup_count": "0",
+    "wakeup_active_count": "0"
+  },
+  "at_suspend": {
+    "runtime_status": "suspended",
+    "runtime_active_time": "2430805",
+    "runtime_suspended_time": "32639",
+    "wakeup_count": "0",
+    "wakeup_active_count": "0"
+  },
+  "error": "No USB resume observed within forty-five seconds",
+  "restored_power_settings": {
+    "control": "on",
+    "autosuspend_delay_ms": "2000",
+    "wakeup": "enabled"
+  },
+  "notification_interface_restored": true,
+  "wake_key_event_captured": false,
+  "operator_darkness_and_wake_confirmation_required": true,
+  "classification": "No wake prompt was issued before this observation completed",
+  "passed": false
+}

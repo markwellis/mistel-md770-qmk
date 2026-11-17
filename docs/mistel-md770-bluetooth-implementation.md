@@ -1,5 +1,9 @@
 # MD770 Bluetooth and charging implementation
 
+See [hardware calibration](mistel-md770-hardware-calibration.md) for the
+current installation, measured macro timing and USB device wake results.
+The installation and pending-test statements below describe earlier builds.
+
 The implementation is in `qmk_firmware`, branch `mistel-md770-support`.
 The personal keymap remains in this repository. Both halves were flashed on
 2026-11-16. The right now runs the normal macro validation image with the

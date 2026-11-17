@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-17T10:21:47.287005+00:00",
+  "scope": "USB device runtime suspend/wake; the laptop remains awake",
+  "usb_device": "3-1.1.2",
+  "original_power_settings": {
+    "control": "on",
+    "autosuspend_delay_ms": "2000",
+    "wakeup": "enabled"
+  },
+  "device_number_before": "14",
+  "suspend_observed": true,
+  "resume_observed": true,
+  "settings_restored": true,
+  "passed": false,
+  "events": [],
+  "operator_action": "Tap A once after USB_SUSPENDED",
+  "before": {
+    "runtime_status": "active",
+    "runtime_active_time": "1949774",
+    "runtime_suspended_time": "0",
+    "wakeup_count": "0",
+    "wakeup_active_count": "0"
+  },
+  "at_suspend": {
+    "runtime_status": "suspended",
+    "runtime_active_time": "1951036",
+    "runtime_suspended_time": "13",
+    "wakeup_count": "0",
+    "wakeup_active_count": "0"
+  },
+  "observed_suspended_seconds": 32.68796461799866,
+  "after": {
+    "runtime_status": "active",
+    "runtime_active_time": "1951412",
+    "runtime_suspended_time": "32626",
+    "wakeup_count": "0",
+    "wakeup_active_count": "0"
+  },
+  "device_number_after": "14",
+  "same_usb_enumeration": true,
+  "restored_power_settings": {
+    "control": "on",
+    "autosuspend_delay_ms": "2000",
+    "wakeup": "enabled"
+  },
+  "classification": "inconclusive",
+  "operator_observation": "Both halves continued the blue notification; A appeared immediately",
+  "reason": "USB resumed without a captured wake key; notification traffic was not isolated"
+}
