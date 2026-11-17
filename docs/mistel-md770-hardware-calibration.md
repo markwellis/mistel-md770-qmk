@@ -95,8 +95,12 @@ firmware retry policy is unchanged. The
 [build record](mistel-md770-saved-output-build.json) links the native and
 instruction-level checks. The right-half image is [installed and checksum-verified](mistel-md770-saved-output-flash-right.json).
 [Post-flash Bluetooth registration](hardware-calibration/saved-output-after-flash.json)
-returned without pairing or a host Connect request. Full cold-start typing
-verification is pending.
+returned without pairing or a host Connect request. The subsequent
+[power-bank cold-start check](hardware-calibration/saved-output-cold-start.json)
+passed after verified complete disconnection: the keyboard reconnected without
+powered Pn shortcuts or laptop Connect, and the owner confirmed typing.
+The laptop's temporary connectable setting was off during this pass. USB
+output and slots 2/3 have software coverage; this physical repeat used slot 1.
 See the [investigation](hardware-calibration/bluetooth-reconnect-investigation.json)
 for the earlier hypotheses and temporary experiments; all diagnostic images
 were removed and the laptop's controller setting was restored.

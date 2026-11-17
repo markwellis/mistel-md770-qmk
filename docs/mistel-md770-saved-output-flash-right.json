@@ -21,7 +21,7 @@
   "generated_version_page_matches": true,
   "factory_bootloader_and_option_page_outside_erase_range": true,
   "normal_usb_return_verified": true,
-  "owner_confirmed_typing": false,
+  "owner_confirmed_typing": true,
   "write_scope": "Application and version pages only; original bootloader retained",
   "access": "sudo -A",
   "build_manifest": "docs/mistel-md770-saved-output-build.json",
@@ -31,5 +31,6 @@
     "vid": "04d9",
     "pid": "0419",
     "product": "MD770 RGB BT (QMK)"
-  }
+  },
+  "cold_start_record": "docs/hardware-calibration/saved-output-cold-start.json"
 }

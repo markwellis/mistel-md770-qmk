@@ -1,6 +1,6 @@
 {
   "date": "2026-11-17T12:04:05.006780+00:00",
-  "status": "Keyboard-only saved-output fix 45b37a03a9 is flashed and checksum-verified. Bluetooth link and input returned without pairing or laptop Connect; full cold-start typing check awaits the owner unplugging power.",
+  "status": "Resolved: keyboard-only saved-output fix 45b37a03a9 is flashed, checksum-verified and physically verified through a complete power-off, automatic reconnection and typing",
   "reference_firmware_sha256": "c29dae348fc922c0d155f91f9ee41c367ec432396e648cefcf97db7ad392b1f8",
   "hid_reconnect_mode": {
     "value": "device",
@@ -46,7 +46,7 @@
     "native_probe": "tests/md770_bluetooth/review/stock_reconnect_shortcut.py",
     "native_probe_results": "tests/md770_bluetooth/review/stock_reconnect_shortcut.json"
   },
-  "next": "Verify a complete power-off, then a joined-half power-bank cold start and actual typing with no shortcuts",
+  "next": null,
   "stock_application_sha256": "8fafdca096756f23626802d5b586b270b0bd512fe5d1c0327db4eafcd4f689b2",
   "stock_comparison_started": true,
   "settings_constraint": "Owner authorised resetting settings for the temporary stock comparison",
@@ -163,7 +163,9 @@
     "restoration_requested": true,
     "assessment": "Enabling the global setting did not resolve stock reconnection; no causal link to the headset issue established",
     "documentation": "https://github.com/bluez/bluez/blob/master/doc/mgmt-protocol.rst",
-    "restored_original_off_setting": true
+    "restored_original_off_setting": true,
+    "verified_off_after_successful_cold_start": true,
+    "persistent_pairing_note": "The owner-requested stock comparison recreated the Mistel bond; Bluetooth configuration files were not changed"
   },
   "temporary_QMK_diagnostics": {
     "installed": false,
@@ -187,5 +189,6 @@
   ],
   "final_pre_fix_cold_repeat": "docs/hardware-calibration/bluetooth-reconnect-cold-repeat.json",
   "saved_output_installation": "docs/mistel-md770-saved-output-flash-right.json",
-  "saved_output_after_flash": "docs/hardware-calibration/saved-output-after-flash.json"
+  "saved_output_after_flash": "docs/hardware-calibration/saved-output-after-flash.json",
+  "saved_output_cold_start": "docs/hardware-calibration/saved-output-cold-start.json"
 }

@@ -1,0 +1,66 @@
+{
+  "date": "2026-11-17T15:36:07.989207+00:00",
+  "result": "passed",
+  "qmk_commit": "45b37a03a9",
+  "firmware_application_sha256": "770457a9708bb9b245f7a8af8ee388b265d25a1287d9616f023b7703aadb73b6",
+  "physical_setup": "Both halves joined; right powered from a power bank; no USB connection to laptop",
+  "power_off_verification": {
+    "owner_confirmed_all_USB_power_unplugged": true,
+    "halves_joined_while_unpowered": true,
+    "observation_started": "2026-11-17T15:28:56.238822+00:00",
+    "states": [
+      {
+        "time": "2026-11-17T15:28:56.246304+00:00",
+        "connected": true,
+        "services_resolved": false,
+        "hid_input_present": true
+      },
+      {
+        "time": "2026-11-17T15:29:02.818468+00:00",
+        "connected": false,
+        "services_resolved": false,
+        "hid_input_present": false
+      }
+    ],
+    "fully_disconnected_verified": true
+  },
+  "passive_reconnection_observation": {
+    "firmware_application_sha256": "770457a9708bb9b245f7a8af8ee388b265d25a1287d9616f023b7703aadb73b6",
+    "fully_disconnected_before_power_restore": true,
+    "observation_started": "2026-11-17T15:29:39.782561+00:00",
+    "host_Connect_or_pairing_requested": false,
+    "states": [
+      {
+        "time": "2026-11-17T15:29:39.786450+00:00",
+        "connected": false,
+        "services_resolved": false,
+        "hid_input_present": false
+      },
+      {
+        "time": "2026-11-17T15:32:28.294763+00:00",
+        "connected": true,
+        "services_resolved": false,
+        "hid_input_present": true
+      }
+    ],
+    "automatic_reconnection_observed": true
+  },
+  "setup_correction": "The initial power confirmation was corrected: the keyboard remained unpowered through the no-typing check and Pn+1 attempt. The owner then connected power and reported automatic reconnection.",
+  "Pn_shortcut_used_while_powered": false,
+  "pairing_shortcut_used": false,
+  "laptop_Connect_requested": false,
+  "owner_confirmed_automatic_reconnection": true,
+  "owner_confirmed_last_chat_message_typed_on_Mistel": true,
+  "owner_confirmed_typing_works": true,
+  "observed_host_state": {
+    "connected": true,
+    "services_resolved": false,
+    "Bluetooth_keyboard_input_present": true
+  },
+  "host_connectable_flag_enabled_during_pass": false,
+  "host_configuration_files_changed": false,
+  "host_bond_note": "Mistel pairing was recreated during the earlier owner-requested stock comparison; no new pairing was performed for this cold-start test",
+  "scope": "Physical automatic reconnection and typing on the existing slot-1 bond; USB output and slots 2/3 have software coverage",
+  "timing_limit": "Observation includes an unpowered setup interval; its duration is not the boot or reconnection delay",
+  "radio_retry_policy": "Resident radio firmware retry count and timeout remain unmeasured and unchanged"
+}

@@ -34,7 +34,7 @@
   "contrib_patches": "Only the existing reset-register and 32-bit BFTM fixes; gitlink unchanged",
   "stored_state": "Native QMK connection selection plus one last Bluetooth slot in the existing unused keyboard EEPROM word",
   "independent_review": "Astra maximum effort: no functional blocker; startup failure clears deferred selection before manual recovery",
-  "physical_verification": "Flashed and checksum-verified; Bluetooth link and input returned without pairing or host Connect; full cold-start typing check pending",
+  "physical_verification": "Passed: verified complete disconnection, power-bank cold start without shortcuts, automatic reconnection and owner-confirmed typing",
   "tested_production_elf_sha256": "60975ad6d8ffcaabdd1e615368d8492b597cdbc65f77810fab77fcf378e77cc3",
   "production_tests_applied": 70,
   "verification_tests_passed": 72,
@@ -55,7 +55,8 @@
     "blockers": [],
     "material_simplicity_concerns": [],
     "summary": "One saved slot byte, native QMK EEPROM and connection selection, reused deferred dispatch, no additional radio retry mechanism; only three keyboard files changed",
-    "scope": "Independent source and test review; physical verification still pending"
+    "scope": "Independent source and test review; physical results are recorded separately"
   },
-  "installation_record": "docs/mistel-md770-saved-output-flash-right.json"
+  "installation_record": "docs/mistel-md770-saved-output-flash-right.json",
+  "cold_start_record": "docs/hardware-calibration/saved-output-cold-start.json"
 }
