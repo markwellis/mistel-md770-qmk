@@ -7,6 +7,8 @@
 #include <cstring>
 #include "keyboards/mistel/md770rgb_bt/storage.c"
 
+void chSysHalt(const char *) { assert(false); }
+
 bool pins[64];
 static bool selected, chip_asleep = true, busy, write_enabled, fail_start, fail_write, cs_output;
 static uint32_t now;
@@ -103,7 +105,7 @@ void spi_stop(void) {
 int main(void) {
     memset(memory, 0xff, sizeof(memory));
     flash_init();
-    assert(md770_storage_sleep() && transactions.empty());
+    assert(!chip_asleep && cs_output);
     uint8_t value = 0;
     assert(flash_read_range(4, &value, 1) == FLASH_STATUS_SUCCESS && value == 0xff);
     assert(transactions[0] == std::vector<uint8_t>{0xab} && wake_delays == 1);
@@ -118,13 +120,14 @@ int main(void) {
     size_t count = transactions.size();
     assert(md770_storage_sleep() && transactions.size() == count);
     fail_start = true;
-    assert(flash_read_range(4, &value, 1) == FLASH_STATUS_ERROR && chip_asleep);
+    assert(!md770_storage_wake());
     fail_write = true;
-    assert(flash_read_range(4, &value, 1) == FLASH_STATUS_ERROR && chip_asleep);
+    assert(!md770_storage_wake());
+    assert(md770_storage_wake());
     count = transactions.size();
     const uint8_t expected[] = {0xa5, 0x5a};
     assert(flash_write_range(4, expected, sizeof(expected)) == FLASH_STATUS_SUCCESS);
-    assert(transactions[count] == std::vector<uint8_t>{0xab} && wake_delays == 2 && cs_output);
+    assert(transactions[count] != std::vector<uint8_t>{0xab} && cs_output);
     uint8_t result[2]{};
     assert(flash_read_range(4, result, sizeof(result)) == FLASH_STATUS_SUCCESS && memcmp(result, expected, sizeof(result)) == 0);
     fail_write = true;
@@ -136,13 +139,20 @@ int main(void) {
         busy_reads = failures == 2 ? 2 : 600;
         id_reads = status_reads = busy_delays = 0;
         unsigned delays_before = wake_delays;
-        assert(spi_flash_start());
-        spi_stop();
+        bool ready = md770_storage_wake();
+        assert(ready == (failures == 2));
         unsigned expected = failures == 2 ? 3 : 1024;
         assert(id_reads == expected && wake_delays - delays_before == expected);
-        assert(status_reads == (failures == 2 ? 3 : 600));
-        assert(busy_delays == (failures == 2 ? 2 : 600));
-        assert(md770_storage_sleep());
+        assert(status_reads == (failures == 2 ? 3 : 0));
+        assert(busy_delays == (failures == 2 ? 2 : 0));
+        bad_ids = 0;
+        busy_reads = 600;
+        if (failures == 1024) {
+            assert(!md770_storage_wake());
+            assert(asleep && status_reads == 600);
+        }
+        busy_reads = 0;
+        assert(md770_storage_wake() && md770_storage_sleep());
     }
-    puts("Flash status initialisation, bounded retries, busy deferral, lazy wake and failure recovery passed");
+    puts("Flash status initialisation, bounded retries, busy deferral, explicit boot/wake and failure recovery passed");
 }

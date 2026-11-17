@@ -126,7 +126,7 @@ static uint8_t macro_byte(uint16_t offset) {
 
 static bool playback_ready(uint8_t code) {
 #    ifdef BLUETOOTH_ENABLE
-    return md770_radio_key_ready(code) && md770_power_key_ready(code);
+    return connection_get_host() == CONNECTION_HOST_BLUETOOTH ? md770_radio_key_ready(code) : md770_power_usb_ready();
 #    else
     return true;
 #    endif
@@ -168,6 +168,9 @@ void md770_playback_cancel(void) {
 void md770_playback_cancel_physical(void) {
     if (!md770_playback_active() && !playback_pending) return;
     playback_state = PLAYBACK_IDLE;
+#    ifdef BLUETOOTH_ENABLE
+    md770_radio_discard_reports();
+#    endif
     playback_pending = false;
     playback_steps = playback_step = 0;
     for (uint16_t code = 0; code <= UINT8_MAX; ++code) {
@@ -177,6 +180,9 @@ void md770_playback_cancel_physical(void) {
     del_weak_mods(playback_mods);
     playback_mods = 0;
     send_keyboard_report();
+#    ifdef BLUETOOTH_ENABLE
+    md770_radio_sync_reports();
+#    endif
 }
 
 static void playback_start(void) {

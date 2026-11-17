@@ -60,37 +60,19 @@ class MacroTests(unittest.TestCase):
     def delay(self, milliseconds):
         return bytes([self.abi['string_prefix'], self.abi['string_delay']]) + str(milliseconds).encode() + b'|'
 
-    def test_powered_boot_uses_the_saved_host_until_usb_configuration(self):
-        for configured in (False, True):
-            for saved in ('host_usb', 'host_bluetooth'):
-                with self.subTest(configured=configured, saved=saved):
-                    machine = MacroQmk(self.image, self.abi)
-                    machine.start()
-                    machine.hardware.pin(1, 12, True)
-                    machine.usb(configured)
-                    machine.set_host(saved)
-                    machine.write(machine.symbol('active_host'), self.abi['host_none'], 1)
-                    machine.call('md770_power_init')
-                    machine.matrix()
-                    machine.call('host_task')
-                    expected = 'host_usb' if configured else saved
-                    self.assertEqual(machine.read(machine.symbol('active_host'), 1), self.abi[expected])
-                    machine.call('register_code', 4)
-                    packets = machine.drain()
-                    if expected == 'host_usb' and not configured:
-                        self.assertEqual(machine.usb_reports, [])
-                        self.assertEqual(machine.read(machine.symbol('usb_pending'), 1), 1)
-                        machine.usb(True)
-                        machine.matrix()
-                    machine.call('unregister_code', 4)
-                    packets.extend(machine.drain())
-                    reports = ([bytes(packet[1:]) for packet in packets if packet[0] == 0xA1]
-                               if expected == 'host_bluetooth' else machine.usb_reports)
-                    self.assertEqual(key_events(reports), [(4, True), (4, False)])
-                    if expected == 'host_bluetooth':
-                        self.assertEqual(machine.usb_reports, [])
-                    else:
-                        self.assertFalse(any(packet[0] == 0xA1 for packet in packets))
+    def test_powered_boot_uses_saved_output_until_initial_usb_configuration(self):
+        for saved in ('host_usb', 'host_bluetooth'):
+            machine = self.machine()
+            machine.hardware.pin(1, 12, True)
+            machine.hardware.pin(0, 10, False)
+            machine.usb(False)
+            machine.set_host(saved)
+            machine.matrix()
+            machine.call('host_task')
+            self.assertEqual(machine.read(machine.symbol('active_host'), 1), self.abi[saved])
+            machine.usb(True)
+            machine.matrix()
+            self.assertEqual(machine.read(machine.symbol('active_host'), 1), self.abi['host_usb'])
 
     def test_slot_selection_switches_the_real_host_driver_without_usb_configuration(self):
         for saved in ('host_usb', 'host_bluetooth'):
@@ -224,7 +206,8 @@ class MacroTests(unittest.TestCase):
         text = b'abcdefghijklmnopqrstuvwxyz' * 3
         machine.load_macro(text + b'\x00')
         machine.play()
-        machine.macro_step()
+        for _ in range(10):
+            machine.macro_step()
         before = machine.read(machine.symbol('playback_offset'), 2)
         self.assertTrue(machine.playing())
         self.assertLess(before, len(text))

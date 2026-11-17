@@ -5,6 +5,13 @@ inspected right board `MD770BR-RIGHT V06 1223BJ`. This repository contains
 the evidence, photographs, reverse-engineering notes, host utilities and
 personal QMK userspace.
 
+The local firmware uses a fixed 48 MHz active clock and native QMK timing.
+All changes to shared QMK code have been removed. Keyboard support needs
+only the two independently submitted ChibiOS-Contrib fixes below; the
+runtime-clock and USB-stop patches are removed. See the
+[review](docs/qmk-upstream-readiness.md) and
+[current checkpoint](docs/mistel-md770-emulator-checkpoint.md).
+
 The QMK port remains in the separate
 [qmk_firmware fork](https://github.com/markwellis/qmk_firmware), on the
 branch `mistel-md770-support`. Hardware drivers remain in that repository;
@@ -68,7 +75,6 @@ The current build setup includes these pending changes:
 | [pok3rtool #19](https://github.com/pok3r-custom/pok3rtool/pull/19) | Open | Recognise both MD770 halves and declare missing CLI dependencies |
 | [QMK keyboard port](https://github.com/qmk/qmk_firmware/compare/develop...markwellis:qmk_firmware:mistel-md770-support) | Branch prepared; PR not opened | Add the keyboard, default keymap and flashing command |
 | [QMK udev rules](https://github.com/qmk/qmk_udev/compare/main...markwellis:mistel-md770-iap) | Branch prepared; PR not opened | Allow user-level USB access for flashing; not needed for compilation |
-| QMK ChibiOS USB receive wake | On support branch; PR not opened | Re-arm reception after suspend resets the input queue |
 
 The ChibiOS fixes must also reach QMK's ChibiOS-Contrib fork and dependency pin.
 `shell.nix` builds pinned upstream `pok3rtool` with the #19 patch. The

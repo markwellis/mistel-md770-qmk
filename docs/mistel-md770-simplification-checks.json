@@ -1,0 +1,152 @@
+{
+  "date": "2026-11-17T09:00:38.498121+00:00",
+  "scope": "Software verification of the committed QMK simplification; no firmware flashed during these checks",
+  "qmk": {
+    "upstream_base": "552db5253fed26665a90d85de6a28adfed0c7d54",
+    "shared_files_restored": [
+      "drivers/flash/flash_spi.c",
+      "drivers/flash/flash_spi.h",
+      "platforms/chibios/suspend.c",
+      "quantum/action.c",
+      "quantum/action_util.c",
+      "quantum/action_util.h",
+      "quantum/keyboard.c",
+      "quantum/keyboard.h",
+      "tmk_core/protocol/chibios/usb_driver.c",
+      "tmk_core/protocol/chibios/usb_driver.h",
+      "tmk_core/protocol/chibios/usb_main.c",
+      "tmk_core/protocol/chibios/usb_main.h",
+      "tmk_core/protocol/host.c",
+      "tmk_core/protocol/host.h",
+      "tmk_core/protocol/report.c"
+    ],
+    "existing_core_files_unchanged": true,
+    "dependency_pin_unchanged": "5a9ad82b6ba4f649cdb800e8c2bbc9be2d3ce767",
+    "additional_test_directories": [
+      "tests/md770_dip_switch",
+      "tests/md770_link",
+      "tests/md770_protocol"
+    ],
+    "commit": "e5b5479c53f3da7b28dac3666e9463ef606f4e27",
+    "branch": "mistel-md770-support"
+  },
+  "contrib": {
+    "base": "5a9ad82b6ba4f649cdb800e8c2bbc9be2d3ce767",
+    "local_revision": "150639d39a0dfbfbc129a23c9eda2dcfed8d2844",
+    "clean_checkout": true,
+    "changes": [
+      "1\t1\tos/common/ext/CMSIS/HT32/HT32F523xx/ht32f523x2.h",
+      "1\t1\tos/hal/ports/HT32/LLD/TIMv1/hal_gpt_lld.h"
+    ],
+    "required_upstream_prs": [
+      469,
+      470
+    ],
+    "runtime_clock_patch_removed": true,
+    "usb_stop_patch_removed": true
+  },
+  "firmware": [
+    {
+      "target": "mistel_md770rgb_bt_left_default_conformance",
+      "bytes": 36444,
+      "bin_sha256": "2794187230e1d866adb8c00fc8200ad2801d6da86462d430b8a9c78326f91bde",
+      "elf_sha256": "e0e577c7336907cd8e1405e145eb43932e289f16d19931474c8ec2170663e360"
+    },
+    {
+      "target": "mistel_md770rgb_bt_left_markwellis_conformance",
+      "bytes": 36444,
+      "bin_sha256": "2794187230e1d866adb8c00fc8200ad2801d6da86462d430b8a9c78326f91bde",
+      "elf_sha256": "e0e577c7336907cd8e1405e145eb43932e289f16d19931474c8ec2170663e360"
+    },
+    {
+      "target": "mistel_md770rgb_bt_right_default_conformance",
+      "bytes": 50364,
+      "bin_sha256": "efdf2122a457a38a65c8e3fa1e0b79ebdcd4067dc6657a6e406769bdac069afb",
+      "elf_sha256": "f15d3b4c377cb7c09354e2a16c284da080efe66b6b2351cc6f786309bac37f9b"
+    },
+    {
+      "target": "mistel_md770rgb_bt_right_markwellis_conformance",
+      "bytes": 51632,
+      "bin_sha256": "c29dae348fc922c0d155f91f9ee41c367ec432396e648cefcf97db7ad392b1f8",
+      "elf_sha256": "1b5b979284ffa669145040248cfe92f61190cfd99458edc92abff9392657acf1"
+    }
+  ],
+  "checks": [
+    {
+      "command": "nix-shell --run 'bash tests/md770_bluetooth/run-software.sh'",
+      "passed": true,
+      "compiled_groups_per_keymap": 100,
+      "compiled_subtests_per_keymap": 408,
+      "host_tool_tests": 44,
+      "records": [
+        "docs/mistel-md770-conformance-checks-default.json",
+        "docs/mistel-md770-conformance-checks-markwellis.json",
+        "docs/mistel-md770-clock-checks-left.json",
+        "docs/mistel-md770-clock-checks-right.json",
+        "docs/mistel-md770-link-stock-conformance.json"
+      ]
+    },
+    {
+      "command": "nix-shell --run 'qmk test-c -t md770_dip_switch -t md770_link -t md770_protocol -j 4'",
+      "passed": true,
+      "tests": 16
+    },
+    {
+      "command": [
+        "qmk lint -kb mistel/md770rgb_bt/left --strict",
+        "qmk lint -kb mistel/md770rgb_bt/right --strict"
+      ],
+      "passed": true
+    },
+    {
+      "command": "nix-shell --run 'bash tests/chibios_usb/run-stop.sh'",
+      "passed": true,
+      "scope": "Separate source investigation; no production patch applied"
+    }
+  ],
+  "source_sha256": {
+    "keyboards/mistel/md770rgb_bt/bluetooth.c": "edd7bfb71f46de4073cce6291918e440ad7ef2bb92f3c05d101c805de5bdcc45",
+    "keyboards/mistel/md770rgb_bt/chconf.h": "338db518cb95866f56f9dac9506ecb6905dfaa21b2666aa40313bd02385a2f38",
+    "keyboards/mistel/md770rgb_bt/config.h": "b1df38eb5179b200044555cd36f1e034f9bbc53dfa974d04b8aee33846d7d826",
+    "keyboards/mistel/md770rgb_bt/halconf.h": "ad962b5ce9b330fe2d2685e1a663eb2fd137ce191b65950153809fbacc83ec8b",
+    "keyboards/mistel/md770rgb_bt/indicators.c": "9aae4d8366ba6e58e673cc05d5885d1ccce32f5be9559fe25b15d92da804a7a5",
+    "keyboards/mistel/md770rgb_bt/info.json": "d2c56bd01170c9030033082bd172b81654c3464ac816a0fee222cc95f287a13a",
+    "keyboards/mistel/md770rgb_bt/keymaps/default/config.h": "c6b88065aacf642353a8660cbdc2f32942ca77fd6a70bd24d43a244ca285e257",
+    "keyboards/mistel/md770rgb_bt/keymaps/default/keymap.c": "92d8beb7b8f4deb80134a4327a9bcac98f4cff5de89989bef00be547e7be7cb9",
+    "keyboards/mistel/md770rgb_bt/keymaps/default/keymap.h": "76d315dcc65a4232a01c416df25f369c45627d5dd97e97d28f68c1ee029d1163",
+    "keyboards/mistel/md770rgb_bt/keymaps/default/keymap.json": "2881ba0a67bae0ec12b21586b7f410a17727fd2115a53ef86e5adb9edd568ade",
+    "keyboards/mistel/md770rgb_bt/keymaps/default/programming.c": "43d0ab06a495c0b85aad872cf619e2ab9eb2b51460de894067a165a9430f5f40",
+    "keyboards/mistel/md770rgb_bt/keymaps/default/programming.h": "12a7419d4b6cd978af85a31103451a9cf08c4521f216b2a8303610b38f49b9eb",
+    "keyboards/mistel/md770rgb_bt/keymaps/default/rules.mk": "4383eeac5ee387055ccfe91d0b2c427324bd0f1b7b39bfda33993cbb440ba181",
+    "keyboards/mistel/md770rgb_bt/left/keyboard.json": "6b8a334e886a70e525f721b1e262145ffc3ef3f11a76ee1a61e28aee5204e242",
+    "keyboards/mistel/md770rgb_bt/left/rules.mk": "2aef93a07fd597b1eaf014575e61a734d9236eb77070da2f50b3e8ee41479743",
+    "keyboards/mistel/md770rgb_bt/link.c": "35c1987845257292ef383dfc0ac923a18c38051b3788956f04c94b8264973544",
+    "keyboards/mistel/md770rgb_bt/mcuconf.h": "65580271e5698d1524f2351ae0fd762205526fa9aa52848d82863e8dda2c99f9",
+    "keyboards/mistel/md770rgb_bt/md770rgb_bt.c": "091b0da4a41d063e4b71587e6dc09399e524e2e2e743eea43254c0430862ec51",
+    "keyboards/mistel/md770rgb_bt/md770rgb_bt.h": "c45b1345d5d70899f755e2374a31e829790133bad73f2cf857fb1469be885fd0",
+    "keyboards/mistel/md770rgb_bt/power.c": "4c6564d8c199512989c53b9d8018cfff3f410567b01b8dc84cdeef2345079f4a",
+    "keyboards/mistel/md770rgb_bt/power_clock.c": "d7723f95c72e6882e0833836408d88b2eca8a35630db19aaf0174a4b9f7229ea",
+    "keyboards/mistel/md770rgb_bt/protocol.c": "f96e1a827e18437ceafd231edafc19f51ce170604558b53a8e75fbf5354b6eb3",
+    "keyboards/mistel/md770rgb_bt/protocol.h": "6d92924fecda05a7ff43e8b64b6456bab0914bd6902778bb22d28ef0f5b14502",
+    "keyboards/mistel/md770rgb_bt/rgb.c": "aa59e2c7892aa5448693716159e157a196bdd24e795715b91388afa6644c44e6",
+    "keyboards/mistel/md770rgb_bt/right/keyboard.json": "c3e88669a49f0695c7ac4d5f7b65ed053baae3f1a25db1aac486bb35ff1cf4e8",
+    "keyboards/mistel/md770rgb_bt/right/rules.mk": "7f7d73e45086d1f55b414daa4040aef68151880dc8dbdac62fa11e1b794b0e9d",
+    "keyboards/mistel/md770rgb_bt/rules.mk": "99202fc76b9b7391045923bd07a0850f126f0f009e356eef972a2dff272290c4",
+    "keyboards/mistel/md770rgb_bt/scan.c": "bbf6a0a5a52faa6e3cddcd5da6752b700c957d2dd10261f4878c8fafb3351e6f",
+    "keyboards/mistel/md770rgb_bt/storage.c": "8db126955b675f568f2c4311d39f1d00ce1d6ad18f9be73eb8bfaa456e608ec6"
+  },
+  "contrib_source_sha256": {
+    "os/common/ext/CMSIS/HT32/HT32F523xx/ht32f523x2.h": "83b50465e3e8b92b5c87dc3bffa0ad652dc4cddbfe55d95fa8643d474bd0c94b",
+    "os/hal/ports/HT32/LLD/TIMv1/hal_gpt_lld.h": "18d8f659cc37dcac88c19e07d37a5592fc585c2d79123af6985600b3654f45a3"
+  },
+  "review": {
+    "model": "Astra Max",
+    "result": "No remaining ordinary-use blocker found; retain keyboard-only implementation and two independent Contrib fixes"
+  },
+  "limits": [
+    "Physical typing, KVM/output switching and USB wake after simplification remain unverified.",
+    "Electrical deep-sleep wake and battery runtime require hardware.",
+    "Exact stock behaviour and transient-input continuation across interruptions are not requirements.",
+    "The optional first Raw HID packet after USB wake limitation is accepted."
+  ]
+}

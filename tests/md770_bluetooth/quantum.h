@@ -194,6 +194,7 @@ void     gpio_set_pin_input_high(unsigned pin);
 void     usbWakeupHost(void *);
 void     clear_keyboard(void);
 bool     process_record_user(uint16_t keycode, keyrecord_t *record);
+bool     pre_process_record_user(uint16_t keycode, keyrecord_t *record);
 uint32_t timer_read32(void);
 uint32_t timer_elapsed32(uint32_t start);
 void     wait_ms(unsigned ms);
@@ -215,3 +216,15 @@ void host_set_consumer_usage(uint16_t usage);
 void host_resend_extra(uint8_t reports);
 void resend_keyboard_report(void);
 uint32_t chVTGetSystemTimeX(void);
+
+void chSysHalt(const char *reason);
+
+void keyboard_post_init_user(void);
+
+extern report_keyboard_t *keyboard_report;
+void bluetooth_send_keyboard(report_keyboard_t *report);
+void bluetooth_send_consumer(uint16_t usage);
+void bluetooth_send_system(uint16_t usage);
+
+uint16_t host_last_consumer_usage(void);
+uint16_t host_last_system_usage(void);

@@ -151,7 +151,7 @@ class FirmwareTests(unittest.TestCase):
                 qmk.task(2000)
         self.assertEqual(stock.read(0x200001E4, 1), 7)
         qmk.keyboard(bytes.fromhex('00 00 04 00 00 00 00 00'))
-        self.assertFalse(qmk.call('md770_radio_key_ready', 4))
+        self.assertEqual(qmk.read(qmk.symbol('radio_state'), 1), 7)
         stock.call(0x36B8, 0x41)
         stock.task()
         qmk.select(1)
@@ -311,7 +311,9 @@ class FirmwareTests(unittest.TestCase):
                 qmk, stock = self.qmk(connected=False), Stock(self.stock_image)
                 qmk.hardware.pin(1, 12, not low_battery)
                 qmk.hardware.pin(2, 13, False)
-                qmk.write(qmk.symbol('battery_level'), 4 if low_battery else 7, 1)
+                qmk.write(qmk.symbol('supply_known'), 1, 1)
+                qmk.write(qmk.symbol('external'), int(not low_battery), 1)
+                qmk.write(qmk.symbol('battery_low'), int(low_battery), 1)
                 qmk.matrix()
                 stock.hardware.pin(2, 13, False)
                 stock.write(0x2000001F, 1 if low_battery else 3, 1)
@@ -340,32 +342,21 @@ class FirmwareTests(unittest.TestCase):
                 stock.indicators()
                 self.assertEqual(qmk.hardware.registers[0x4006E098], stock.hardware.registers[0x4006E098])
 
-    def test_all_lvd_selections_and_debounce_match_stock(self):
-        thresholds = (0, 2250, 2400, 2550, 2700, 2850, 3000, 3150)
-        for level in range(7, 0, -1):
-            with self.subTest(level=level):
-                qmk, stock = self.qmk(connected=False), Stock(self.stock_image)
-                qmk.write(qmk.symbol('battery_level'), level, 1)
-                stock.write(0x2000001E, level, 1)
-                qmk.matrix()
-                stock.power()
-                self.assertEqual(qmk.hardware.lvd, stock.hardware.lvd)
-                qmk.hardware.voltage_mv = stock.hardware.voltage_mv = thresholds[level] - 1
-                qmk.matrix()
-                qmk.voltage_tick(49)
-                stock.voltage_tick(49)
-                stock.power()
-                qmk.ms += 24
-                qmk.matrix()
-                self.assertEqual(stock.read(0x2000001E, 1), level)
-                self.assertEqual(qmk.read(qmk.symbol('battery_level'), 1), level)
-                qmk.voltage_tick()
-                stock.voltage_tick()
-                stock.power()
-                qmk.ms += 1
-                qmk.matrix()
-                self.assertEqual(stock.read(0x2000001E, 1), level - 1)
-                self.assertEqual(qmk.read(qmk.symbol('battery_level'), 1), level - 1)
+    def test_one_lvd_threshold_filters_and_latches_the_warning(self):
+        qmk = self.qmk()
+        qmk.matrix()
+        self.assertEqual(qmk.hardware.lvd, 0x410000)
+        qmk.hardware.voltage_mv = 2849
+        qmk.voltage_tick(49)
+        qmk.matrix()
+        self.assertFalse(qmk.call('md770_battery_low'))
+        qmk.voltage_tick()
+        qmk.matrix()
+        self.assertTrue(qmk.call('md770_battery_low'))
+        qmk.hardware.voltage_mv = 3300
+        qmk.voltage_tick(100)
+        qmk.matrix()
+        self.assertTrue(qmk.call('md770_battery_low'))
 
     def test_pairing_waits_150_ms_after_selection(self):
         qmk = self.qmk()
@@ -415,16 +406,17 @@ class FirmwareTests(unittest.TestCase):
                 self.assertEqual(stock.transfer(bytes(9)), expected)
                 self.assertEqual(stock.read(0x20000218, 1), 0x20)
 
-    def test_report_acceptance_yields_without_sleeping(self):
+    def test_report_fifo_acceptance_yields_without_sleeping(self):
         qmk = self.qmk()
-        qmk.keyboard(bytes([0, 0, 4, 0, 0, 0, 0, 0]))
         started = qmk.ms
-        for _ in range(100):
-            self.assertFalse(qmk.call('md770_radio_key_ready', 4))
+        for _ in range(8):
+            qmk.keyboard(bytes([0, 0, 4, 0, 0, 0, 0, 0]))
+            qmk.keyboard(bytes(8))
+        self.assertEqual(qmk.queued(), 16)
         self.assertEqual(qmk.ms, started)
-        qmk.select(2, pair=True)
-        self.assertEqual(qmk.read(qmk.symbol('latest_keyboard') + 2, 1), 4)
-        self.assertEqual(qmk.drain()[-1], [0xA1, 0, 0, 4, 0, 0, 0, 0, 0])
+        reports = qmk.drain()
+        self.assertEqual(len(reports), 16)
+        self.assertEqual([p[3] for p in reports], [4, 0] * 8)
 
     def test_radio_startup_survives_timer_wrap(self):
         qmk = self.qmk(connected=False)
@@ -556,23 +548,6 @@ class FirmwareTests(unittest.TestCase):
                 self.assertEqual(qmk.read(qmk.symbol('radio_state'), 1), 4)
                 self.assertIn(('enter', SPI_IRQ), [(kind, irq) for kind, irq, _ in qmk.interrupt_trace])
 
-    def test_lvd_requires_25_ms_before_changing_level(self):
-        qmk = self.qmk()
-        qmk.hardware.voltage_mv = 3100
-        qmk.matrix()
-        self.assertEqual(qmk.read(qmk.symbol('battery_level'), 1), 7)
-        qmk.voltage_tick(48)
-        qmk.ms += 24
-        qmk.matrix()
-        self.assertEqual(qmk.read(qmk.symbol('battery_level'), 1), 7)
-        qmk.voltage_tick(2)
-        qmk.ms += 1
-        qmk.matrix()
-        self.assertEqual(qmk.read(qmk.symbol('battery_level'), 1), 6)
-        qmk.ms += 100
-        qmk.matrix()
-        self.assertEqual(qmk.read(qmk.symbol('battery_level'), 1), 6)
-
     def test_charging_indicator_burst_boundaries(self):
         qmk = self.qmk()
         qmk.hardware.pin(1, 12, True)
@@ -603,16 +578,6 @@ class FirmwareTests(unittest.TestCase):
                                           self.abi['usb_driver_state_bytes']), self.abi[driver])
                 self.assertEqual(qmk.read(qmk.symbol('usb_device_state') + self.abi['usb_configure_state'],
                                           self.abi['usb_configure_state_bytes']), self.abi[core])
-
-    def test_remote_wake_is_explicitly_outside_the_model(self):
-        qmk = self.qmk()
-        qmk.hardware.pin(1, 12, True)
-        qmk.write(qmk.symbol('supply'), 3, 1)
-        qmk.set_host('host_usb')
-        qmk.usb(True, suspended=True, remote_wakeup=True)
-        qmk.matrix()
-        with self.assertRaisesRegex(Unsupported, 'USB signalling, including remote wake'):
-            qmk.call('register_code', 4)
 
     def test_wrong_stock_image_is_rejected(self):
         with self.assertRaisesRegex(ValueError, 'recorded US 7.02'):

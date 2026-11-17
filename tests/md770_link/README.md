@@ -6,7 +6,8 @@ The stock comparison requires the recorded left US 4.01 and right US 7.02 binari
 The native harness compiles the actual QMK link and framing source for both halves
 with address, undefined-behaviour and bounds sanitisers. It checks periodic
 snapshots, coalesced ticks, queue backpressure, retained matrix/RGB state, PB8
-mode transitions, RGB power requests and UART retiming/sleep restoration.
+mode transitions, RGB activity and native serial stop/start at 48 MHz.
+Sleep discards partial frames and queues; a fresh complete snapshot restores input.
 Hardware services are supplied; the tests do not establish electrical wake or
 physical UART timing.
 

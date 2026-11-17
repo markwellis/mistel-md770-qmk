@@ -13,7 +13,8 @@ nix-shell --run 'bash tests/md770_bluetooth/run.sh'
 ```
 
 `QMK_HOME` defaults to the sibling `qmk_firmware` checkout. The Nix shell sets
-that path. Cases cover queued reports and macro backpressure, media mappings,
+that path. Cases cover ordered quick taps, bounded queue overflow/release recovery,
+macro backpressure and cancellation, native media mappings,
 transport recovery, incoming status/reconnect races, pairing, shutdown,
 supply/LVD/LED states, USB suspend and both RGB drivers. The RGB checks verify
 the unchanged shifted waveform for all 256 byte values and that wake priming
@@ -43,13 +44,16 @@ use `mistel-md770-conformance-*` names; installed-image records are historical.
 The generated hardware plan contains predictions awaiting measured calibration.
 
 `run-clock.sh` executes the board and HAL clock/sleep instructions separately.
+Both halves retain 48 MHz operation while active and use native QMK
+waits and the unmodified periodic kernel tick. Idle settling uses 2 ms waits
+with the scan timer stopped. Deep sleep stops the clocks until wake.
 Oscillator readiness, timer completion, RTOS sleep and wake events are supplied;
 the ordinary component fixture explicitly skips this clock boundary. Clock
 records list each check and its limits. USB IRQ tests execute suspend, resume
 and SOF callbacks with actual HAL queues; physical transfer completion is supplied.
-The remote-wake request test supplies CSR storage and observes requests only.
+The remote-wake request test supplies the wake API and observes requests only.
 Flash tests execute the board wrapper and generic driver with supplied chip
-responses, including stock's ID/status initialisation and retry limits.
+responses, including ID/status initialisation, retry limits and rejection of exhausted retries.
 
 `emulator*.py` and `emulator_abi.c` execute compiled QMK and stock components
 against the same bounded peripheral model. The Nix shell supplies Unicorn,

@@ -21,6 +21,7 @@
 #define USART_FCR_RXR 2U
 #define USART0_IRQn 23
 #define HT32_USART0_IRQ_PRIORITY 0x40
+#define HT32_CK_USART_FREQUENCY 48000000U
 #define TIME_IMMEDIATE 0
 #define MSG_OK 0
 
@@ -58,4 +59,7 @@ size_t sdWriteTimeout(SerialDriver *driver, const uint8_t *data, size_t length, 
 size_t oqGetEmptyI(output_queue_t *queue);
 bool oqIsEmptyI(output_queue_t *queue);
 matrix_row_t matrix_get_row(uint8_t row);
-uint32_t md770_clock_frequency(void);
+
+void sdStop(SerialDriver *driver);
+void usbDisconnectBus(void *driver);
+void usbConnectBus(void *driver);

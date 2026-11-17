@@ -36,11 +36,12 @@ bool md770_radio_key_ready(uint16_t code) {
     (void)code;
     return radio_reports <= 8;
 }
-bool md770_power_key_ready(uint16_t code) {
-    (void)code;
+bool md770_power_usb_ready(void) {
     return true;
 }
 void host_task(void) {}
+void md770_radio_discard_reports(void) { radio_reports = 0; }
+void md770_radio_sync_reports(void) {}
 void md770_playback_cancel_physical(void);
 static struct {
     uint8_t  code;

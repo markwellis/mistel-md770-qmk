@@ -21,7 +21,7 @@ class Qmk(Machine):
         self.sleep_ticks = 0
         self.tick_hz = (self.read(self.symbol('md770_system_tick_frequency'))
                         if 'md770_system_tick_frequency' in self.symbols else
-                        abi['system_tick_hz'] if 'dirty' in self.symbols else 1000)
+                        abi['system_tick_hz'] if 'report_count' in self.symbols else 1000)
         self.hook('timer_read32', lambda: int(self.ms))
         if 'md770_indicator_ticks' in self.symbols:
             self.hook('md770_indicator_ticks', lambda: int(self.ms * self.tick_hz / 1000))
@@ -46,14 +46,12 @@ class Qmk(Machine):
         self.set_host('host_bluetooth')
         self.write(self.symbol('active_host'), abi['host_bluetooth'], 1)
         self._hal()
-        if 'dirty' in self.symbols and 'led_init_ports' in self.symbols:
+        if 'report_count' in self.symbols and 'led_init_ports' in self.symbols:
             self.call('led_init_ports')
         self.usb(False)
-        if 'usb_driver_set_enabled' in self.symbols:
-            self.hook('usb_driver_set_enabled', self._usb_enable)
-        if 'md770_clock_service' in self.symbols:
-            # Clock and sleep instructions run in the separate ClockFirmware fixture.
-            self.hook('md770_clock_service', lambda: None)
+        if 'md770_power_service' in self.symbols:
+            # Full sleep instructions have their own compiled clock fixture.
+            self.hook('md770_power_service', lambda: None)
 
     def _sleep(self):
         self.sleep_ticks += self.cpu.reg_read(UC_ARM_REG_R0) * 1000
@@ -64,18 +62,6 @@ class Qmk(Machine):
 
     def _persist(self):
         self.persistent_writes += 1
-
-    def _usb_enable(self):
-        from unicorn.arm_const import UC_ARM_REG_R1
-        enabled = bool(self.cpu.reg_read(UC_ARM_REG_R1))
-        state = self.read(self.symbol('USBD1') + self.abi['usb_driver_state'],
-                          self.abi['usb_driver_state_bytes'])
-        if not enabled or state == self.abi['usb_stop']:
-            self.usb(False)
-            if not enabled:
-                self.write(self.symbol('USBD1') + self.abi['usb_driver_state'],
-                           self.abi['usb_stop'], self.abi['usb_driver_state_bytes'])
-        self.usb_enabled = enabled
 
     def _hal(self):
         abi = self.abi
@@ -98,6 +84,8 @@ class Qmk(Machine):
         self.write(self.symbol('config'), self.abi[name], 1)
 
     def usb(self, configured, suspended=False, remote_wakeup=False):
+        if configured:
+            self.hardware.pin(1, 12, True)
         if suspended and not configured:
             raise ValueError('Only a configured USB connection can be suspended')
         self.write(self.symbol('USBD1') + self.abi['usb_configuration'], int(configured), 1)
@@ -161,11 +149,7 @@ class Qmk(Machine):
         return self.read(self.symbol('radio_state'), 1) == 4
 
     def queued(self):
-        if 'dirty' in self.symbols:
-            pending = self.read(self.symbol('pending_command'), self.abi.get('radio_command_bytes', 1))
-            return self.read(self.symbol('dirty'), 1).bit_count() + int(
-                self.abi.get('radio_keyboard_command', 0xF0) <= pending <= self.abi.get('radio_system_command', 0xF2))
-        return self.read(self.symbol('count'), 1)
+        return self.read(self.symbol('report_count'), 1)
 
     def start(self):
         self.call('reset_radio')

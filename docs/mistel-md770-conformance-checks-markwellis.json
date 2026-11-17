@@ -1,8 +1,8 @@
 {
-  "date": "2026-11-16T20:25:26.843366+00:00",
+  "date": "2026-11-17T08:50:07.146376+00:00",
   "unicorn": "2.1.4",
-  "tests": 125,
-  "parameterised_subtests": 449,
+  "tests": 100,
+  "parameterised_subtests": 408,
   "passed": true,
   "failures": [],
   "errors": [],
@@ -12,21 +12,21 @@
     "emulator.py": "2b38edd3f9d28cfd495ede639039ba9306135f5ed7f0606ecbb396f461fcb3be",
     "emulator_abi.c": "e2dbf75de0fb07d3bf296f853563d787d191f1142184b85e4af3ac683a679898",
     "emulator_abi.py": "ee79ce95573bed0760d7cfca3e4933a5a6a4f64476707f2bcc0ec1f70e68e5b1",
-    "emulator_firmware.py": "e73687b03392c9f9543cfce6929e9e4059976c1ff1ac8ced9d3466cba7261aab",
-    "emulator_macros.py": "9bb275ba54fcdde64bad28bb488cc22df37193cc3ea72019b847bde2973d904a",
+    "emulator_firmware.py": "6fecdba674b75b0c350933eee9b5c55da1492b7c55766ab5ed835689361d8ee4",
+    "emulator_macros.py": "6046798fa129b821a2b316d3d6e8c25a23999fa0c6b722fd2a48d788b9856fb7",
     "emulator_scenarios.py": "caf235de6975b045db39f033bf8b75b6ce4c758a737764bc137e3cd885c71592",
-    "emulator_usb.py": "b90b47c31887e9d383dc007e96b6be15b91254feb83cecb6337f2e85ea8e7b2d"
+    "emulator_usb.py": "8044a1e72f468e41780310a4af7db09905b44b37a2b9a117844b73ec2bfc10a8"
   },
   "test_sources_sha256": {
     "check_emulator.py": "3e37270bc7fe5a0b6e465449663c514d53e5c0023b9649e4fb8b798f95452166",
     "cpu_fixture.S": "75e8f9508bea49d8c35707031abdbea417caa8af9d9b59f8d58952eb9408f5b8",
     "test_emulator.py": "0b5d4232084818b2e906114c803e77dd8096d362f53ce0009f3fc465ab05b5f3",
-    "test_emulator_conformance.py": "ad71dabc203330ea85022e68ffb9a853b06f1dfb599bef413ab69a85c5aa91da",
-    "test_emulator_firmware.py": "7c19f3e5e19b45502687950010bffad61ea2e3d34e484eaf6b79b85e8a05eca8",
-    "test_emulator_macros.py": "42c149c8ebedd07ffc85175217205601c592fe9f51b573cb8db14d1856e11848",
-    "test_emulator_usb.py": "56b7ab4feb8a36da40e8d1445a413875df7ad73ca307f9e64ad5729086fb9a5f"
+    "test_emulator_conformance.py": "da0f90bf79b85f166fd5602ab255a53231b2804346c2ed4f1d388001d291d379",
+    "test_emulator_firmware.py": "33c17e71d70947ed84e4b9dc519b2b1e4564e99f0685b140af9216c68bcacc69",
+    "test_emulator_macros.py": "a0f820be3bd607155ac26afed914d722993eced70809a5286086528b563ba7a9",
+    "test_emulator_usb.py": "8463f097f33448838c2b643e8eec176937761d79b9d4e6b39fe974fe57949903"
   },
-  "qmk_elf_sha256": "e157e062a264d7e6bf3a48ea89152b43a56401c461dae401f86fe131c1d8fb75",
+  "qmk_elf_sha256": "1b5b979284ffa669145040248cfe92f61190cfd99458edc92abff9392657acf1",
   "stock_sha256": "8fafdca096756f23626802d5b586b270b0bd512fe5d1c0327db4eafcd4f689b2",
   "abi": {
     "usb_configuration": 127,
@@ -143,17 +143,17 @@
   },
   "abi_provenance": {
     "assumption": "Current headers and compiler must match the supplied ELF build; rebuild after changes",
-    "elf_sha256": "e157e062a264d7e6bf3a48ea89152b43a56401c461dae401f86fe131c1d8fb75",
+    "elf_sha256": "1b5b979284ffa669145040248cfe92f61190cfd99458edc92abff9392657acf1",
     "compiler": "arm-none-eabi-gcc (Arm GNU Toolchain 15.2.Rel1 (Build arm-15.86)) 15.2.1 20251203",
     "flags_sha256": "e8e88a5769b44caa74f18b860f1b896f70b25a28ee25b86f81e0d03019607138",
-    "preprocessed_probe_sha256": "299c5c61bea0ed77e1ef25f63e6a97632f207f70d0b878f15e5c8b1e3a324bbd"
+    "preprocessed_probe_sha256": "714ff345b3ef15727b06550284b1e5967898dff0515765db2896179208a33564"
   },
-  "macro_elf_sha256": "e20a0dfdb7c6ca03db3da1d0dd275a768bbd13052a86a0ba4f149a2d03fc81cf",
+  "macro_elf_sha256": "09b856434b84f0f7552fcb47763513912c0129d9704a53cbdd716d3301733e52",
   "macro_abi_provenance": {
     "assumption": "Current headers and compiler must match the supplied ELF build; rebuild after changes",
-    "elf_sha256": "e20a0dfdb7c6ca03db3da1d0dd275a768bbd13052a86a0ba4f149a2d03fc81cf",
+    "elf_sha256": "09b856434b84f0f7552fcb47763513912c0129d9704a53cbdd716d3301733e52",
     "compiler": "arm-none-eabi-gcc (Arm GNU Toolchain 15.2.Rel1 (Build arm-15.86)) 15.2.1 20251203",
     "flags_sha256": "215a8c3e40b1709039dda7a605679953614702a1db810f93b9dd6d8410c7335e",
-    "preprocessed_probe_sha256": "299c5c61bea0ed77e1ef25f63e6a97632f207f70d0b878f15e5c8b1e3a324bbd"
+    "preprocessed_probe_sha256": "714ff345b3ef15727b06550284b1e5967898dff0515765db2896179208a33564"
   }
 }

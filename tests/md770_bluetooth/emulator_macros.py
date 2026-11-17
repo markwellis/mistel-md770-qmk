@@ -39,6 +39,8 @@ class MacroQmk(Qmk):
         return self.macro_buffer[offset]
 
     def _usb_keyboard(self):
+        if self.read(self.symbol('USBD1') + self.abi['usb_driver_state'], self.abi['usb_driver_state_bytes']) != self.abi['usb_active']:
+            return
         report = self.cpu.reg_read(UC_ARM_REG_R0)
         mods = self.read(report + self.abi['report_mods'], 1)
         keys = self.cpu.mem_read(report + self.abi['report_keys'], 6)
@@ -105,3 +107,4 @@ class MacroQmk(Qmk):
         self.set_host(host)
         self.write(self.symbol('active_host'), self.abi[host], 1)
         self.usb(not bluetooth)
+        self.hardware.pin(1, 12, not bluetooth)

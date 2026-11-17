@@ -7,6 +7,8 @@
 #include "keyboards/mistel/md770rgb_bt/power.c"
 #include "keyboards/mistel/md770rgb_bt/indicators.c"
 
+static report_keyboard_t native_report;
+report_keyboard_t *keyboard_report = &native_report;
 bool pins[64], sel;
 unsigned errors;
 std::deque<uint8_t> fifo_rx, fifo_tx;
@@ -41,8 +43,7 @@ uint32_t timer_read32(void) { return now; }
 uint32_t timer_elapsed32(uint32_t start) { return now - start; }
 uint32_t chVTGetSystemTimeX(void) { return now * 2; }
 bool md770_power_sleeping(void) { return false; }
-void md770_power_request(enum md770_power_level) {}
-void md770_clock_service(void) {}
+void md770_power_service(void) {}
 matrix_row_t matrix_get_row(uint8_t row) { return rows[row]; }
 uint8_t layer_switch_get_layer(keypos_t) { return 0; }
 uint16_t keymap_key_to_keycode(uint8_t, keypos_t key) { return keycodes[key.row][key.col]; }
@@ -50,7 +51,10 @@ uint16_t get_event_keycode(keyevent_t event, bool) { return keycodes[event.key.r
 connection_host_t connection_get_host(void) { return host; }
 void connection_set_host_noeeprom(connection_host_t next) { host = next; }
 void connection_set_host(connection_host_t next) { host = next; ++saved_hosts; }
+uint16_t host_last_consumer_usage(void) { return consumer_usage; }
+uint16_t host_last_system_usage(void) { return system_usage; }
 void host_task(void) {}
+void keyboard_post_init_user(void) {}
 void host_set_system_usage(uint16_t usage) { system_usage = usage; }
 void host_set_consumer_usage(uint16_t usage) { consumer_usage = usage; }
 void host_system_send(uint16_t usage) { system_usage = usage; if (host == CONNECTION_HOST_BLUETOOTH) bluetooth_send_system(usage); }
@@ -58,6 +62,9 @@ void host_consumer_send(uint16_t usage) { consumer_usage = usage; if (host == CO
 void host_resend_extra(uint8_t) { ++usb_flushes; }
 void resend_keyboard_report(void) { ++usb_flushes; }
 bool process_record_user(uint16_t, keyrecord_t *) { return true; }
+bool pre_process_record_user(uint16_t, keyrecord_t *) { return true; }
+void notify_usb_device_state_change_user(struct usb_device_state) {}
+usb_configure_state_t usb_device_state_get_configure_state(void) { return USB_DEVICE_STATE_CONFIGURED; }
 void clear_keyboard(void) {
     report_keyboard_t zero{};
     bluetooth_send_keyboard(&zero);
@@ -109,7 +116,7 @@ static std::vector<std::vector<uint8_t>> drain(void) {
     for (unsigned i = 0; i < 100; ++i) {
         tick(10);
         if (pins[C14]) result.push_back(finish());
-        else if (!dirty && pending_command == NO_COMMAND) return result;
+        else if (!report_count && pending_command == NO_COMMAND) return result;
     }
     assert(false);
     return result;
@@ -134,58 +141,53 @@ int main(int argc, char **argv) {
     std::string test = argv[1];
     boot();
     if (test == "sleep") {
-        for (auto old_phase : {READY, OFF, FAILED}) {
-            for (auto command : {NO_COMMAND, COMMAND_PAIR_START}) {
-                for (unsigned guard : {0, 150, 2000}) {
-                    arm_receiver();
-                    phase = old_phase;
-                    pending_command = old_phase == READY ? command : COMMAND_STOP;
-                    ready_at = now + guard;
-                    gpio_write_pin_low(C14);
-                    md770_radio_power_prepare();
-                    unsigned expected = old_phase == READY && command == 0x50 ? (guard ? guard : 2000) : 10;
-                    bool request = pins[C14], reset = pins[D1];
-                    md770_radio_power_downI();
-                    assert(radio_suspended && !(CKCU->APBCCR0 & CKCU_APBCCR0_SPI0EN) && !radio_pin_mode);
-                    errors = 8;
-                    radio_irq();
-                    assert(errors == 8 && !failed);
-                    now += 5000;
-                    md770_radio_power_upI();
-                    assert(!radio_suspended && phase == READY && ready_at == now + expected);
-                    assert(radio_pin_mode == (PAL_MODE_HT32_AF(5) | PAL_MODE_INPUT));
-                    assert(pins[C14] == request && pins[D1] == reset && SPI0->CPR == 0x17);
-                }
-            }
-        }
-        md770_radio_set_clockI(8000000);
-        assert(SPI0->CPR == 3);
-        md770_radio_set_clockI(48000000);
-        assert(SPI0->CPR == 0x17);
+        report_keyboard_t report{.keys = {4}};
+        bluetooth_send_keyboard(&report);
+        md770_radio_select(2, true);
+        md770_radio_power_downI();
+        assert(radio_suspended && !report_count && pending_command == COMMAND_USB_STATUS);
+        assert(!(CKCU->APBCCR0 & CKCU_APBCCR0_SPI0EN) && !radio_pin_mode);
+        errors = 8;
+        radio_irq();
+        assert(errors == 8 && !failed);
+        now += 5000;
+        md770_radio_power_upI();
+        assert(!radio_suspended && phase == READY && ready_at == now + 10);
+        assert(radio_pin_mode == (PAL_MODE_HT32_AF(5) | PAL_MODE_INPUT) && SPI0->CPR == 0x17);
+        assert(drain() == std::vector<std::vector<uint8_t>>({{0xa7, 2, 0, 2}}));
     } else if (test == "reports") {
-        report_keyboard_t report{.mods = 2, .keys = {4}};
-        bluetooth_send_keyboard(&report);
-        assert(!md770_radio_key_ready(4));
+        for (uint8_t key = 4; key < 10; ++key) {
+            report_keyboard_t down{.mods = 2, .keys = {key}}, up{};
+            bluetooth_send_keyboard(&down);
+            bluetooth_send_keyboard(&up);
+        }
+        auto packets = drain();
+        assert(packets.size() == 12);
+        for (unsigned i = 0; i < packets.size(); ++i) {
+            assert(packets[i] == std::vector<uint8_t>({0xa1, (uint8_t)(i % 2 ? 0 : 2), 0, (uint8_t)(i % 2 ? 0 : 4 + i / 2), 0, 0, 0, 0, 0}));
+        }
+    } else if (test == "overflow") {
+        report_keyboard_t down{.mods = 2, .keys = {4}}, up{};
+        bluetooth_send_keyboard(&down);
         tick(10);
-        assert(md770_radio_key_ready(4));
-        report = {};
-        bluetooth_send_keyboard(&report);
-        assert(finish() == std::vector<uint8_t>({0xa1, 2, 0, 4, 0, 0, 0, 0, 0}));
-        assert(drain() == std::vector<std::vector<uint8_t>>({{0xa1, 0, 0, 0, 0, 0, 0, 0, 0}}));
+        for (unsigned i = 1; i < REPORT_QUEUE_SIZE; ++i) bluetooth_send_keyboard(&down);
+        assert(!md770_radio_key_ready(4));
+        bluetooth_send_keyboard(&up);
+        assert(report_count == 5);
+        assert(finish()[3] == 4);
+        auto packets = drain();
+        assert(packets == std::vector<std::vector<uint8_t>>({{0xa1, 0, 0, 0, 0, 0, 0, 0, 0}, {0xa2, 0, 0, 0, 0}, {0xa3, 0}, {0xa1, 0, 0, 0, 0, 0, 0, 0, 0}}));
     } else if (test == "media") {
-        host_consumer_key_event(0x183, true);
-        assert(drain()[0][1] == 1);
-        host_consumer_key_event(0x18a, true);
-        assert(drain()[0][1] == 3);
-        host_consumer_key_event(0x183, false);
-        assert(drain()[0][1] == 2 && consumer_usage == 0x18a);
-        host_consumer_key_event(0x18a, false);
-        assert(drain()[0][1] == 0 && !consumer_usage);
-        host_system_key_event(0x81, true);
-        host_system_key_event(0x82, true);
-        assert(drain()[0][1] == 3);
-        host_system_key_event(0x81, false);
-        assert(drain()[0][1] == 2 && system_usage == 0x82);
+        for (unsigned i = 0; i < ARRAY_SIZE(consumer_usages); ++i) {
+            bluetooth_send_consumer(consumer_usages[i]);
+            bluetooth_send_consumer(0);
+            auto packets = drain();
+            assert(packets.size() == 2 && packets[0][0] == 0xa2 && packets[0][1 + i / 8] == (1U << (i % 8)));
+            assert(packets[1] == std::vector<uint8_t>({0xa2, 0, 0, 0, 0}));
+        }
+        bluetooth_send_system(0x82);
+        bluetooth_send_system(0);
+        assert(drain() == std::vector<std::vector<uint8_t>>({{0xa3, 2}, {0xa3, 0}}));
     } else if (test == "short" || test == "error" || test == "long" || test == "collision") {
         report_keyboard_t report{.keys = {4}};
         bluetooth_send_keyboard(&report);
@@ -219,7 +221,7 @@ int main(int argc, char **argv) {
         tick(10);
         assert(finish() == std::vector<uint8_t>({0xaa, 3, 2}));
         auto packets = drain();
-        assert(packets.size() == 2 && packets[0] == std::vector<uint8_t>({0xaa, 0, 1}) && packets[1][0] == 0xa1);
+        assert(packets.size() == 4 && packets[0] == std::vector<uint8_t>({0xaa, 0, 1}) && packets[1][0] == 0xa1);
     } else if (test == "pair") {
         md770_radio_select(2, true);
         tick(10);
@@ -238,35 +240,43 @@ int main(int argc, char **argv) {
     } else if (test == "voltage") {
         md770_power_init();
         md770_power_task();
+        assert((PWRCU->LVDCSR & 0x7f0000) == 0x410000 && !md770_battery_low());
         PWRCU->LVDCSR |= 0x80000;
         for (unsigned i = 0; i < 49; ++i) md770_power_tick();
         md770_power_task();
-        assert(battery_level == 7 && lvd_remaining == 1);
+        assert(!md770_battery_low() && lvd_remaining == 1);
+        PWRCU->LVDCSR &= ~0x80000U;
         md770_power_tick();
+        assert(lvd_remaining == 50);
+        PWRCU->LVDCSR |= 0x80000;
+        for (unsigned i = 0; i < 50; ++i) md770_power_tick();
         PWRCU->LVDCSR &= ~0x80000U;
         md770_power_tick();
         assert(lvd_remaining == 0);
         md770_power_task();
-        assert(battery_level == 6);
+        assert(md770_battery_low() && !md770_power_rgb_allowed());
+        pins[B12] = true;
+        pins[A10] = false;
+        md770_power_task();
+        assert(!md770_battery_low() && md770_power_rgb_allowed());
     } else if (test == "usb_wake") {
         host = CONNECTION_HOST_USB;
-        pins[B12] = true;
-        external = true;
-        supply = SUPPLY_CONFIGURED;
         USBD1.state = USB_SUSPENDED;
         USBD1.configuration = 1;
-        USBD1.status = 2;
-        report_keyboard_t report{};
-        host_keyboard_send_kb(&report);
+        md770_power_usb_wake();
         assert(!wake_requests);
-        md770_power_task();
+        USBD1.status = 2;
+        md770_power_usb_wake();
         assert(wake_requests == 1);
     } else if (test == "escape") {
-        dirty = HOST_REPORT_KEYBOARD;
-        keycodes[0][0] = 4;
-        keycodes[0][1] = QK_BLUETOOTH_PROFILE1;
-        assert(!pre_process_keyevent_kb({{0, 0}, false}));
-        assert(pre_process_keyevent_kb({{1, 0}, true}));
+        for (unsigned i = 0; i < REPORT_QUEUE_SIZE; ++i) {
+            report_keyboard_t report{.keys = {4}};
+            bluetooth_send_keyboard(&report);
+        }
+        keyrecord_t event{};
+        event.event.pressed = true;
+        assert(pre_process_record_kb(QK_BLUETOOTH_PROFILE1, &event));
+        assert(process_record_kb(QK_BLUETOOTH_PROFILE1, &event) == false);
     } else if (test == "leds") {
         radio_state = 2;
         md770_radio_indicate(false);

@@ -31,7 +31,7 @@ class ClockHardware(Hardware):
             0x4008810C, 0x40080200, 0x40022000, 0x40022004,
             0x40024050, 0x40024054, 0x40024058,
             0x4006A100, 0x4006A104, 0x40068000, 0x40068004, 0x40068008,
-            0xE000E010, 0xE000E014, 0xE000E018, 0xE000ED10,
+            0xE000E010, 0xE000E014, 0xE000E018, 0xE000ED10, 0xE000ED1C,
             *range(0x40000000, 0x4000002C, 4),
             *range(0x40077000, 0x40077010, 4),
         )}
@@ -63,12 +63,16 @@ class ClockHardware(Hardware):
             self.clock[0x40088034] = value & 7
             self.clock[0x40088008] = 8 | (2 if value & (1 << 9) else 0)
         if address == 0x40077000 and value == 6:
-            frequency = self.machine.read(self.machine.symbol('frequency'))
-            duration = self.clock[0x4007700C] / frequency * 1000000
+            duration = self.clock[0x4007700C] / self.core_clock() * 1000000
             self.delays.append(duration)
             self.machine.ms += duration / 1000
             self.clock[0x40077004] |= 1
         return 0
+
+    def core_clock(self):
+        source = self.clock[0x40088004] & 7
+        frequency = {1: 48000000, 3: 8000000}[source]
+        return frequency // (1 << (self.clock[0x40088020] & 3))
 
 
 def thread_layout(qmk, elf):
@@ -96,6 +100,7 @@ class ClockFirmware(Machine):
         self.hooks[self.function('__port_irq_epilogue')] = lambda: None
         if not self.left:
             self.hook('md770_storage_sleep', lambda: 1)
+            self.hook('md770_storage_wake', lambda: 1)
         (current, main, self.row_bytes, self.matrix_rows,
          timer_list, timer_next, timer_prev, timer_delta, timer_time) = thread_layout(qmk, elf)
         self.write(self.symbol('ch0') + current, self.symbol('ch0') + main)
@@ -109,16 +114,23 @@ class ClockFirmware(Machine):
         self.call(self.function('gpt_lld_init'))
         self.call(self.function('sd_lld_init'))
         self.call(self.function('board_init'))
+        self.call('st_lld_init')
         if not self.left:
             self.call(self.function('pwm_lld_init'))
             self.call('led_init_ports')
         self.call('matrix_init_custom')
-        assert self.hardware.clock[0xE000E014] == 0x5DB0
+        assert self.hardware.clock[0xE000E014] == 48000000 // 2000 - 1
         self.hardware.trace.clear()
         self.hardware.delays.clear()
 
     def _sleep(self):
-        self.ms += self.cpu.reg_read(UC_ARM_REG_R0) / 2
+        milliseconds = self.cpu.reg_read(UC_ARM_REG_R0) / 2
+        self.ms += milliseconds
+        if self.settles:
+            assert milliseconds == 2
+            self.waits.append(('sleep', self.hardware.registers[0x40076000],
+                               self.hardware.registers[0x4007600C]))
+            self.settles.popleft()(self)
 
     def _instruction(self, cpu, address, size, context):
         operation = self.read(address, 2)
@@ -141,8 +153,8 @@ class ClockFirmware(Machine):
         super()._instruction(cpu, address, size, context)
 
     def request(self, level):
-        self.call('md770_power_request', level)
-        self.call('md770_clock_service', budget=300000)
+        self.hook('md770_power_rgb_allowed', lambda: int(level != 9))
+        self.call('md770_power_service', budget=300000)
 
     def flag_address(self, getter):
         disassembler = Cs(CS_ARCH_ARM, CS_MODE_THUMB)
@@ -164,9 +176,20 @@ class ClockFirmware(Machine):
 def check(qmk, elf):
     early = Machine(elf.read_bytes(), elf=True)
     early.hardware = ClockHardware(early)
+    early.hardware.clock[0x40088004] |= 1 << 17
     early.call('early_hardware_init_pre')
-    assert early.hardware.trace[:4] == [(0x4008810C, 0x10), (0x40068008, 0x5FFF),
-                                        (0x40068004, 0x1A7D0), (0x40068000, 0x5FA00001)]
+    assert not early.hardware.clock[0x40088004] & (1 << 17)
+    watchdog = [(address, value) for address, value in early.hardware.trace
+                if address in (0x4008810C, 0x40068008, 0x40068004, 0x40068000)]
+    assert watchdog == [(0x4008810C, 0x10), (0x40068008, 0x5FFF),
+                        (0x40068004, 0x1A7D0), (0x40068000, 0x5FA00001)]
+
+    def fixed_clock(machine):
+        assert machine.hardware.core_clock() == 48000000
+        assert machine.hardware.clock[0xE000E014] == 48000000 // 2000 - 1
+        assert not any(address in (0x40088004, 0x40088020, 0x40080200, 0xE000E014)
+                       for address, _ in machine.hardware.trace)
+
     q = ClockFirmware(qmk, elf)
     stock_image = Path('mistel_md770rgb_bt_right_stock.bin').read_bytes()
     assert hashlib.sha256(stock_image).hexdigest() == STOCK_SHA256
@@ -193,44 +216,27 @@ def check(qmk, elf):
     sleeping = q.flag_address('md770_power_sleeping')
     q.write(sleeping, 1, 1)
     hw.trace.clear()
-    q.write(q.symbol('md770_tick_step'), 4)
     q.call('SysTick_Handler')
-    assert q.read(q.kernel_time) == 5
+    assert q.read(q.kernel_time) == 2
     assert not any(address == 0x40068000 for address, _ in hw.trace)
     q.write(sleeping, 0, 1)
-    q.write(q.symbol('md770_tick_step'), 1)
     q.call('SysTick_Handler')
-    assert q.read(q.kernel_time) == 6
+    assert q.read(q.kernel_time) == 3
     assert [(address, value) for address, value in hw.trace if address == 0x40068000] == [(0x40068000, 0x5FA00001)]
-    hw.clock[0x40000010] = 0
     q.request(9)
-    assert q.call('md770_clock_frequency') == 48000000
-    hw.clock[0x40000010] = 1 << 8
-    q.call('md770_clock_service')
-    assert q.call('md770_clock_frequency') == 8000000
-    assert hw.clock[0x40000024] == 16
-    assert hw.clock[0xE000E014] == 0xF90
-    assert hw.registers[0x4007600C] == 6573
-    clock_writes = [(address, value) for address, value in hw.trace
-                    if address in (0x40088004, 0x40080200)]
-    assert [address for address, _ in clock_writes] == [0x40088004, 0x40080200, 0x40088004]
-    assert clock_writes[0][1] & 7 == 3 and clock_writes[0][1] & (1 << 9)
-    assert clock_writes[1][1] & 7 == 1 and not clock_writes[2][1] & (1 << 9)
-    q.call('wait_us', 1000)
-    assert hw.delays[-1] == 1000
+    fixed_clock(q)
+    assert hw.clock[0x40000024] == 96
+    assert hw.registers[0x4007600C] == 39441
+    for duration in (1, 10, 100, 1000, 10000):
+        q.call('wait_us', duration)
+        assert hw.delays[-1] == duration
     hw.trace.clear()
     q.request(11)
     if q.left:
         q.call('md770_rgb_sleep', 0)
-    assert q.call('md770_clock_frequency') == 48000000
+    fixed_clock(q)
     assert hw.clock[0x40000024] == 96
-    assert hw.clock[0xE000E014] == 0x5DB0
     assert hw.registers[0x4007600C] == 39441
-    clock_writes = [(address, value) for address, value in hw.trace
-                    if address in (0x40088004, 0x40080200)]
-    assert [address for address, _ in clock_writes] == [0x40088004, 0x40080200, 0x40088004]
-    assert clock_writes[0][1] & 7 == 3 and clock_writes[0][1] & (1 << 9)
-    assert clock_writes[1][1] & 7 == 2 and clock_writes[2][1] & 7 == 1
     q.call('wait_us', 1000)
     assert hw.delays[-1] == 1000
     assert 10000 in hw.delays and 100 in hw.delays
@@ -260,7 +266,7 @@ def check(qmk, elf):
         mask = 0x100 if machine.left else 0x1000
         assert machine.hardware.clock[0x40024050] & (0x1FF if machine.left else 0x1FE)
         assert machine.hardware.clock[0xE000E010] == 5
-        assert machine.read(machine.symbol('md770_tick_step')) == 4
+        fixed_clock(machine)
         trace = machine.hardware.trace
         reloads = [index for index, (address, _) in enumerate(trace) if address == 0x40068000]
         assert reloads
@@ -273,9 +279,8 @@ def check(qmk, elf):
     q.wakes.append(nonmatrix_wake)
     q.request(4)
     assert q.waits == [('wfe', 0, 39441)]
-    assert q.call('md770_clock_frequency') == 48000000
+    fixed_clock(q)
     assert not q.call('md770_power_idle')
-    assert q.read(q.symbol('md770_tick_step')) == 1
     assert hw.clock[0xE000E010] == 7
     assert hw.registers[0x4007600C] == 39441
     assert hw.clock[0x40000024] == 96
@@ -293,14 +298,14 @@ def check(qmk, elf):
         machine.hardware.clock[0x40024058] = 1 if machine.left else 2
 
     def settle_tick(machine):
-        machine.ms += 2
-        machine.hardware.scan_interrupt()
+        fixed_clock(machine)
+        assert machine.hardware.registers[0x40076000] == 0
 
     q.wakes.extend((matrix_wake, nonmatrix_wake))
     q.settles.extend([settle_tick] * 19)
     q.request(4)
     assert [wait for wait in q.waits if wait[0] == 'wfe'] == [('wfe', 0, 39441)] * 2
-    assert [wait for wait in q.waits if wait[0] == 'wfi'] == [('wfi', 5, 39441)] * 19
+    assert [wait for wait in q.waits if wait[0] == 'sleep'] == [('sleep', 0, 39441)] * 19
     assert not q.wakes and not q.settles
     assert not q.call('md770_power_idle')
     q = ClockFirmware(qmk, elf)
@@ -321,19 +326,28 @@ def check(qmk, elf):
     q.wakes.append(counted_matrix_wake)
     q.settles.append(first_settle)
     q.request(4)
-    assert q.waits == [('wfe', 0, 39441), ('wfi', 5, 39441)]
+    assert q.waits == [('wfe', 0, 39441), ('sleep', 0, 39441)]
     assert q.read(q.symbol('debounce_count'), 1) == 5
     for previous in (9, 11):
         q = ClockFirmware(qmk, elf)
         q.request(previous)
-        interval = 6573 if previous == 9 else 39441
         q.write(q.idle_address(), 1, 1)
         q.wakes.append(nonmatrix_wake)
         q.request(4)
-        assert q.waits == [('wfe', 0, interval)]
-        assert q.call('md770_clock_frequency') == (8000000 if previous == 9 else 48000000)
-        assert q.hardware.registers[0x4007600C] == interval
-        assert q.hardware.clock[0x40000024] == (16 if previous == 9 else 96)
+        assert q.waits == [('wfe', 0, 39441)]
+        fixed_clock(q)
+        assert q.hardware.registers[0x4007600C] == 39441
+        assert q.hardware.clock[0x40000024] == 96
+    q = ClockFirmware(qmk, elf)
+    q.write(q.idle_address(), 1, 1)
+    q.hardware.clock[0x40000010] = 0
+    q.request(4)
+    assert not q.waits and not q.call('md770_power_sleeping')
+    q.hardware.clock[0x40000010] = 1 << 8
+    q.wakes.append(nonmatrix_wake)
+    q.call('md770_power_service')
+    assert q.waits == [('wfe', 0, 39441)]
+    fixed_clock(q)
     if not q.left:
         for public in (4, 5):
             q = ClockFirmware(qmk, elf)
@@ -358,7 +372,7 @@ def check(qmk, elf):
             q.write(q.symbol('scanned'), first, q.row_bytes)
             q.write(q.symbol('held_armed'), previous, 1)
             q.write(q.symbol('held_slot'), 1 if previous else 0, 1)
-            q.write(q.symbol('supply'), 1)
+            q.write(q.symbol('supply_known'), 1, 1)
             q.write(q.symbol('activity'), 0)
             q.ms = age
             q.hook('host_task', lambda: None)
@@ -368,7 +382,7 @@ def check(qmk, elf):
                 q.hardware.pin(0, 1, bool(final))
                 q.hardware.scan_interrupt()
 
-            q.hook('md770_clock_service', between_copies)
+            q.hook('md770_power_service', between_copies)
             changed = q.call('matrix_scan_custom', rows)
             assert bool(changed) == (previous != final)
             assert q.read(rows, q.row_bytes) == final
@@ -376,20 +390,21 @@ def check(qmk, elf):
             assert q.read(q.symbol('held_slot'), 1) == (1 if previous else 0)
             assert q.read(q.symbol('activity')) == age
             assert ('enter', 17) in [(kind, irq) for kind, irq, _ in q.interrupt_trace]
-    checks = ['UART drain before retiming', '48/8MHz scan, tick and UART divisors',
+    checks = ['UART drain before sleep', 'fixed 48 MHz CPU, scan, tick and UART divisors across active/idle operation',
               f'row debounce matches actual stock 0xaa70 for {len(samples)} supplied raw samples',
-              'slow/fast clock, oscillator and flash wait-state ordering',
-              'runtime BFTM1 microsecond delay at both clocks',
+              'power transitions leave oscillator, AHB divider, flash wait states and SysTick reload unchanged',
+              'native BFTM1 waits from one microsecond to ten milliseconds',
               'RGB wake delay, row prime, latch and timer-start order',
               'nonmatrix WFE wake and retained scan compare',
-              'matrix-only wake stays idle through nineteen WFI settling cycles',
+              'matrix-only wake stays idle through nineteen native two-millisecond sleeps with the scan timer stopped',
               'scan restore does not add a synchronous debounce sample',
               'sense GPIO output, input-enable and pulldown state restores before scanning',
-              'previous levels 9 and 11 restore their clocks, UART and scan intervals',
+              'RGB gating retains fixed clocks, UART and scan intervals',
               'early watchdog reset, reload and sleep-halt configuration',
-              'compiled idle SysTick advances four kernel ticks without reloading watchdog; active ticks reload it',
+              'native SysTick advances one kernel tick per interrupt; only active ticks reload the watchdog',
+              'early initialisation disables temporary HSI execution during PLL wake',
               'watchdog final reload and disabled SysTick interrupt window',
-              'wake restores active level, UART, SysTick and local scan']
+              'wake restores UART, SysTick and local scan']
     if not q.left:
         checks.append('right initial changed input honours public radio state')
         checks.append('real scan IRQ between matrix copies preserves final press/release qualification and both activity boundaries')

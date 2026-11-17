@@ -1,5 +1,75 @@
 # MD770 QMK development
 
+## Simplification and independent review, 2026-11-17
+
+QMK commit `e5b5479c53` on `mistel-md770-support` keeps existing shared files identical to
+upstream base `552db5253fed26665a90d85de6a28adfed0c7d54`. The support diff
+contains the keyboard and its tests; QMK's dependency pin is unchanged.
+ChibiOS itself is unchanged. The Contrib source contains only the two
+one-line corrections in the owner's PRs #469 and #470.
+
+The implementation uses fixed 48 MHz active clocks, native QMK waits and
+the periodic kernel tick. The runtime-clock and USB-stop patches are removed.
+The optional Raw HID receive-wake change is also removed from QMK.
+
+The source review's eight reductions are implemented:
+
+1. Native report clearing replaces preservation, mirrors and forced USB
+   resends. Output changes and USB interruptions cancel running playback.
+2. A bounded 16-report FIFO lives inside the Bluetooth driver. It preserves
+   ordinary quick taps without changing matrix history. Overflow releases
+   all report families and drops the waiting backlog; it does not block.
+3. Native consumer/system usages are encoded for the resident module without
+   additional simultaneous-usage state or core APIs.
+4. USB keeps its normal driver lifetime. Linked-left mode uses the existing
+   output-selection API and USB pull-up disconnect/reconnect.
+5. Serial sleep uses `sdStop()`/`sdStart()`. Partial frames are discarded;
+   periodic complete snapshots restore input.
+6. Flash wakes through the existing `spi_init()` hook before EEPROM startup,
+   sleeps only for deep idle, and wakes before foreground work resumes.
+   Exhausted identification/status retries fail closed.
+7. Actual sleep, supply and RGB conditions replace the stock numeric power
+   levels and intermediate transition timer.
+8. One filtered, latched low-battery flag replaces the unused threshold ladder.
+
+The resident radio stays running when USB is configured, so an ordinary
+return to Bluetooth needs no extra stop/restart state machine. Native USB
+notifications suspend lighting when USB is selected; matrix activity can
+request host wake on either half. Automatic supply changes do not write
+connection preferences to EEPROM. Startup reapplies the policy after QMK
+loads those preferences.
+
+A further independent Astra Max review found no remaining ordinary-use
+blocker or reason to restore shared-core changes. It checked boot selection,
+FIFO/control ordering, explicit releases on cancellation, ordinary output
+changes and USB suspend lighting/wake. Exact stock parity and continuation
+of held reports, alerts or running macros are not requirements.
+
+The four production builds and both keymaps' 100-group, 408-subtest compiled
+suites pass. Native Bluetooth/RGB, USB queue, split, flash and programming
+checks, both compiled clock/wake checks, 16 QMK unit tests and strict
+keyboard lint pass.
+See `mistel-md770-simplification-checks.json` and the referenced records.
+No firmware was flashed during this verification. Physical KVM switching,
+Bluetooth delivery after
+these changes, USB wake, deep-sleep wake and battery runtime remain unverified.
+
+## Separate USB-stop investigation
+
+The additional stop guard was a separate local change, not part of the
+owner's two PRs. The original HT32 driver does not shut down its hardware
+when `usbStop()` is called from SELECTED (addressed), ACTIVE (configured) or
+SUSPENDED. The retained actual-source test reproduces this and compares a
+one-line correction in its temporary build.
+
+The simplified keyboard does not use those stop paths. The patch is removed
+from its dependency and setup instructions; no third Contrib fix is needed
+for the port. The investigation establishes a source-level shutdown defect,
+not an observed keyboard failure. No upstream PR was opened for it.
+See `tests/chibios_usb/README.md` in the research repository.
+
+## Historical bring-up record
+
 The current local candidate adds [onboard assignments, persistent macro
 recording and Fn/Pn relocation](onboard-programming.md). The personal build
 passed the selected representative [hardware checks](mistel-md770-personal-hardware-tests.json).

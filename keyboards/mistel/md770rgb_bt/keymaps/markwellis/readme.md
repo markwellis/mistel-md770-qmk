@@ -33,17 +33,18 @@ write global configuration or install a service.
 
 | Component | Use before merging | Switch after merging |
 | --- | --- | --- |
-| QMK keyboard port | `markwellis/qmk_firmware` branch `mistel-md770-support` (`bf866604c1`); its PR is not open yet | Upstream QMK containing the MD770 port |
+| QMK keyboard port | `markwellis/qmk_firmware` branch `mistel-md770-support`; its PR is not open yet | Upstream QMK containing the MD770 port |
 | HT32 reset address | Fix commit `410d3636` in the QMK-compatible ChibiOS-Contrib branch below; the existing local integration checkout already includes it | QMK must update its ChibiOS-Contrib dependency to include [ChibiOS-Contrib #469](https://github.com/ChibiOS/ChibiOS-Contrib/pull/469) |
+| HT32 counter width | `patches/ht32f523xx-bftm-counter-width.patch` after the reset fix | QMK dependency containing [ChibiOS-Contrib #470](https://github.com/ChibiOS/ChibiOS-Contrib/pull/470) |
 | `pok3rtool` | Pinned upstream source plus `patches/pok3rtool-md770.patch`, applied by `shell.nix` | Update the source pin/hash to a revision containing #19, then remove the patch entry and file |
 | USB permissions | [MD770 qmk_udev branch](https://github.com/qmk/qmk_udev/compare/main...markwellis:mistel-md770-iap), or the sudo flashing command below | Install QMK udev rules containing those device IDs |
 
-The first three supply the firmware source, controller reset fix and flasher.
+The first four supply firmware, the two controller fixes and the flasher.
 The udev rules affect USB access; they are not required to compile firmware.
 Merging #469 into canonical ChibiOS alone is insufficient: the fix must also
 reach QMK's ChibiOS-Contrib fork and QMK's selected dependency revision.
 
-The existing local `mistel-md770-support` checkout is ready to build.
+The pushed `mistel-md770-support` branch contains the simplification.
 To reproduce the pending configuration with a fresh sibling checkout, run
 these commands from the userspace root. Do not clone over an existing repo:
 
@@ -54,13 +55,14 @@ git -C ../qmk_firmware submodule update --init --recursive
 git -C ../qmk_firmware/lib/chibios-contrib fetch https://github.com/markwellis/ChibiOS-Contrib.git qmk-ht32f523x2-reset-register
 git -C ../qmk_firmware/lib/chibios-contrib checkout --detach 410d3636a15485aefc74559a52e38c8a642b8ad9
 git -C ../qmk_firmware/lib/chibios-contrib apply - < patches/ht32f523xx-bftm-counter-width.patch
-git -C ../qmk_firmware/lib/chibios-contrib apply - < patches/ht32f523xx-runtime-clocks.patch
-git -C ../qmk_firmware/lib/chibios-contrib apply - < patches/ht32f523xx-usb-stop.patch
 ```
 
-The checkout supplies the reviewed reset-address correction over
-QMK's current dependency. The patches supply the 32-bit BFTM counter type,
-runtime timer/UART clocks, idle tick handling and USB stop from active states.
+The checkout supplies the reset-address correction from #469. The patch
+supplies the 32-bit BFTM counter type from #470. These are the only required
+ChibiOS-Contrib changes. Both halves run at a fixed 48 MHz while active,
+using native QMK timing. No runtime-clock or USB-stop patch is required.
+Shared QMK code is unchanged. The simplification is committed as
+`e5b5479c53` on `mistel-md770-support`.
 QMK reports that submodule as modified until its
 upstream dependency catches up; keep that local dependency selection out
 of the keyboard submission. Running `git submodule update` on this temporary

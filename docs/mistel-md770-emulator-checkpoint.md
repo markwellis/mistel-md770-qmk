@@ -1,4 +1,34 @@
-# Resume checkpoint: Bluetooth and ARM emulator
+# Current MD770 checkpoint
+
+The 2026-11-17 simplification is committed as QMK `e5b5479c53` and pushed
+to `mistel-md770-support`.
+Existing QMK core files match upstream; only the keyboard and its tests are
+added. The Contrib source has exactly the reset-address and counter-width
+fixes in PRs #469/#470. The runtime-clock, USB-stop and optional QMK USB
+receive-wake changes are removed. The QMK dependency pin is unchanged.
+
+Both halves use fixed 48 MHz active clocks and native QMK timing. Native
+report clearing, ordinary media semantics, a local Bluetooth FIFO, explicit
+flash wake, serial stop/start, direct RGB/supply conditions and one low-battery
+flag replace the previous preservation and stock-power framework.
+Interrupted macros are cancelled; exact continuation after sleep or output
+changes is not promised. The final Astra Max review found no remaining
+ordinary-use blocker or justification for shared-core changes.
+
+Four production builds, both 100-group/408-subtest compiled suites, native
+driver/programming checks, both clock/wake checks, 16 QMK unit tests and
+strict lint pass.
+See [the current review](qmk-upstream-readiness.md) and
+`mistel-md770-simplification-checks.json` for scope and evidence.
+
+No firmware was flashed during the software verification. The next useful step
+is a small physical check of normal USB/Bluetooth typing, occasional output
+switching and wake, including standalone left and a USB KVM if used.
+Battery wake/current need measurement when a battery is available. The older
+full stock-parity matrices below are historical research, not acceptance
+criteria for this implementation.
+
+## Historical investigation
 
 The owner rejected the current implementation scope on 2026-11-16.
 The change set is not ready for the intended QMK PR. The target is to keep
@@ -7,11 +37,10 @@ The current changes to shared `tmk_core/`, `quantum/`, ChibiOS and
 `flash_spi` code are not acceptable as part of this keyboard implementation.
 Passing tests and earlier reviews do not establish acceptance of that scope.
 
-Tomorrow's first task is to audit the changes outside that directory and
-remove or relocate them, using existing QMK hooks and board-local code where
-possible. Record any behaviour that cannot be preserved within this boundary
-for separate consideration. The owner deferred this work; this checkpoint
-records the decision without changing firmware or dependencies.
+The remaining work is to remove or relocate changes outside that directory
+using existing QMK hooks and board-local code where possible. The owner
+accepts normal QMK input behaviour across power states. Exact continuation
+of transient reports, notifications and macro playback is not required.
 
 The requested checkpoint is saved as `779831a` here and `7f95caf037` in
 `qmk_firmware`. The reviewed corrections are now in QMK `c4500108e9`.

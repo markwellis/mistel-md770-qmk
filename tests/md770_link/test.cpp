@@ -10,14 +10,13 @@ SerialDriver SD0{};
 USART_TypeDef usart{};
 static bool locked, uart_irq, usb_enabled = true;
 static unsigned sd_starts, uart_resets, usb_changes, rgb_sleeps, activity_calls;
-static uint32_t ticks, frequency = 48000000;
+static uint32_t ticks;
 static bool pins[32];
 static unsigned pin_modes[32];
 static matrix_row_t matrix[MATRIX_ROWS], remote_rows[MATRIX_ROWS];
 static uint8_t rgb[126];
 static std::deque<uint8_t> input, hardware_rx;
 static std::vector<std::vector<uint8_t>> frames;
-static std::vector<uint8_t> power_requests;
 
 void chSysLock(void) { assert(!locked); locked = true; }
 void chSysUnlock(void) { assert(locked); locked = false; }
@@ -35,7 +34,7 @@ void sdStart(SerialDriver *driver, const SerialConfig *config) {
     driver->state = 1;
     usart.CR = 0x1b0;
     usart.IER = 7;
-    usart.DLR = frequency / config->speed;
+    usart.DLR = HT32_CK_USART_FREQUENCY / config->speed;
     usart.SIFR = USART_SIFR_TXC;
     uart_irq = true;
 }
@@ -55,13 +54,23 @@ size_t sdWriteTimeout(SerialDriver *driver, const uint8_t *data, size_t length, 
 size_t oqGetEmptyI(output_queue_t *queue) { assert(locked); return 256 - queue->used; }
 bool oqIsEmptyI(output_queue_t *queue) { assert(locked); return !queue->used; }
 matrix_row_t matrix_get_row(uint8_t row) { assert(row < MATRIX_ROWS); return matrix[row]; }
-uint32_t md770_clock_frequency(void) { return frequency; }
-void md770_power_request(enum md770_power_level level) { power_requests.push_back(level); }
+void sdStop(SerialDriver *driver) {
+    assert(driver == &SD0 && !locked);
+    driver->state = 0;
+    driver->oqueue.used = 0;
+    input.clear();
+    uart_irq = false;
+    usart.IER = 0;
+}
 void md770_power_activity(bool local) { assert(!local); ++activity_calls; }
 void md770_rgb_sleep(bool value) { assert(value); ++rgb_sleeps; }
 const uint8_t *md770_rgb_left(void) { return rgb; }
 void md770_rgb_receive(const uint8_t *payload) { memcpy(rgb, payload, sizeof(rgb)); }
-void usb_driver_set_enabled(void *, bool enabled) { usb_enabled = enabled; ++usb_changes; }
+void usbDisconnectBus(void *) { usb_enabled = false; ++usb_changes; }
+void usbConnectBus(void *) { usb_enabled = true; ++usb_changes; }
+#ifdef MD770_LEFT
+void connection_set_host_noeeprom(connection_host_t host) { assert(host == (usb_enabled ? CONNECTION_HOST_USB : CONNECTION_HOST_NONE) || host == CONNECTION_HOST_NONE); }
+#endif
 void ResetRegister::operator=(uint32_t value) {
     assert(locked && value == 0x100);
     ++uart_resets;
@@ -172,17 +181,15 @@ int main(int argc, char **argv) {
         receive(data, sizeof(data));
         task();
         assert(md770_link_rgb_active() && rgb[0] == 7 && activity_calls == 1);
-        assert(power_requests == std::vector<uint8_t>({13}));
         task(300);
         assert(md770_link_rgb_active() && rgb[0] == 7 && !rgb_sleeps);
         receive(data, sizeof(data));
         task();
-        assert(activity_calls == 2 && power_requests.size() == 1);
+        assert(activity_calls == 2);
         memset(data, 0, sizeof(data));
         receive(data, sizeof(data));
         task();
         assert(!md770_link_rgb_active() && rgb[0] == 0);
-        assert(power_requests == std::vector<uint8_t>({13, 11}));
     } else if (test == "mode_rgb") {
         connect();
         uint8_t data[126] = {1};
@@ -194,7 +201,6 @@ int main(int argc, char **argv) {
         pins[B8] = true;
         for (unsigned i = 0; i < 16; ++i) task();
         assert(md770_link_connected() && !md770_link_rgb_active());
-        assert(power_requests == std::vector<uint8_t>({13}));
     } else
 #else
     if (test == "periodic") {
@@ -241,18 +247,15 @@ int main(int argc, char **argv) {
     } else if (test == "uart") {
         SD0.oqueue.used = 1;
         chSysLock();
-        assert(!md770_link_can_retime());
+        assert(!md770_link_can_sleep());
         SD0.oqueue.used = 0;
         usart.SIFR = 0;
-        assert(!md770_link_can_retime());
+        assert(!md770_link_can_sleep());
         usart.SIFR = USART_SIFR_TXC;
         usart.FCR = 0x50;
-        assert(md770_link_can_retime());
-        md770_link_set_clock(8000000);
-        assert(usart.DLR == 16 && usart.CR == 0x1b0 && !uart_resets && sd_starts == 1);
+        assert(md770_link_can_sleep());
+        assert(usart.DLR == 96 && usart.CR == 0x1b0 && !uart_resets && sd_starts == 1);
         assert(usart.FCR == 0x50 && usart.IER == 7 && usart.SIFR == USART_SIFR_TXC);
-        md770_link_set_clock(48000000);
-        assert(usart.DLR == 96 && !uart_resets && sd_starts == 1);
         chSysUnlock();
 #ifdef MD770_LEFT
         uint8_t data[126] = {7};
@@ -268,14 +271,14 @@ int main(int argc, char **argv) {
         hardware_rx.push_back(0x55);
         md770_link_sleep(true);
         assert(sleeping && !uart_irq && !usart.CR && uart_resets == 1);
-        assert(parser.length == 3 && input.size() == length - 3 && hardware_rx.empty() && SD0.state == 1);
+        assert(!parser.length && input.empty() && hardware_rx.empty() && SD0.state == 0);
         assert(pin_modes[B0] == PAL_MODE_HT32_AF(0) && pin_modes[B1] == (PAL_MODE_HT32_AF(6) | PAL_MODE_INPUT));
         task(100);
-        assert(input.size() == length - 3);
-        frequency = 8000000;
+        assert(input.empty());
         md770_link_sleep(false);
-        assert(!sleeping && uart_irq && usart.DLR == 16 && usart.CR == 0x1b0 && usart.IER == 7 && sd_starts == 1);
-        assert(parser.length == 3 && input.size() == length - 3 && pins[B0]);
+        assert(!sleeping && uart_irq && usart.DLR == 96 && usart.CR == 0x1b0 && usart.IER == 7 && sd_starts == 2);
+        assert(!parser.length && input.empty() && pins[B0]);
+        receive(data, sizeof(data));
         task();
         assert(!parser.length && input.empty());
 #ifdef MD770_LEFT

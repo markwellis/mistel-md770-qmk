@@ -1,23 +1,24 @@
 {
   "side": "left",
-  "elf_sha256": "a771dc73de3231eac6b2b524cb0655a133ab37e7116d8cbbf389a095d53f6f71",
+  "elf_sha256": "a12654308db87d231f6b9d4835dea9002de10e5b21c9171e028596a43323e587",
   "stock_reference_sha256": "8fafdca096756f23626802d5b586b270b0bd512fe5d1c0327db4eafcd4f689b2",
   "checks": [
-    "UART drain before retiming",
-    "48/8MHz scan, tick and UART divisors",
+    "UART drain before sleep",
+    "fixed 48 MHz CPU, scan, tick and UART divisors across active/idle operation",
     "row debounce matches actual stock 0xaa70 for 238 supplied raw samples",
-    "slow/fast clock, oscillator and flash wait-state ordering",
-    "runtime BFTM1 microsecond delay at both clocks",
+    "power transitions leave oscillator, AHB divider, flash wait states and SysTick reload unchanged",
+    "native BFTM1 waits from one microsecond to ten milliseconds",
     "RGB wake delay, row prime, latch and timer-start order",
     "nonmatrix WFE wake and retained scan compare",
-    "matrix-only wake stays idle through nineteen WFI settling cycles",
+    "matrix-only wake stays idle through nineteen native two-millisecond sleeps with the scan timer stopped",
     "scan restore does not add a synchronous debounce sample",
     "sense GPIO output, input-enable and pulldown state restores before scanning",
-    "previous levels 9 and 11 restore their clocks, UART and scan intervals",
+    "RGB gating retains fixed clocks, UART and scan intervals",
     "early watchdog reset, reload and sleep-halt configuration",
-    "compiled idle SysTick advances four kernel ticks without reloading watchdog; active ticks reload it",
+    "native SysTick advances one kernel tick per interrupt; only active ticks reload the watchdog",
+    "early initialisation disables temporary HSI execution during PLL wake",
     "watchdog final reload and disabled SysTick interrupt window",
-    "wake restores active level, UART, SysTick and local scan"
+    "wake restores UART, SysTick and local scan"
   ],
   "limits": "Oscillator readiness, timer completion, RTOS sleep, flash sleep and wake events are supplied. The separate matrix race case supplies host/clock service boundaries to inject a real scan IRQ. Flash protocol is checked separately; electrical/RF behaviour requires hardware."
 }
