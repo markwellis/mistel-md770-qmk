@@ -21,12 +21,16 @@ strict lint pass.
 See [the current review](qmk-upstream-readiness.md) and
 `mistel-md770-simplification-checks.json` for scope and evidence.
 
-No firmware was flashed during the software verification. The next useful step
-is a small physical check of normal USB/Bluetooth typing, occasional output
-switching and wake, including standalone left and a USB KVM if used.
-Battery wake/current need measurement when a battery is available. The older
-full stock-parity matrices below are historical research, not acceptance
-criteria for this implementation.
+Both personal builds were subsequently installed on 2026-11-17 through the
+retained updater. Application sum/CRC and generated metadata matched after
+programming, and both halves returned to their normal QMK USB identities.
+The owner confirmed joined typing, both space bars and cross-half Shift.
+See [right installation](mistel-md770-simplified-flash-right.json) and
+[left installation](mistel-md770-simplified-flash-left.json).
+
+Bluetooth, KVM switching, USB suspend/wake and battery behaviour for these
+images remain untested. The older full stock-parity matrices below are
+historical research, not acceptance criteria for this implementation.
 
 ## Historical investigation
 

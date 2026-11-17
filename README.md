@@ -10,7 +10,11 @@ All changes to shared QMK code have been removed. Keyboard support needs
 only the two independently submitted ChibiOS-Contrib fixes below; the
 runtime-clock and USB-stop patches are removed. See the
 [review](docs/qmk-upstream-readiness.md) and
-[current checkpoint](docs/mistel-md770-emulator-checkpoint.md).
+[current checkpoint](docs/mistel-md770-emulator-checkpoint.md). Both
+personal images are now installed: application checksums and metadata match,
+and the owner confirmed typing, both space bars and cross-half Shift. See the
+[right](docs/mistel-md770-simplified-flash-right.json) and
+[left](docs/mistel-md770-simplified-flash-left.json) installation records.
 
 The QMK port remains in the separate
 [qmk_firmware fork](https://github.com/markwellis/qmk_firmware), on the

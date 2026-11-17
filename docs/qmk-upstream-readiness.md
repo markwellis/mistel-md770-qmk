@@ -50,9 +50,14 @@ suites pass. Native Bluetooth/RGB, USB queue, split, flash and programming
 checks, both compiled clock/wake checks, 16 QMK unit tests and strict
 keyboard lint pass.
 See `mistel-md770-simplification-checks.json` and the referenced records.
-No firmware was flashed during this verification. Physical KVM switching,
-Bluetooth delivery after
-these changes, USB wake, deep-sleep wake and battery runtime remain unverified.
+The personal builds were subsequently installed on both halves. Application
+sum/CRC and generated metadata matched after programming; both halves
+returned to normal QMK USB identities. The owner confirmed joined typing,
+both space bars and cross-half Shift. See
+[right](mistel-md770-simplified-flash-right.json) and
+[left](mistel-md770-simplified-flash-left.json) installation records.
+Physical KVM switching, Bluetooth, USB suspend/wake, deep-sleep wake and
+battery runtime for these images remain unverified.
 
 ## Separate USB-stop investigation
 
