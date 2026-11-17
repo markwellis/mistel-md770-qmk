@@ -1,6 +1,6 @@
 {
   "date": "2026-11-17T17:00:43.284044+00:00",
-  "qmk_source_commit": "d39c45248bec4abc477b43bbfe8eb670c178fa98",
+  "qmk_source_commit": "9024e7c2e1826408483c38bc6160492eb999a9a5",
   "images_built_before_source_commit": true,
   "build_command": "nix-shell --run 'qmk userspace-compile -j 4'",
   "stock_build_commands": [
@@ -130,10 +130,18 @@
     "production_components": "docs/mistel-md770-upstream-ready-tests.json",
     "retained_components": "docs/mistel-md770-upstream-ready-verification-tests.json"
   },
-  "hardware_flashed": false,
+  "hardware_flashed": true,
   "remaining_conditions": [
     "Use develop as PR base; master currently includes unrelated upstream development changes",
     "The two Contrib fixes must reach QMK's dependency chain independently before merge",
     "Battery sleep/wake, runtime and charging remain unvalidated"
+  ],
+  "pre_squash_qmk_source_commit": "d39c45248bec4abc477b43bbfe8eb670c178fa98",
+  "qmk_source_tree": "24a24eedfb718ac7cd09caf6edd65360de9296f1",
+  "squash_preserved_source_tree": true,
+  "owner_confirmed_joined_typing": true,
+  "installation_records": [
+    "docs/mistel-md770-upstream-ready-flash-right.json",
+    "docs/mistel-md770-upstream-ready-flash-left.json"
   ]
 }

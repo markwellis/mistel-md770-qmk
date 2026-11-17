@@ -1,6 +1,7 @@
 # Personal keyboard notifications
 
-The `markwellis` right-half firmware accepts a Raw HID colour message and
+The personal right-half build uses `default_mistel` with
+`USER_NAME=markwellis`. It accepts a Raw HID colour message and
 breathes that colour across both halves until the next physical key press.
 Dismissal does not consume the press; QMK's normal USB wake behaviour still
 applies when suspended. Releases and synthetic events
@@ -19,9 +20,15 @@ Notification state lives only in RAM. Rendering leaves QMK's lighting
 configuration unchanged, so pending or forced settings saves cannot store
 the alert colour. No notification command writes EEPROM.
 
-This feature belongs to the personal keymap. The QMK default keymap and
-keyboard driver do not contain it. VIA is disabled in the personal build;
-onboard remapping and persistent macro recording remain available.
+The implementation lives in `users/markwellis/notification.c`, enabled by
+its userspace `rules.mk`. It uses standard QMK hooks and the factory
+keymap's `housekeeping_task_keymap()` callback. Both upstream keymaps omit
+notifications; the personal build adds them without copying the factory
+layout or programming code. VIA is disabled; factory onboard remapping and
+persistent macro recording remain available.
+
+See [personal setup](../users/markwellis/readme.md) for the two build targets
+and flashing commands.
 
 ## Send an alert
 

@@ -1,6 +1,19 @@
 # MD770 emulator calibration on hardware
 
-## Current short differential pass
+## Current installation
+
+The installed personal build uses `default_mistel` with
+`USER_NAME=markwellis` from the squashed QMK support commit `9024e7c2e1`.
+Both halves passed application-checksum, metadata and normal USB-return
+verification. The owner confirmed joined typing, both spaces and cross-half
+Shift. See the [right](mistel-md770-upstream-ready-flash-right.json) and
+[left](mistel-md770-upstream-ready-flash-left.json) records.
+
+The measured captures below belong to the preceding firmware; they have
+not been rerun against these new images. Their plans and image hashes remain
+the reference for those measurements.
+
+## Previous short differential pass
 
 The QMK scope simplification is complete. On 2026-11-17, two short physical
 sequences passed on the installed `markwellis` production image: Bluetooth
@@ -26,10 +39,12 @@ it does not establish every emulator contract. The additional macro timing
 and USB wake checks are described below. KVMs, interrupts and battery
 behaviour remain outside these hardware comparisons.
 
-Generate the fixed predictions before capturing:
+To prepare a fresh comparison for the current personal build, build it with
+`qmk userspace-compile`, then generate a new plan without replacing the
+recorded baseline plan:
 
 ```fish
-nix-shell --run 'python3 -B tests/md770_bluetooth/predict_physical_input.py --elf ../qmk_firmware/.build/mistel_md770rgb_bt_right_markwellis_conformance.elf --out docs/hardware-calibration/simplified-input-plan.json'
+nix-shell --run 'python3 -B tests/md770_bluetooth/predict_physical_input.py --elf ../qmk_firmware/.build/mistel_md770rgb_bt_right_markwellis.elf --out docs/hardware-calibration/upstream-ready-input-plan.json'
 ```
 
 Use `scripts/md770_calibrate.py` with that plan, the matching production
@@ -39,7 +54,7 @@ hash is checked, and the plan hash binds each capture to its predictions.
 
 ## Macro timing and USB device wake
 
-The current installation uses one temporary F3 recording: Left Shift+A,
+The preceding installation used one temporary F3 recording: Left Shift+A,
 release Shift, then B/C/D with the Fn+T, Fn+G and Fn+B delays. The fixed
 [prediction plan](hardware-calibration/macro-wake-plan.json) was generated
 before capture. Its ten key/modifier events span 935 ms. Timing limits were
@@ -212,7 +227,11 @@ timing and auto-repeat are not scored. Those boundaries stay explicitly
 uncalibrated; future software tests can reuse the demonstrated paths without
 claiming that the whole board model is correct.
 
-## Changed stateful behaviour
+## Historical stateful changes
+
+This table describes the archived candidate. Its shared-QMK changes were
+subsequently removed. The current factory playback file is named below;
+the historical measurements and their original firmware hashes are retained.
 
 | Area in `qmk_firmware` | Change since the wired baseline | Hardware check |
 | --- | --- | --- |
@@ -221,16 +240,16 @@ claiming that the whole board model is correct.
 | `platforms/chibios/suspend.c` | Preserve Bluetooth-held reports during an unrelated USB resume | Scenario 5 checks post-resume Bluetooth delivery and output handover; held-during-resume details retain software coverage |
 | `keyboards/mistel/md770rgb_bt/scan.c`, `rgb.c` | Idle scan cadence and RGB sleep/wake gating/priming | Wake paths are sampled; battery idle and electrical waveforms remain unmeasured |
 | `keyboards/mistel/md770rgb_bt/indicators.c` | Bluetooth, Caps, charging and warning indications | Scenario 2 samples Bluetooth/Caps; charging/low-battery observations are deferred |
-| `keyboards/mistel/md770rgb_bt/keymaps/default/programming.c` | Playback yields when the Bluetooth queue lacks space | Scenarios 3–4 check Bluetooth playback; queue saturation is tested in software |
+| Factory playback, now `keyboards/mistel/md770rgb_bt/keymaps/default_mistel/programming.c` | Playback yields when the Bluetooth queue lacks space | Scenarios 3–4 check Bluetooth playback; queue saturation is tested in software |
 
-The personal keymap has the matching playback change. Recording/editing
-states otherwise retain their earlier hardware baseline. Passing the short
-run does not mean every internal state transition has been observed.
+The current personal build compiles this factory playback implementation
+directly. Recording/editing states retain their earlier hardware baseline.
+Passing a short run does not establish every internal state transition.
 
 ## Prepare the software
 
 Run from this repository with the sibling QMK checkout and dependency fixes
-described in the [keymap setup](../keyboards/mistel/md770rgb_bt/keymaps/markwellis/readme.md#pending-upstream-changes):
+described in the [keymap setup](../users/markwellis/readme.md#pending-upstream-changes):
 
 ```fish
 nix-shell --run 'bash tests/md770_bluetooth/run-software.sh'

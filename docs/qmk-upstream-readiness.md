@@ -2,7 +2,10 @@
 
 ## Keymap split and upstream preparation, 2026-11-17
 
-QMK commit `d39c45248bec4abc477b43bbfe8eb670c178fa98` contains this preparation.
+The support branch is squashed to QMK commit
+`9024e7c2e1826408483c38bc6160492eb999a9a5`. Its file tree is identical to
+the reviewed preparation; the rewrite changed no firmware sources or
+dependency selections.
 
 The QMK keyboard now supplies a minimal three-layer `default` and the full
 factory-style `default_mistel`. Factory DIP mappings, profiles, onboard
@@ -33,7 +36,10 @@ Use `develop` as the PR base for this branch. A comparison against `master`
 currently includes unrelated upstream development commits. The two Contrib
 fixes must still reach QMK's dependency chain independently before merge.
 Battery sleep/wake, runtime and charging remain outside the measured hardware
-scope. This preparation has not been flashed to the keyboard.
+scope. Both personal images are flashed and checksum-verified, with metadata,
+normal QMK USB return and owner-confirmed joined typing verified. See the
+[right](mistel-md770-upstream-ready-flash-right.json) and
+[left](mistel-md770-upstream-ready-flash-left.json) installation records.
 
 All six ordinary build configurations pass, as do strict QMK lint for both
 halves, formatting, userspace discovery, 18 native QMK tests, 41 programming
@@ -128,6 +134,10 @@ not an observed keyboard failure. No upstream PR was opened for it.
 See `tests/chibios_usb/README.md` in the research repository.
 
 ## Historical bring-up record
+
+The remaining sections describe earlier implementations and their then-current
+keymaps. Use [personal setup](../users/markwellis/readme.md) for current
+builds, dependency setup and flashing; the commands below are historical.
 
 The current local candidate adds [onboard assignments, persistent macro
 recording and Fn/Pn relocation](onboard-programming.md). The personal build

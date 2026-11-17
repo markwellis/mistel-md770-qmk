@@ -1,8 +1,10 @@
 # MD770 onboard programming
 
-The current candidate adds keyboard-only programming to the right-hand
-master and the personal `markwellis` keymap. It uses QMK's dynamic keymap
-and persistent macro storage. VIA and OpenRGB are not required.
+The `default_mistel` factory keymap provides onboard programming on the
+right-hand master, using QMK's dynamic keymap and persistent macro storage.
+The personal build uses that same keymap with `USER_NAME=markwellis` to add
+notifications. The minimal `default` keymap omits the editor, profiles and
+factory macros. VIA and OpenRGB are not required.
 
 The personal build passed the selected representative
 [hardware checks](mistel-md770-personal-hardware-tests.json), including all
@@ -10,13 +12,19 @@ profile banks, remapping, persistent macros, Fn/Pn relocation and DIP
 precedence. The record identifies the checks deferred from hardware testing.
 The [onboard build and review record](mistel-md770-onboard-programming-checks.json)
 identifies the editor baseline before personal notifications and VIA removal.
-The newer personal build is described in [notifications](notifications.md).
+See [personal setup](../users/markwellis/readme.md) and
+[notifications](notifications.md) for the current shared-keymap build.
 
 ## Upgrade
 
-Clear QMK settings after installing this candidate over the previous layer
-order. Hold both physical Alt keys for one second. This clears saved profiles,
-macros and colours. Export any settings you need before updating.
+Moving from the former copied `markwellis` keymap to `default_mistel` with
+personal userspace keeps the layout, keycode values and storage layout.
+That migration needs no settings reset.
+
+Clear QMK settings when switching between minimal `default` and
+`default_mistel`, or upgrading from the earlier layer/storage layout. Hold
+both physical Alt keys for one second in the factory keymap. This clears
+saved profiles, macros and colours; save anything you need first.
 
 All four profiles, including the default, have independent ordinary, Fn and
 Pn assignments. Explicit assignments take precedence over Mac and DIP4

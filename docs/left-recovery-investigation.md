@@ -1,7 +1,9 @@
 # Left-half recovery investigation
 
-QMK has not been flashed. This investigation concerns the photographed
-left half; right-half recovery results do not establish left-half recovery.
+This historical investigation preceded the left half's first QMK flash.
+It concerns the photographed left half; right-half recovery results do not
+establish left-half recovery. See the [current checkpoint](mistel-md770-emulator-checkpoint.md)
+for the installed firmware.
 
 ## Identification
 

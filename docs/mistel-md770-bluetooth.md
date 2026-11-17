@@ -248,7 +248,7 @@ transport needs a separate memory check.
 
 ## Hardware capture
 
-The diagnostic copies the current default keymap into a temporary userspace.
+The historical diagnostic copied the then-default factory keymap into a temporary userspace.
 It adds the radio probe's init/task calls to the existing post-init and
 housekeeping hooks, enables Raw HID, and retains USB output. It leaves the
 Bluetooth/connection subsystem disabled, avoiding its new EEPROM settings.
@@ -302,6 +302,10 @@ The power-bank test already established the radio's power and hardware
 baseline. Slot 3 is paired with the development computer.
 
 ### Historical diagnostic reproduction
+
+This recipe requires the diagnostic's recorded QMK revision. Current builds
+use [personal userspace](../users/markwellis/readme.md) and the shared
+`default_mistel` keymap; they do not need these diagnostic copies or probes.
 
 The diagnostic sources are retained in `tests/md770_bluetooth/`. To rebuild,
 copy the default keymap into a separate QMK userspace and add `radio_probe.c`

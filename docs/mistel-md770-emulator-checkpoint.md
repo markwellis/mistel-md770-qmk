@@ -1,42 +1,48 @@
 # Current MD770 checkpoint
 
-The 2026-11-17 simplification is committed as QMK `e5b5479c53` and pushed
-to `mistel-md770-support`.
-Existing QMK core files match upstream; only the keyboard and its tests are
-added. The Contrib source has exactly the reset-address and counter-width
-fixes in PRs #469/#470. The runtime-clock, USB-stop and optional QMK USB
-receive-wake changes are removed. The QMK dependency pin is unchanged.
+The QMK support branch is squashed to `9024e7c2e1` on
+`mistel-md770-support`, with base `552db5253f`. Its tree is identical to the
+reviewed preparation. The diff against `develop` contains only MD770 support
+and its tests. Shared QMK and ChibiOS source and the Contrib dependency pin
+are unchanged; the local Contrib checkout still has only fixes #469/#470.
 
-Both halves use fixed 48 MHz active clocks and native QMK timing. Native
-report clearing, ordinary media semantics, a local Bluetooth FIFO, explicit
-flash wake, serial stop/start, direct RGB/supply conditions and one low-battery
-flag replace the previous preservation and stock-power framework.
-Interrupted macros are cancelled; exact continuation after sleep or output
-changes is not promised. The final Astra Max review found no remaining
-ordinary-use blocker or justification for shared-core changes.
+QMK supplies a minimal `default` and full factory-style `default_mistel`.
+The personal targets in `qmk.json` compile `default_mistel` directly with
+`USER_NAME=markwellis`, adding notifications from `users/markwellis/`.
+There is no copied keymap or programming implementation in this repository.
+Factory layout, saved keycode values and storage remain compatible with the
+previous personal build, so that migration needs no settings reset.
 
-Four production builds, both 100-group/408-subtest compiled suites, native
-driver/programming checks, both clock/wake checks, 16 QMK unit tests and
-strict lint pass.
-See [the current review](qmk-upstream-readiness.md) and
-`mistel-md770-simplification-checks.json` for scope and evidence.
+Both personal production images are installed. Application sums/CRCs and
+version metadata verified after flashing, and both halves returned to normal
+QMK USB identities. The owner confirmed typing from both halves, both space
+bars and cross-half Shift. See the
+[right](mistel-md770-upstream-ready-flash-right.json) and
+[left](mistel-md770-upstream-ready-flash-left.json) installation records and
+[build manifest](mistel-md770-upstream-ready-builds.json).
 
-Both personal builds were subsequently installed on 2026-11-17 through the
-retained updater. Application sum/CRC and generated metadata matched after
-programming, and both halves returned to their normal QMK USB identities.
-The owner confirmed joined typing, both space bars and cross-half Shift.
-See [right installation](mistel-md770-simplified-flash-right.json) and
-[left installation](mistel-md770-simplified-flash-left.json).
+The reviewed fixes send changed left-hand key state promptly and preserve
+periodic resynchronisation. Imported native taps use QMK's configured delays
+through the existing macro scheduler. Both halves keep fixed 48 MHz active
+clocks and native QMK timing. Astra Max found no further P1/P2 issue in the
+final firmware changes.
 
-A short differential pass subsequently matched all 24 predicted key events
-on Bluetooth/power-bank power and all 24 on laptop USB. It covered both
-halves, cross-half Shift, both space bars and quick taps using the exact
-installed production image. See the
-[comparison summary](hardware-calibration/simplified-input-summary.json).
-Bluetooth needed manual reconnection after flashing; automatic reconnection
-was not a pass condition. Macro playback calibration, KVMs, suspend/wake and
-battery behaviour remain untested on this installation. The older full
-stock-parity matrices below are historical research, not acceptance criteria.
+All six production configurations, strict lint, formatting, userspace checks,
+18 native QMK tests, 41 programming cases, notification tests, driver/USB/
+split/flash/clock checks and 47 host-tool tests pass. The factory and personal
+integration suites each pass 102 groups and 408 subtests, with two inlined
+startup entry points checked separately: all 72 retained component tests pass.
+See [the current review](qmk-upstream-readiness.md) for records and scope.
+
+Earlier USB/Bluetooth input captures, macro timing, USB wake and automatic
+reconnection checks are described in
+[hardware calibration](mistel-md770-hardware-calibration.md). They identify
+the older measured firmware; these detailed captures have not been rerun on
+the new images. Battery sleep/wake, runtime and charging remain untested.
+
+Current setup and build commands are in
+[personal setup](../users/markwellis/readme.md). The sections below are the
+historical investigation and do not override these current instructions.
 
 ## Historical investigation
 

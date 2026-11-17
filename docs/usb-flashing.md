@@ -8,6 +8,30 @@ The owner selected this retained-bootloader route on 2026-11-14 for both
 initial installation and every subsequent update. The secondary DFU
 experiment is withdrawn. No replacement or secondary bootloader is required.
 
+## Current personal build
+
+The personal firmware uses QMK's `default_mistel` factory keymap with
+`USER_NAME=markwellis`, adding notifications from `users/markwellis/`.
+It keeps the factory profiles, editor and macros. The upstream `default`
+keymap is the minimal alternative and omits those features.
+
+Build both configured halves from this repository:
+
+```fish
+nix-shell --run 'qmk userspace-compile -j 4'
+```
+
+The outputs are `mistel_md770rgb_bt_right_markwellis.bin` and
+`mistel_md770rgb_bt_left_markwellis.bin`. Keep each image with its matching
+half. Use the [personal setup](../users/markwellis/readme.md#flash) for the
+complete per-half commands and physical updater shortcuts. The native QMK
+`USER_NAME` option selects personal code; there is no separate `markwellis`
+keymap to pass to `-km`.
+
+The move from the copied personal keymap to the shared factory keymap does
+not require a reset. Switching between minimal `default` and
+`default_mistel` does, because their layer/storage layouts differ.
+
 ## Existing-tool integration
 
 The upstream candidate now uses

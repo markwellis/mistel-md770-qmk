@@ -1,11 +1,27 @@
 # MD770 Bluetooth and charging implementation
 
-See [hardware calibration](mistel-md770-hardware-calibration.md) for the
-current installation, measured macro timing and USB device wake results.
-The installation and pending-test statements below describe earlier builds.
+The current personal build uses the shared `default_mistel` keymap with
+`USER_NAME=markwellis`, adding notification code from this repository. Both
+halves are installed and verified; the owner confirmed joined typing.
+Current setup is in [personal userspace](../users/markwellis/readme.md),
+with the implementation boundary and software results in
+[upstream readiness](qmk-upstream-readiness.md). No shared QMK changes are
+required beyond the two separately submitted Contrib fixes.
+
+See [hardware calibration](mistel-md770-hardware-calibration.md) for measured
+macro timing, USB wake and reconnect results, each tied to its recorded image.
+
+## Historical implementation and audits
+
+The remaining development account describes earlier builds. Its unresolved
+defects and shared-core changes are historical; the current review above
+records their corrections or removal. The reproduction commands use the
+current shared-keymap setup.
 
 The implementation is in `qmk_firmware`, branch `mistel-md770-support`.
-The personal keymap remains in this repository. Both halves were flashed on
+The personal notification userspace remains in this repository and builds
+the shared `default_mistel` keymap. The following hardware account is
+historical. Both halves were flashed on
 2026-11-16. The right now runs the normal macro validation image with the
 SPI reset fix and no diagnostic commands; settings were retained. Application
 sum/CRC, QMK metadata and normal USB return passed. See the
@@ -109,7 +125,7 @@ physical J, full boot or deep-sleep restoration, RF behaviour, electrical
 USB/SPI timing or battery performance. No further firmware was flashed and
 no additional manual key tests were requested during the review.
 
-## Current design
+## Historical design
 
 The right half retains the resident Bluetooth module. The MCU sends stock
 A1 keyboard, A2 consumer and A3 system reports over SPI0 slave FIFO transfers.
@@ -154,7 +170,7 @@ SysTick/watchdog and SPI/UART configuration. It does not reproduce stock's
 8 MHz clock changes or deep WFE power sequence, so stock battery runtime and
 sleep current are not established.
 
-## QMK integration and review
+## Historical QMK integration and review
 
 | Responsibility | Existing interface or source in `qmk_firmware` |
 | --- | --- |
@@ -195,7 +211,8 @@ review result and image fingerprints are in the
 
 ## Verification
 
-The default and personal keymaps build for both halves. QMK strict keyboard
+The minimal `default`, factory `default_mistel` and personal builds compile
+for both halves. QMK strict keyboard
 lint passes for both halves. The linked record includes image sizes, hashes,
 static RAM and remaining heap after reserving the existing 1 KiB interrupt
 and 2 KiB thread stacks. The new transport allocates no heap memory.
@@ -215,8 +232,7 @@ Run from this repository with the sibling QMK support checkout:
 ```fish
 nix-shell --run 'bash tests/md770_bluetooth/run.sh'
 nix-shell --run 'bash tests/md770_keymap/run-programming.sh'
-nix-shell --run 'qmk compile -kb mistel/md770rgb_bt/right -km markwellis -j 4'
-nix-shell --run 'qmk compile -kb mistel/md770rgb_bt/left -km markwellis -j 4'
+nix-shell --run 'qmk userspace-compile -j 4'
 ```
 
 Existing protocol, split, DIP, notification, USB receive and host-tool

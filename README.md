@@ -10,31 +10,38 @@ All changes to shared QMK code have been removed. Keyboard support needs
 only the two independently submitted ChibiOS-Contrib fixes below; the
 runtime-clock and USB-stop patches are removed. See the
 [review](docs/qmk-upstream-readiness.md) and
-[current checkpoint](docs/mistel-md770-emulator-checkpoint.md). Both
-personal images are now installed: application checksums and metadata match,
-and the owner confirmed typing, both space bars and cross-half Shift. See the
-[right](docs/mistel-md770-simplified-flash-right.json) and
-[left](docs/mistel-md770-simplified-flash-left.json) installation records.
-A subsequent [short differential pass](docs/hardware-calibration/simplified-input-summary.json)
+[current checkpoint](docs/mistel-md770-emulator-checkpoint.md). Both personal
+images from the shared factory-keymap build are installed: application
+checksums, metadata and normal QMK USB return are verified. The owner
+confirmed joined typing, both space bars and cross-half Shift. See the
+[right](docs/mistel-md770-upstream-ready-flash-right.json) and
+[left](docs/mistel-md770-upstream-ready-flash-left.json) installation records.
+An earlier [short differential pass](docs/hardware-calibration/simplified-input-summary.json)
 matched all 24 predicted key events on Bluetooth/power-bank power and all 24
 on USB.
 
 The QMK port remains in the separate
 [qmk_firmware fork](https://github.com/markwellis/qmk_firmware), on the
-branch `mistel-md770-support`. Hardware drivers remain in that repository;
-this repository adds personal `markwellis` userspace to the shared factory keymap. Both halves have booted QMK after USB-only updates and
-passed basic typing, cold reconnect and updater entry/return checks. Split
-typing and cold reconnect now pass with clean firmware on both halves,
-including both space bars and cross-half Shift. The diagnostic console has
-been removed. RGB effects, indicators and settings persistence passed
-hardware validation.
+branch `mistel-md770-support`, squashed to `9024e7c2e1`. Use `develop` as
+the PR base; the diff contains only MD770 support and its tests. Hardware
+drivers remain in that repository; this repository adds personal
+`markwellis` userspace to its factory keymap. Earlier builds passed cold
+reconnect, updater entry/return, RGB, indicators and settings persistence
+checks. The diagnostic console is removed.
 
 ## Personal keymap
 
-This repository is also standard QMK External Userspace. The personal build compiles QMK's `default_mistel` keymap directly with
+This repository is standard QMK External Userspace. The personal build
+compiles QMK's `default_mistel` keymap directly with
 `USER_NAME=markwellis`, adding only Raw HID
 [notification lighting](docs/notifications.md). The factory code stays in
 QMK, alongside a minimal `default` keymap. VIA is disabled.
+
+| Build | QMK keymap | Userspace | Behaviour |
+| --- | --- | --- | --- |
+| Minimal | `default` | None | QWERTY, basic Fn/Pn, lighting and connection controls |
+| Factory | `default_mistel` | None | Factory profiles, DIP mappings, editor, macros and lighting |
+| Personal | `default_mistel` | `USER_NAME=markwellis` | Full factory behaviour plus notifications |
 
 With a sibling `qmk_firmware` checkout containing the pending changes:
 
@@ -43,7 +50,7 @@ nix-shell --run 'qmk userspace-compile -j 4'
 ```
 
 See the [personal keymap instructions](users/markwellis/readme.md)
-for setup, custom functions, building, flashing and updates.
+for setup, building, flashing and updates.
 The keymap is GPL-2.0-or-later; see its
 [licence](users/markwellis/LICENSE).
 Other tools retain their own licences and provenance notices.
@@ -52,18 +59,19 @@ The current local candidate adds [onboard assignments and persistent macro
 recording](docs/onboard-programming.md), including profile-specific Fn/Pn
 relocation. The personal build passed the selected representative
 [hardware checks](docs/mistel-md770-personal-hardware-tests.json), including
-notifications and USB wake. Its reordered layers require a full QMK settings
-reset when upgrading from the earlier firmware.
+notifications and USB wake. Moving from the copied personal keymap to this
+shared factory build keeps its storage layout and needs no reset. Switching
+between minimal `default` and factory `default_mistel` requires a reset.
 
 The QMK support branch now also contains
 [Bluetooth, charging indicators and battery idle support](docs/mistel-md770-bluetooth-implementation.md).
 USB and power-bank Bluetooth typing, automatic cold-start and rapid-cycle
 reconnection, macro timing and controlled USB suspend/wake passed the selected
-hardware checks. The installed saved-output firmware is recorded in
-[the build record](docs/mistel-md770-saved-output-build.json). Battery
-sleep/wake, runtime, charger current and termination remain untested.
-The upstream preparation below changes source and builds only; it has not
-been flashed over the installed firmware.
+hardware checks. Those measured captures belong to the earlier
+[saved-output firmware](docs/mistel-md770-saved-output-build.json). The
+new [build record](docs/mistel-md770-upstream-ready-builds.json) identifies
+the installed images. Battery sleep/wake, runtime, charger current and
+termination remain untested.
 
 ## Pending upstream changes
 
