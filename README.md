@@ -33,15 +33,15 @@ checks. The diagnostic console is removed.
 
 This repository is standard QMK External Userspace. The personal build
 compiles QMK's `default_mistel` keymap directly with
-`USER_NAME=markwellis`, adding only Raw HID
-[notification lighting](docs/notifications.md). The factory code stays in
+`USER_NAME=markwellis`, adding Raw HID [notification lighting](docs/notifications.md)
+and a [numpad](users/markwellis/readme.md#numpad). The factory code stays in
 QMK, alongside a minimal `default` keymap. VIA is disabled.
 
 | Build | QMK keymap | Userspace | Behaviour |
 | --- | --- | --- | --- |
 | Minimal | `default` | None | QWERTY, basic Fn/Pn, lighting and connection controls |
 | Factory | `default_mistel` | None | Factory profiles, DIP mappings, editor, macros and lighting |
-| Personal | `default_mistel` | `USER_NAME=markwellis` | Full factory behaviour plus notifications |
+| Personal | `default_mistel` | `USER_NAME=markwellis` | Factory behaviour, notifications and numpad |
 
 With a sibling `qmk_firmware` checkout containing the pending changes:
 

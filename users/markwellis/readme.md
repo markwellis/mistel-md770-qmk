@@ -1,8 +1,8 @@
 # Mark's MD770 RGB BT build
 
 This build uses QMK's `default_mistel` keymap directly, including its profiles,
-onboard programming, Fn/Pn controls, DIP switches and lighting. The only
-personal addition is Raw HID notification lighting on the right half.
+onboard programming, Fn/Pn controls, DIP switches and lighting. The personal
+build adds Raw HID notification lighting and a numpad on both joined halves.
 The factory implementation stays in QMK; there are no copied keymap files.
 
 QMK's native `USER_NAME=markwellis` option loads `users/markwellis/rules.mk`
@@ -128,3 +128,21 @@ editor and [notifications](../../docs/notifications.md) for alert behaviour.
 ```fish
 python3 scripts/md770_notify.py ff8800
 ```
+
+## Numpad
+
+Tap Caps Lock to toggle the numpad and light the left keys green. Tap Caps
+Lock again or press Escape to turn it off. Hold Caps Lock for quick entry
+with your right hand. The right keys glow green while you hold it.
+The numpad uses the physical QWERTY positions below. Digits work with Num Lock
+off. Caps activates the numpad when that position is assigned Caps Lock.
+
+| Output | Left keys | Right keys |
+| --- | --- | --- |
+| 7 8 9 | W E R | U I O |
+| 4 5 6 | S D F | J K L |
+| 1 2 3 | X C V | M , . |
+| 0 | Left Space | Right Space |
+| Decimal | Z | ; |
+| Backspace | Q | Backspace |
+| Enter | B | Enter |

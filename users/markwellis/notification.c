@@ -1,6 +1,7 @@
 // Copyright 2026 Mark Ellis (@markwellis)
 // SPDX-License-Identifier: GPL-2.0-or-later
 #include "notification.h"
+#include "numpad.h"
 
 #if defined(RAW_ENABLE) && defined(RGB_MATRIX_ENABLE)
 #    include "lib/lib8tion/lib8tion.h"
@@ -12,6 +13,7 @@
 enum { NOTIFICATION_VERSION = 1 };
 
 static bool         active;
+static md770_numpad_side_t numpad_shown;
 static rgb_t        colour;
 static uint32_t     started, last_flush;
 static matrix_row_t previous[MATRIX_ROWS];
@@ -38,8 +40,7 @@ void raw_hid_receive(uint8_t *data, uint8_t length) {
     raw_hid_send(data, length);
 }
 
-static void dismiss_notification(void) {
-    active = false;
+static void restore_lighting(void) {
     rgb_matrix_set_color_all(0, 0, 0);
     if (rgb_matrix_is_enabled()) {
         if (!rgb_matrix_get_suspend_state()) {
@@ -58,7 +59,8 @@ void matrix_scan_user(void) {
     for (uint8_t row = 0; row < MATRIX_ROWS; ++row) {
         matrix_row_t current = matrix_get_row(row);
         if (current & ~previous[row]) {
-            dismiss_notification();
+            active = false;
+            restore_lighting();
             return;
         }
         previous[row] = current;
@@ -66,17 +68,23 @@ void matrix_scan_user(void) {
 }
 
 void suspend_power_down_user(void) {
-    if (active && !rgb_matrix_get_suspend_state()) {
+    if ((active || numpad_shown != MD770_NUMPAD_OFF) && !rgb_matrix_get_suspend_state()) {
         // QMK skips clearing an off effect that was already initialised.
         rgb_matrix_set_color_all(0, 0, 0);
         rgb_matrix_set_suspend_state(true);
     }
 }
 
-bool rgb_matrix_indicators_user(void) {
-    if (active && !rgb_matrix_get_suspend_state()) {
+static void draw_overlay(md770_numpad_side_t numpad) {
+    if (active) {
         draw_notification();
+    } else if (numpad != MD770_NUMPAD_OFF) {
+        md770_numpad_draw(numpad);
     }
+}
+
+bool rgb_matrix_indicators_user(void) {
+    if (!rgb_matrix_get_suspend_state()) draw_overlay(md770_numpad_side());
     return true;
 }
 
@@ -85,9 +93,17 @@ void housekeeping_task_keymap(void) {
 }
 
 void md770_notification_task(void) {
-    if (!active || rgb_matrix_is_enabled() || rgb_matrix_get_suspend_state()) return;
+    md770_numpad_side_t numpad = md770_numpad_side();
+    if (numpad != numpad_shown) {
+        if (!active) {
+            if (numpad_shown != MD770_NUMPAD_OFF) restore_lighting();
+            last_flush = timer_read32() - RGB_MATRIX_LED_FLUSH_LIMIT;
+        }
+        numpad_shown = numpad;
+    }
+    if ((!active && numpad == MD770_NUMPAD_OFF) || rgb_matrix_is_enabled() || rgb_matrix_get_suspend_state()) return;
     // QMK can clear the off-mode buffer between our timed flushes.
-    draw_notification();
+    draw_overlay(numpad);
     if (timer_elapsed32(last_flush) >= RGB_MATRIX_LED_FLUSH_LIMIT) {
         rgb_matrix_update_pwm_buffers();
         last_flush = timer_read32();
